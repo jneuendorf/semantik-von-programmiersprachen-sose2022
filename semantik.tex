@@ -1,0 +1,67 @@
+\hfill 29.04.
+
+\section{Semantik}
+
+
+Ziel: Finde eine mathematische Methode, um einem Programm eine \emph{Bedeutung} zuzuordnen.
+
+Motivation:
+\begin{itemize}
+    \item Verifikation:
+        \begin{itemize}
+            \item Erfüllt mein Programm die Spezifikation (tut es das, was es soll)?
+            \item Setzt der Übersetzer/Interpretierer die Spezifikation der Sprache korrekt um?
+        \end{itemize}
+     \item Programmumformung
+        \begin{itemize}
+            \item Haben zwei unterschiedliche Programme die gleiche Bedeutung?
+            \item Optimierung
+        \end{itemize}
+    \item Programmanalyse
+        \begin{itemize}
+            \item Ist das Programm ``sicher'' (secure vs. safe)?
+            \item Ist das Programm ``effizient''?
+        \end{itemize}
+\end{itemize}
+
+\begin{definition}[Programmierparadigma]
+    Programmierparadigma: \zb deklarativ (``Was?'') (funktional vs. logisch), imperativ (``Wie?''). In verschiedenen Paradigmen haben (potenziell) Programme verschiedene Bedeutungen.
+\end{definition}
+
+Wir konzentrieren uns auf \emph{imperative} Programmierung.
+
+\begin{question}
+    Was ist die ``mathematische Bedeutung'' eines imperativen Programms?
+\end{question}
+
+\begin{question}[folgend]
+    Was ist ein imperatives Programm?
+\end{question}
+
+
+
+\begin{lstlisting}[language=Python, caption=Imperatives Programm]
+x = 1
+y = x + 2
+x = y + 5
+for ...
+\end{lstlisting}
+% => Es gibt einen Zustand (alles, was im Speicher steht). Diesen ändert man mit Zuweisung
+
+
+\begin{lstlisting}[language=Haskell, caption=Funktionales Programm]
+foo :: Int -> Int
+foo 0 = 1
+foo x = x + 1
+foo 3
+\end{lstlisting}
+% => kein Zustand, sondern es gibt einen Ausdruck, der ausgewertet wird
+
+Das zentrale Konzept der imperativen Programmierung ist der \emph{Zustand} (state). Der Zustand ist der Inhalt aller Speicherzellen und Register, die Position des Programm"-zählers und der Zustand der Eingabe-/Ausgabe-Geräte.
+
+Ein imperatives Programm ist eine Folge von \emph{Anweisungen} (statement / instruction). Diese haben \emph{Wirkungen} (effects), welche den Zustand verändern (selbst \texttt{nop} ändert den Programmzähler und somit den Zustand). Darüber hinasu gibt es Neben"-wir"-kungen bzw. Seiteneffekte (side effects). Es gibt unterschiedliche Arten von Anwei"-sungen:
+\begin{itemize}
+    \item Zuweisungen (direkte Änderung des Zustandes)
+    \item Kontrollfluss (Änderung des Programmzählers: Verzweigungen, Schleifen, Funk"-tions"-aufrufe bzw. Sprünge)
+    \item Eingabe / Ausgabe
+\end{itemize}
