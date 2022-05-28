@@ -1,0 +1,273 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\hfill 20.05.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Natürliche operationelle Semantik (``big step'')}
+% \subsection{Definition von \texorpdfstring{$\mathcal{S}\lsem \cdot \rsem$}{S[.]}}
+
+$\Asem{\cdot}$ und $\Bsem{\cdot}$ \emph{benutzen} den Zustand $\sigma$ während die Semantik von Anweisungen den Zustand \emph{verändern} soll.
+
+Idee: Definiere $\Ssem{\cdot}$ mithilfe einer Zustandsüberführungerelation.
+
+\begin{definition}
+    Sei $s \in \SExp$ eine Anweisungsfolge und seien $\sigma, \sigma' \in \State$ Zustände. Die Zustandsüberführungsrelation
+    \[
+    \strans{S}{\sigma}{\sigma'}
+    \]
+    spezifiziert die Beziehung zwischen Startzustand $\sigma$ und dem Endzustand $\sigma'$ gemäß der Anweisungsfolge $S$.
+\end{definition}
+
+\begin{remark}[Bedeutung]
+    Die Ausführung von $S$ auf Startzustand $\sigma$ terminiert mit Endzustand $\sigma'$.
+\end{remark}
+
+\par\medskip
+\begin{notation}
+    Wir definieren die Zustandsübergangsrelation mithilfe von Schlussregeln. Eine solche Schlussregel besitzt die folgende Form:
+    \[
+    \frac{\text{Voraussetzung}}{\text{Folgerung}} \leadsto \frac{\strans{S_1}{\sigma_1}{\sigma_1'}, \strans{S_2}{\sigma_2}{\sigma_2'}, \,\dots\, , \strans{S_n}{\sigma_n}{\sigma_n'}}{\strans{S}{\sigma}{\sigma'}}
+    \]
+    (ggf.\ mit zusätzlichen Bedingungen) wobei $S_1, \dots, S_n$ Bestandteile von $S$ sind.
+
+    Gibt es keine Voraussetzung, nennen wir die Schlussregel ein \emph{Axiom}.
+\end{notation}
+
+
+
+% SCHLUSSREGELN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Schlussregeln für die natürliche Semantik von \texttt{while}}
+
+Im Folgenden schreiben wir $[\cdot]_{\text{ns}}$ um anzuzeigen, dass es sich um die natürliche Semantik handelt.
+
+\begin{enumerate}
+    \item Zuweisung $[\text{zuw}_{\text{ns}}]$ (Axiom)
+    \[
+    \frac{}{\strans{x \texttt{ := } a}{\sigma}{\sigma[x \mapsto \Asem{a}(\sigma)]}}
+    \]
+
+    \item Skip $[\text{skip}_{\text{ns}}]$ (Axiom)
+    \[
+    \frac{}{\strans{\texttt{skip}}{\sigma}{\sigma}}
+    \]
+
+    \item Hintereinanderausführung $[\text{seq}_{\text{ns}}]$
+    \[
+    \frac{\strans{S_1}{\sigma}{\sigma'}, \strans{S_2}{\sigma'}{\sigma''}}{\strans{S_1 \texttt{;} S_2}{\sigma}{\sigma''}}
+    \]
+    Dabei können $S_1$ und $S_2$ zusammengesetzte Anweisungen sein.
+
+    \item Verzweigung $[\text{if}_{\text{ns}}^{\true}]$
+    \[
+    \frac{\strans{S_1}{\sigma}{\sigma'}}{\strans{\texttt{if } b \texttt{ then } S_1 \texttt{ else } S_2}{\sigma}{\sigma'}}
+    \]
+    falls $\Bsem{b}(\sigma) = \true$. Dabei muss $S_2$ nicht terminieren.
+
+    \item Verzweigung $[\text{if}_{\text{ns}}^{\false}]$
+    \[
+    \frac{\langle S_2, \sigma \rangle \to \sigma'}{\langle \texttt{if } b \texttt{ then } S_1 \texttt{ else } S_2, \sigma \rangle \to \sigma'}
+    \]
+    falls $\Bsem{b}(\sigma) = \false$. Dabei muss $S_1$ nicht terminieren.
+
+    \item Schleife $[\text{while}_{\text{ns}}^{\true}]$
+    \[
+    \frac{\langle S, \sigma \rangle \to \sigma', \langle \texttt{while } b \texttt{ do } S, \sigma' \rangle \to \sigma''}{\langle \texttt{while } b \texttt{ do } S, \sigma \rangle \to \sigma''}
+    \]
+    falls $\Bsem{b}(\sigma) = \true$. Im Allgemeinen kann es sein, dass die Schleife nicht terminiert. Deshalb müssen wir diesen Fall in der Definition der semantischen Funktion beachten. Das bedeutet, diese Relation ist nicht total.
+
+    \item Schleife $[\text{while}_{\text{ns}}^{\false}]$
+    \[
+    \frac{\text{ }}{\langle \texttt{while } b \texttt{ do } S, \sigma \rangle \to \sigma}
+    \]
+    falls $\Bsem{b}(\sigma) = \false$.
+\end{enumerate}
+
+\par\bigskip
+\par\bigskip
+Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
+
+\begin{definition}
+    Sei $S \in \SExp$ ein Programm und seien $\sigma, \sigma' \in \State$. Dann gilt
+    \[
+    \langle S, \sigma \rangle \to \sigma'
+    \]
+    gdw.\ ein \emph{endlicher Ableitungsbaum} dafür existiert.
+
+    Der Ableitungsbaum entsteht durch wiederholte Anwendung der Schlussregeln. Die Wurzel ist ist $\langle S, \sigma \rangle \to \sigma'$, die Blätter sind Axiome, die Knoten entsprechen  korrekte Anwendung der Schlussregeln.
+\end{definition}
+
+\begin{example}
+    Sei $\sigma \in \State$ mit $\sigma(x) = 1$ und $\sigma(y) = 5$.
+
+    Behauptung: $\langle (z := z; x := y); y := z, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]$
+
+    Nun müssen wir den endlichen Ableitungsbaum erzeugen.
+
+
+    \begin{enumerate}
+        \item $[\text{seq}_{ns}]$
+            \[
+            \frac{\langle z := x; x ;= y, \sigma \rangle \to \sigma', \langle y := z, \sigma' \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}{\langle \underbrace{(z := z; x := y)}_{s_1}; \underbrace{y := z}_{S_2}, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
+            \]
+
+            Welches $\sigma'$ brauchen wir? $\leadsto \sigma[z \mapsto 1][x \mapsto 5]$. Somit erhalten wir
+            \[
+            \frac{\langle z := x; x := y, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5], \langle y := z, \sigma[z \mapsto 1][x \mapsto 5] \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}{\langle \underbrace{(z := z; x := y)}_{S_1}; \underbrace{y := z}_{S_2}, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
+            \]
+
+        \item $[\text{zuw}_{ns}]$ für den rechten Teil
+            \[
+            \frac{\Asem{z}(\sigma[z \mapsto 1][x \mapsto 5]) \overset{?}{=} 1}{\langle y := z, \sigma[z \mapsto 1][x \mapsto 5] \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
+            \]
+
+            \[
+            \Asem{z}(\sigma[z \mapsto 1][x \mapsto 5]) \overset{Def}{=} \sigma[z \mapsto 1][x \mapsto 5](z) \overset{Def}{=} 1
+            \]
+
+        \item $[\text{seq}_{ns}]$
+            \[
+            \frac{\langle z := x, \sigma \rangle \to \sigma[z \mapsto 1], \langle x := y, \sigma[z \mapsto 1] \rangle \to \sigma[z \mapsto 1][x \mapsto 5]}{\langle z := x; x ;= y, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5]}
+            \]
+
+            Ab hier analog zum rechten Teil (mit zwei Mal $[\text{zuw}_{ns}]$).
+    \end{enumerate}
+\end{example}
+
+\par\bigskip
+\begin{remark}[Rechtseindeutigkeit / Determiniertheit]
+    Es ist noch nicht klar, dass ``$\to$'' \emph{rechtseindeutig} ist. D.\,h. möglicherweise existiert ein Programm $S$, ein Startzustand $\sigma$ und Zustände $\sigma_1 \neq \sigma_2 \in \State$, sodass sowohl
+    \[
+    \langle S, \sigma \rangle \to \sigma_1 \text{ als auch } \langle S, \sigma \rangle \to \sigma_2
+    \]
+    gilt. Daher muss die Rechtseindeutigkeit bzw. \emph{Determiniertheit} bewiesen werden!
+\end{remark}
+
+\par\medskip
+\begin{remark}[Ableitungsbaum]
+    Der Ableitungsbaum ist statisch. D.\,h. man kann nicht erkennen, in welcher Reihenfolge die Schlussregeln angewendet werden.
+\end{remark}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\hfill 27.05.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{definition}
+    Sei $S$ ein Programm und $\sigma$ ein Startzustand. Das Programm $S$ \emph{terminiert} bei Startzustand $\sigma$ falls ein $\sigma'$ existiert, sodass $\strans{S}{\sigma}{\sigma'}$ gilt.
+
+    ? Analog \emph{terminiert $S$ nicht} bei Startzustand $\sigma$.
+
+    Das Programm $S$ \emph{terminiert immer}, falls $S$ für jeden Startzustand $\sigma$ terminiert. $S$ \emph{terminiert nie}, falls $S$ für keinen Startzustand $\sigma$ terminiert.
+\end{definition}
+
+\begin{definition}
+    Sei $S_1, S_2$ zwei Programme. $S_1$ und $S_2$ heißen \emph{semantisch äquivalent}, falls für alle Zustände $\sigma, \sigma'$ gilt
+    \[
+    \strans{S_1}{\sigma}{\sigma'} \Leftrightarrow \strans{S_2}{\sigma}{\sigma'}
+    \]
+\end{definition}
+
+\begin{example}
+    Die Programme
+    \[
+    S_1 = \texttt{while b do S}
+    \]
+    und
+    \[
+    S_2 = \texttt{if b then (S; while b do S) else skip}
+    \]
+    sind semantisch äquivalent.
+\end{example}
+\begin{proof}
+    Seien $\sigma, \sigma'$ Zustände. Z.\,z.: $\strans{S_1}{\sigma}{\sigma'} \Leftrightarrow \strans{S_2}{\sigma}{\sigma'}$.
+
+    \begin{enumerate}
+        \item ``$\Rightarrow$''
+
+            Nimm an, es gilt $\strans{S_1}{\sigma}{\sigma'}$. Also exisitert nach Definition ein endlicher Ableitungsbaum für $\strans{S_1}{\sigma}{\sigma'}$.
+            \begin{enumerate}
+                \item $\Bsem{b}(\sigma) = \true$
+
+                    Dann hat der Ableitungsbaum $T_1$ die Form
+                    \begin{align*}
+                        [\text{while}_{\text{ns}}^{\true}]\;
+                        \cfrac{
+                            \cfrac{T_a}{\strans{S}{\sigma}{\sigma''}}
+                            \;,\;
+                            \cfrac{T_b}{\strans{\texttt{while b do S}}{\sigma''}{\sigma'}}
+                        }{
+                            \strans{\texttt{while b do S}}{\sigma}{\sigma'}
+                        }
+                    \end{align*}
+
+                    Z.\,z.:\ es existiert ein endlicher Ableitungsbaum für $\strans{S_2}{\sigma}{\sigma'}$
+                    \begin{align*}
+                        [\text{if}_{\text{ns}}^{\true}]\;
+                        \cfrac{
+                            [\text{seq}_{\text{ns}}]\;
+                            \cfrac{
+                                \cfrac{T_a}{\strans{S}{\sigma}{\sigma''}}
+                                ,
+                                \cfrac{T_b}{\strans{\texttt{while b do S}}{\sigma''}{\sigma}}
+                            }{
+                                \strans{\texttt{S; while b do S}}{\sigma}{\sigma'}
+                            }
+                        }{
+                            \strans{\texttt{if b then (S; while b do S) else skip}}{\sigma}{\sigma'}
+                        }
+                        \quad
+                        \Bsem{b}(\sigma) = \true
+                    \end{align*}
+
+                \item $\Bsem{b}(\sigma) = \false$
+
+                    Dann hat $T_1$ die Form
+                    \begin{align*}
+                        [\text{while}_{\text{ns}}^{\false}]
+                        \cfrac{}{
+                            \strans{\texttt{while b do S}}{\sigma}{\sigma}
+                        }
+                        \quad
+                        \Bsem{b}(\sigma) = \false
+                    \end{align*}
+                    Dieses Axiom ist wahr, gdw. $\sigma = \sigma'$.
+
+                    Z.\,z.: Es existiert ein Ableitungsbaum für $\strans{S_2}{\sigma}{\sigma}$.
+                    \begin{align*}
+                        [\text{if}_{\text{ns}}^{\false}]\;
+                        \cfrac{
+                            [\text{skip}_{\text{ns}}]\;
+                            \cfrac{}{\strans{\texttt{skip}}{\sigma}{\sigma}}
+                        }{
+                            \strans{\texttt{if b then (S; while b do S) else skip}}{\sigma}{\sigma}
+                        }
+                        \quad
+                        \Bsem{b}(\sigma) = \false
+                    \end{align*}
+            \end{enumerate}
+
+        \item ``\Leftarrow''
+
+            Analog.
+    \end{enumerate}
+\end{proof}
+
+\begin{remark}
+    Die natürliche Semantik der \texttt{while}-Sprache ist \emph{determiniert}, \dh für alle Anweisungen $S$ und Zustände $\sigma, \sigma_1, \sigma_2$ gilt:
+
+    Wenn $\strans{S}{\sigma}{\sigma_1}$ und $\strans{S}{\sigma}{\sigma_2}$, dann $\sigma_1 = \sigma_2$.
+\end{remark}
+\begin{proof}
+    Durch strukturelle Induktion nach Tiefe des Ableitungsbaums. (Übung)
+\end{proof}
+
+
+\begin{definition}
+    Die semantische Funktion $\mathcal{S}_{\text{ns}}: \State \to (\State \to \State)$ ist definiert als
+    \begin{align*}
+        \mathcal{S}_{\text{ns}}\lsem S \rsem(\sigma) = \begin{cases}
+            \sigma' & \text{falls } \exists\; \sigma': \strans{S}{\sigma}{\sigma'} \\
+            \bot & \text{sonst}
+        \end{cases}
+    \end{align*}
+\end{definition}

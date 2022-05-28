@@ -9,5 +9,6 @@
 \contentsline {subsection}{\numberline {3.1}Semantik arithmetischer Ausdrücke}{9}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Freie Variablen}{11}{subsection.3.2}%
 \contentsline {subsection}{\numberline {3.3}Substitution}{13}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Definition von $\mathcal {S}\mathrm {[}\kern -.14em\mathrm {[}\cdot \mathrm {]}\kern -.14em\mathrm {]}$}{15}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.4}Natürliche operationelle Semantik (``big step'')}{15}{subsection.3.4}%
 \contentsline {subsubsection}{\numberline {3.4.1}Schlussregeln für die natürliche Semantik von \texttt {while}}{15}{subsubsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.5}Strukturelle operationelle Semantik (``small step'')}{20}{subsection.3.5}%

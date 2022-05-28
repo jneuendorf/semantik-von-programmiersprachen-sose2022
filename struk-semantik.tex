@@ -1,0 +1,89 @@
+\subsection{Strukturelle operationelle Semantik (``small step'')}
+
+Hier geht es um die genaue Reihenfolge der Schritte bei der Ausführung. Das ist bespielsweise nützlich bei der parallelen Ausführungen eines Programms.
+
+Wir definieren wieder eine Zustandsüberführungsrelation ``$\Rightarrow$''. Sie hat die Form
+\begin{align*}
+    \langle S, \sigma \rangle & \Rightarrow \langle S', \sigma' \rangle \tag{*} \\
+    \text{oder} \\
+    \langle S, \sigma \rangle & \Rightarrow \sigma' \tag{**}
+\end{align*}
+
+Interpretation:
+\begin{enumerate}
+    \item[(*)] Ausführung ist noch nicht vorbei, sondern erreicht in \emph{einem Schritt} die \emph{Zwischenkonfiguration} $\langle s', \sigma' \rangle$.
+    \item[(**)] Ausführung ist nach einem Schritt vorbei und erreicht den Endzustand $\sigma'$.
+\end{enumerate}
+
+
+
+Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreiben wir $[\cdot]_{\text{sos}}$ um anzuzeigen, dass es sich um die strukturelle operationelle Semantik handelt.
+
+
+\begin{enumerate}
+    \item $[\text{zuw}_{\text{sos}}]$
+    \[
+    \langle x := a, \sigma \rangle \Rightarrow \sigma[x \mapsto \Asem{a}(\sigma)]
+    \]
+
+    \item $[\text{skip}_{\text{sos}}]$
+    \[
+    \langle \texttt{skip}, \sigma \rangle \Rightarrow \sigma
+    \]
+
+    \item $[\text{seq}_{\text{sos}}^1]$
+    \begin{align*}
+        \frac{
+            \langle S_1, \sigma \rangle \Rightarrow \langle S_1', \sigma' \rangle
+        }{
+            \langle S_1; S_2, \sigma \rangle \Rightarrow \langle S_1'; S_2, \sigma' \rangle
+        }
+    \end{align*}
+
+    \item $[\text{seq}_{\text{sos}}^2]$
+    \begin{align*}
+        \frac{
+            \langle S_1, \sigma \rangle \Rightarrow \sigma'
+        }{
+            \langle S_1; S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma' \rangle
+        }
+    \end{align*}
+
+
+    \item $[\text{if}_{\text{sos}}^{\true}]$
+    \begin{align*}
+        \langle \texttt{if b then } S_1 \texttt{ else } S_2, \sigma \rangle \Rightarrow \langle S_1, \sigma \rangle
+    \end{align*}
+    falls $\Bsem{b}(\sigma) = \true$
+
+    \item $[\text{if}_{\text{sos}}^{\false}]$
+    \begin{align*}
+        \langle \texttt{if b then } S_1 \texttt{ else } S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma \rangle
+    \end{align*}
+    falls $\Bsem{b}(\sigma) = \false$
+
+    \item $[\text{while}_{\text{sos}}]$
+    \[
+    \langle \texttt{while } b \texttt{ do } S, \sigma \rangle \Rightarrow \langle \texttt{if } b \texttt{ then } \texttt{(S; while b do S)} \texttt{ else skip}, \sigma \rangle
+    \]
+\end{enumerate}
+
+\begin{definition}
+    Sei $S$ eine Anweisung und $\sigma$ ein Zustand.
+
+    Eine Ableitungsfolge für $\langle S, \sigma \rangle$ ist entweder
+    \begin{enumerate}
+        \item eine endliche Folge $\gamma_0 \Rightarrow \gamma_1 \Rightarrow \dots \Rightarrow \gamma_k$ von Konfigurationen, sodass $\gamma_0 = \langle S, \sigma \rangle$ ist $\gamma_i \Rightarrow \gamma_{i+1}$ für $0, \dots, k-1$ und $\gamma_k$ entweder ein Zustand $\sigma'$ oder eine Konfiguration $\langle S', \sigma' \rangle$ für die es mit $\Rightarrow$ nicht weiter geht \emph{(steckengebliebe Konfiguration)}.
+
+        \item eine unendliche Folge $\gamma_0 \Rightarrow \gamma_1 \Rightarrow \dots$ von Konfigurationen mit $\gamma_0 = \langle S, \sigma \rangle$ mit $\gamma_i \Rightarrow \gamma_{i+1}$ für $i \geq 0$.
+    \end{enumerate}
+\end{definition}
+
+\par\medskip
+\begin{notation}
+    Wir schreiben
+
+    $\gamma_0 \Rightarrow^i \gamma'$ für ``$\gamma'$ geht aus $i$ Schritten hervor'' und
+
+    $\gamma_0 \Rightarrow^* \gamma'$ für ``$\gamma'$ geht aus endlich vielen Schritten hervor'' (auch null).
+\end{notation}

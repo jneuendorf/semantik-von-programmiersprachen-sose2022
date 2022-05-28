@@ -1,0 +1,121 @@
+\section{Mathematische Formalisierung}
+
+\begin{definition}[Zustand]
+    Es gibt eine abzählbar unendliche Menge von Variablen $V = \{ x_1, x_2, \dots, y, z, \dots \}$ (Speicher ist begrenzt aber beliebig groß). Der Zustand ist eine (partielle) Funktion \[
+    \sigma: V \to \mathbb{Z} \cup \{ \bot, true, false \}
+    \]
+    ($\bot$ bedeutet undefiniert, \dh{} eine Speicherzelle hat noch keinen Wert und die Funk"-tion gibt nichts aus).
+
+    Die Teile des Zustandes ``Eingabe / Ausgabe'' ignorieren wir erst einmal, \dh{} die initiale Eingabe ist implizit durch den Wert der Variablen am Anfang. Der Programm"-zähler wird an anderer Stelle thematisiert.
+\end{definition}
+
+\begin{remark}
+    Diese Definition dient als Bespiel, \dh{} in anderen Szenarion mit anderen Variables außer Ganzzahlen und Boolesche Wert kann eine andere Definition sinnvoller sein.
+\end{remark}
+
+\begin{definition}[Imperatives Programm]
+    Ein imperatives Programm ist eine Funktion auf der Menge alles Zustände. Jedem Startzustand wird ein Endzustand zugeordnet (wir ignorieren E/A).
+\end{definition}
+
+\begin{notation}
+    Sei $\Pi \in \Sigma^*$ ein gültiges Programm (eine Zeichenkette). Wir bezeichnen mit
+    \[
+    \sem{\Pi} \in [State \to State]
+    \]
+    ($S$ ist die semantische Funktion) die Funktion, welche durch $\Pi$ definiert wird.
+\end{notation}
+
+
+
+\subsection{\texttt{while}-Sprache}\label{section:while}
+
+\begin{definition}
+    Wir verwenden in dieser Vorlesung eine einfache, turing-vollständige, imperative Programmiersprache als durchgängiges Beispiel namens \texttt{while}\emph{-Sprache}, die durch folgende kontextfreie Grammatik gegeben ist:
+\end{definition}
+\vspace*{-2em}
+\begin{align*}
+    A & \to \texttt{Zahl | Var | $A + A$ | $A * A$ | $A - A$} \\
+    B & \to \texttt{true | false | $A = A$ | $A \leq A$ | $\neg B$ | $B \wedge B$} \\
+    S & \to \texttt{Var := A | skip | S; S | if B then S else S | while B do S}
+\end{align*}
+\begin{remark}
+    Es gibt die syntaktischen Kategorien ``arithmetischer Ausdruck'' ($A$), ``Boolescher Ausdruck'' ($B$) und ``Statement'' ($S$, Anweisung).
+\end{remark}
+
+\begin{example}
+    \begin{align*}
+        \Pi & = \texttt{x = z + 1} \\
+        \Ssem{\texttt{x = z + 1}}(\underbrace{[x \mapsto 5, z \mapsto -4, a \mapsto 2]}_{\text{Startzustand}}) & = \underbrace{[x \mapsto -3, z \mapsto 4, a \mapsto 2]}_{\text{Endzustand}} \\
+        \Ssem{\texttt{x = z + 3}}([x \mapsto 10, z \mapsto 12]) & = [x \mapsto 10, z \mapsto 12]
+    \end{align*}
+\end{example}
+
+\fbox{Für diese Veranstaltung stellen wir uns die Frage: Wie komme ich von $\Pi$ zu $\sem{\Pi}$?}
+
+
+Dafür gibt es drei Ansätze:
+\begin{enumerate}
+    \item axiomatische Semantik
+    \item operationelle Semantik
+    \item denotationelle Semantik
+\end{enumerate}
+
+
+\subsection{Axiomatische Semantik}
+
+Wir verzichten auf die vollständige Spezifikation von $\sem{\cdot}$. Stattdessen arbeiten wir mit \emph{Zusicherungen} (Assertions), welche wesentliche Aspekte des Zustands zu einem gegebenen Zeitpunkt widerspiegeln.
+
+Wir definieren ein logisches System, das Beziehungen zwischen Zuständen aufstellt (Vorbedingungen, Nachebdingungen). Das System muss $\sem{\cdot}$ verträglich sein.
+
+Die Details sind Thema einer anderen Vorlesungen, \zb Hoare-Kalkül.
+
+\begin{example}
+    \[
+    \underbrace{\{ x = n \wedge y = m \}}_{\text{Vorbedingung}} \quad \texttt{z := x; x := y; y := z} \quad \underbrace{\{ x = m \wedge y = n \}}_{\text{Nachbedingung}}
+    \]
+\end{example}
+
+
+
+\subsection{Operationelle Semantik}
+
+Definiere $\sem{\Pi}$ durch schrittweise Simulation der Ausführung von $\Pi$ (ein Interpretierer in mathematischer Form / Abstraktion).
+
+Genauer gesagt bedeutet das: Wir definieren ein \emph{Transitionssystem}
+\begin{align*}
+    \langle \Pi, s \rangle & \Rightarrow \langle \Pi', s' \rangle \\
+    \langle \Pi, s \rangle & \Rightarrow s'
+\end{align*}
+das die Ausführung von $\Pi$ auf Zustand $s$ darstellt.
+
+\begin{example}
+    \begin{align*}
+        & \langle \texttt{'z = x; x = y; y = z;'}, [x \mapsto 2, y \mapsto 3, z \mapsto 6] \rangle \\
+        \leadsto \; & \langle \texttt{'x = y; y = z;'}, [x \mapsto 2, y \mapsto 3, z \mapsto 2] \rangle \quad\quad \text{(1. Befehl ausgeführt)} \\
+        \leadsto \; & \langle \texttt{'y = z;'}, [x \mapsto 3, y \mapsto 3, z \mapsto 2] \rangle \\
+        \leadsto \; & [x \mapsto 3, y \mapsto 2, z \mapsto 2] \quad\quad \text{(Endzustand)}
+    \end{align*}
+\end{example}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\hfill 06.05.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{Denotationelle Semantik}
+
+Definiere $\sem{\Pi}$ direkt als mathematisch Funktion anhand der Syntax von $\Pi$, \zb
+\begin{align*}
+    \Ssem{\texttt{z := x; x := y; y := z}} & = \Ssem{\texttt{y := z}} \circ \Ssem{\texttt{x := y}} \circ \Ssem{\texttt{z := x}}
+\end{align*}
+
+Es wird also \zb die sequenzielle Ausführung von Anweisungen als Funktionskomposition übersetzt.
+
+\begin{remark}[Problem]
+    Wie kann man beispielsweise Schleifen darstellen (insbesondere \texttt{while})? Ein möglicher Ansatz sind Grenzwerte, aber das geht tiefer in die Analysis.
+
+    Bei der operationellen Semantik wird die Schleife durch das Transitionssystem realisiert.
+\end{remark}
