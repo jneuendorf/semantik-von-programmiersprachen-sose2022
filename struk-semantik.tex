@@ -23,7 +23,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 \begin{enumerate}
     \item $[\text{zuw}_{\text{sos}}]$
     \[
-    \langle x := a, \sigma \rangle \Rightarrow \sigma[x \mapsto \Asem{a}(\sigma)]
+    \langle x \texttt{ := } a, \sigma \rangle \Rightarrow \sigma[x \mapsto \Asem{a}(\sigma)]
     \]
 
     \item $[\text{skip}_{\text{sos}}]$
@@ -36,7 +36,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
         \frac{
             \langle S_1, \sigma \rangle \Rightarrow \langle S_1', \sigma' \rangle
         }{
-            \langle S_1; S_2, \sigma \rangle \Rightarrow \langle S_1'; S_2, \sigma' \rangle
+            \langle S_1\texttt{;} S_2, \sigma \rangle \Rightarrow \langle S_1'\texttt{;} S_2, \sigma' \rangle
         }
     \end{align*}
 
@@ -45,26 +45,26 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
         \frac{
             \langle S_1, \sigma \rangle \Rightarrow \sigma'
         }{
-            \langle S_1; S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma' \rangle
+            \langle S_1\texttt{;} S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma' \rangle
         }
     \end{align*}
 
 
     \item $[\text{if}_{\text{sos}}^{\true}]$
     \begin{align*}
-        \langle \texttt{if b then } S_1 \texttt{ else } S_2, \sigma \rangle \Rightarrow \langle S_1, \sigma \rangle
+        \langle \texttt{if } b \texttt{ then } S_1 \texttt{ else } S_2, \sigma \rangle \Rightarrow \langle S_1, \sigma \rangle
     \end{align*}
     falls $\Bsem{b}(\sigma) = \true$
 
     \item $[\text{if}_{\text{sos}}^{\false}]$
     \begin{align*}
-        \langle \texttt{if b then } S_1 \texttt{ else } S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma \rangle
+        \langle \texttt{if } b \texttt{ then } S_1 \texttt{ else } S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma \rangle
     \end{align*}
     falls $\Bsem{b}(\sigma) = \false$
 
     \item $[\text{while}_{\text{sos}}]$
     \[
-    \langle \texttt{while } b \texttt{ do } S, \sigma \rangle \Rightarrow \langle \texttt{if } b \texttt{ then } \texttt{(S; while b do S)} \texttt{ else skip}, \sigma \rangle
+    \langle \texttt{while } b \texttt{ do } S, \sigma \rangle \Rightarrow \langle \texttt{if } b \texttt{ then } \texttt{(S; while } b \texttt{ do } S) \texttt{ else skip}, \sigma \rangle
     \]
 \end{enumerate}
 
@@ -73,7 +73,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 
     Eine Ableitungsfolge für $\langle S, \sigma \rangle$ ist entweder
     \begin{enumerate}
-        \item eine endliche Folge $\gamma_0 \Rightarrow \gamma_1 \Rightarrow \dots \Rightarrow \gamma_k$ von Konfigurationen, sodass $\gamma_0 = \langle S, \sigma \rangle$ ist $\gamma_i \Rightarrow \gamma_{i+1}$ für $0, \dots, k-1$ und $\gamma_k$ entweder ein Zustand $\sigma'$ oder eine Konfiguration $\langle S', \sigma' \rangle$ für die es mit $\Rightarrow$ nicht weiter geht \emph{(steckengebliebe Konfiguration)}.
+        \item eine endliche Folge $\gamma_0 \Rightarrow \gamma_1 \Rightarrow \dots \Rightarrow \gamma_k$ von Konfigurationen, sodass $\gamma_0 = \langle S, \sigma \rangle$ ist, $\gamma_i \Rightarrow \gamma_{i+1}$ für $0, \dots, k-1$ gilt und $\gamma_k$ entweder ein Zustand $\sigma'$ oder eine Konfiguration $\langle S', \sigma' \rangle$ ist, für die es mit $\Rightarrow$ nicht weiter geht \emph{(steckengebliebe Konfiguration)}.
 
         \item eine unendliche Folge $\gamma_0 \Rightarrow \gamma_1 \Rightarrow \dots$ von Konfigurationen mit $\gamma_0 = \langle S, \sigma \rangle$ mit $\gamma_i \Rightarrow \gamma_{i+1}$ für $i \geq 0$.
     \end{enumerate}
