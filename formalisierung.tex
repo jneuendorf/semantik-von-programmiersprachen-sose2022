@@ -67,7 +67,7 @@ Wir verzichten auf die vollständige Spezifikation von $\sem{\cdot}$. Stattdesse
 
 Wir definieren ein logisches System, das Beziehungen zwischen Zuständen aufstellt (Vorbedingungen, Nachebdingungen). Das System muss $\sem{\cdot}$ verträglich sein.
 
-Die Details sind Thema einer anderen Vorlesungen, \zb Hoare-Kalkül.
+Die Details sind Thema einer anderen Vorlesungen, \zb{} Hoare-Kalkül.
 
 \begin{example}
     \[
@@ -107,12 +107,12 @@ das die Ausführung von $\Pi$ auf Zustand $s$ darstellt.
 
 \subsection{Denotationelle Semantik}
 
-Definiere $\sem{\Pi}$ direkt als mathematisch Funktion anhand der Syntax von $\Pi$, \zb
+Definiere $\sem{\Pi}$ direkt als mathematische Funktion anhand der Syntax von $\Pi$, \zb{}
 \begin{align*}
     \Ssem{\texttt{z := x; x := y; y := z}} & = \Ssem{\texttt{y := z}} \circ \Ssem{\texttt{x := y}} \circ \Ssem{\texttt{z := x}}
 \end{align*}
 
-Es wird also \zb die sequenzielle Ausführung von Anweisungen als Funktionskomposition übersetzt.
+Es wird also \zb{} die sequenzielle Ausführung von Anweisungen als Funktionskomposition übersetzt.
 
 \begin{remark}[Problem]
     Wie kann man beispielsweise Schleifen darstellen (insbesondere \texttt{while})? Ein möglicher Ansatz sind Grenzwerte, aber das geht tiefer in die Analysis.
