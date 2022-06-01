@@ -40,41 +40,41 @@ Idee: Definiere $\Ssem{\cdot}$ mithilfe einer Zustandsüberführungerelation.
 Im Folgenden schreiben wir $[\cdot]_{\text{ns}}$ um anzuzeigen, dass es sich um die natürliche Semantik handelt.
 
 \begin{enumerate}
-    \item Zuweisung $[\text{zuw}_{\text{ns}}]$ (Axiom)
+    \item Zuweisung $\infruleNs{zuw}$ (Axiom)
     \[
     \frac{}{\strans{x \texttt{ := } a}{\sigma}{\sigma[x \mapsto \Asem{a}(\sigma)]}}
     \]
 
-    \item Skip $[\text{skip}_{\text{ns}}]$ (Axiom)
+    \item Skip $\infruleNs{skip}$ (Axiom)
     \[
     \frac{}{\strans{\texttt{skip}}{\sigma}{\sigma}}
     \]
 
-    \item Hintereinanderausführung $[\text{seq}_{\text{ns}}]$
+    \item Hintereinanderausführung $\infruleNs{seq}$
     \[
     \frac{\strans{S_1}{\sigma}{\sigma'}, \strans{S_2}{\sigma'}{\sigma''}}{\strans{S_1 \texttt{;} S_2}{\sigma}{\sigma''}}
     \]
     Dabei können $S_1$ und $S_2$ zusammengesetzte Anweisungen sein.
 
-    \item Verzweigung $[\text{if}_{\text{ns}}^{\true}]$
+    \item Verzweigung $\infruleNs[\true]{if}$
     \[
     \frac{\strans{S_1}{\sigma}{\sigma'}}{\strans{\texttt{if } b \texttt{ then } S_1 \texttt{ else } S_2}{\sigma}{\sigma'}}
     \]
     falls $\Bsem{b}(\sigma) = \true$. Dabei muss $S_2$ nicht terminieren.
 
-    \item Verzweigung $[\text{if}_{\text{ns}}^{\false}]$
+    \item Verzweigung $\infruleNs[\false]{if}$
     \[
     \frac{\langle S_2, \sigma \rangle \to \sigma'}{\langle \texttt{if } b \texttt{ then } S_1 \texttt{ else } S_2, \sigma \rangle \to \sigma'}
     \]
     falls $\Bsem{b}(\sigma) = \false$. Dabei muss $S_1$ nicht terminieren.
 
-    \item Schleife $[\text{while}_{\text{ns}}^{\true}]$
+    \item Schleife $\infruleNs[\true]{while}$
     \[
     \frac{\langle S, \sigma \rangle \to \sigma', \langle \texttt{while } b \texttt{ do } S, \sigma' \rangle \to \sigma''}{\langle \texttt{while } b \texttt{ do } S, \sigma \rangle \to \sigma''}
     \]
     falls $\Bsem{b}(\sigma) = \true$. Im Allgemeinen kann es sein, dass die Schleife nicht terminiert. Deshalb müssen wir diesen Fall in der Definition der semantischen Funktion beachten. Das bedeutet, diese Relation ist nicht total.
 
-    \item Schleife $[\text{while}_{\text{ns}}^{\false}]$
+    \item Schleife $\infruleNs[\false]{while}$
     \[
     \frac{\text{ }}{\langle \texttt{while } b \texttt{ do } S, \sigma \rangle \to \sigma}
     \]
@@ -104,7 +104,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
 
 
     \begin{enumerate}
-        \item $[\text{seq}_{ns}]$
+        \item $\infruleNs{seq}$
             \[
             \frac{\langle z := x; x ;= y, \sigma \rangle \to \sigma', \langle y := z, \sigma' \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}{\langle \underbrace{(z := z; x := y)}_{s_1}; \underbrace{y := z}_{S_2}, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
             \]
@@ -114,7 +114,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
             \frac{\langle z := x; x := y, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5], \langle y := z, \sigma[z \mapsto 1][x \mapsto 5] \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}{\langle \underbrace{(z := z; x := y)}_{S_1}; \underbrace{y := z}_{S_2}, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
             \]
 
-        \item $[\text{zuw}_{ns}]$ für den rechten Teil
+        \item $\infruleNs{zuw}$ für den rechten Teil
             \[
             \frac{\Asem{z}(\sigma[z \mapsto 1][x \mapsto 5]) \overset{?}{=} 1}{\langle y := z, \sigma[z \mapsto 1][x \mapsto 5] \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
             \]
@@ -123,12 +123,12 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
             \Asem{z}(\sigma[z \mapsto 1][x \mapsto 5]) \overset{Def}{=} \sigma[z \mapsto 1][x \mapsto 5](z) \overset{Def}{=} 1
             \]
 
-        \item $[\text{seq}_{ns}]$
+        \item $\infruleNs{seq}$
             \[
             \frac{\langle z := x, \sigma \rangle \to \sigma[z \mapsto 1], \langle x := y, \sigma[z \mapsto 1] \rangle \to \sigma[z \mapsto 1][x \mapsto 5]}{\langle z := x; x ;= y, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5]}
             \]
 
-            Ab hier analog zum rechten Teil (mit zwei Mal $[\text{zuw}_{ns}]$).
+            Ab hier analog zum rechten Teil (mit zwei Mal $\infruleNs{zuw}$).
     \end{enumerate}
 \end{example}
 
@@ -190,7 +190,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
 
                     Dann hat der Ableitungsbaum $T_1$ die Form
                     \begin{align*}
-                        [\text{while}_{\text{ns}}^{\true}]\;
+                        \infruleNs[\true]{while}\;
                         \cfrac{
                             \cfrac{T_a}{\strans{S}{\sigma}{\sigma''}}
                             \;,\;
@@ -202,9 +202,9 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
 
                     Z.\,z.:\ es existiert ein endlicher Ableitungsbaum für $\strans{S_2}{\sigma}{\sigma'}$
                     \begin{align*}
-                        [\text{if}_{\text{ns}}^{\true}]\;
+                        \infruleNs[\true]{if}\;
                         \cfrac{
-                            [\text{seq}_{\text{ns}}]\;
+                            \infruleNs{seq}\;
                             \cfrac{
                                 \cfrac{T_a}{\strans{S}{\sigma}{\sigma''}}
                                 ,
@@ -223,7 +223,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
 
                     Dann hat $T_1$ die Form
                     \begin{align*}
-                        [\text{while}_{\text{ns}}^{\false}]
+                        \infruleNs[\false]{while}\;
                         \cfrac{}{
                             \strans{\texttt{while b do S}}{\sigma}{\sigma}
                         }
@@ -234,9 +234,9 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
 
                     Z.\,z.: Es existiert ein Ableitungsbaum für $\strans{S_2}{\sigma}{\sigma}$.
                     \begin{align*}
-                        [\text{if}_{\text{ns}}^{\false}]\;
+                        \infruleNs[\false]{if}\;
                         \cfrac{
-                            [\text{skip}_{\text{ns}}]\;
+                            \infruleNs{skip}\;
                             \cfrac{}{\strans{\texttt{skip}}{\sigma}{\sigma}}
                         }{
                             \strans{\texttt{if b then (S; while b do S) else skip}}{\sigma}{\sigma}
@@ -252,11 +252,11 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
     \end{enumerate}
 \end{proof}
 
-\begin{remark}
+\begin{lemma}
     Die natürliche Semantik der \texttt{while}-Sprache ist \emph{determiniert}, \dh für alle Anweisungen $S$ und Zustände $\sigma, \sigma_1, \sigma_2$ gilt:
 
     Wenn $\strans{S}{\sigma}{\sigma_1}$ und $\strans{S}{\sigma}{\sigma_2}$, dann $\sigma_1 = \sigma_2$.
-\end{remark}
+\end{lemma}
 \begin{proof}
     Durch strukturelle Induktion nach Tiefe des Ableitungsbaums. (Übung)
 \end{proof}

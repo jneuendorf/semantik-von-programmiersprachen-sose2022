@@ -21,17 +21,17 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 
 
 \begin{enumerate}
-    \item $[\text{zuw}_{\text{sos}}]$
+    \item $\infruleSos{zuw}$
     \[
     \langle x \texttt{ := } a, \sigma \rangle \Rightarrow \sigma[x \mapsto \Asem{a}(\sigma)]
     \]
 
-    \item $[\text{skip}_{\text{sos}}]$
+    \item $\infruleSos{skip}$
     \[
     \langle \texttt{skip}, \sigma \rangle \Rightarrow \sigma
     \]
 
-    \item $[\text{seq}_{\text{sos}}^1]$
+    \item $\infruleSos[1]{seq}$
     \begin{align*}
         \frac{
             \langle S_1, \sigma \rangle \Rightarrow \langle S_1', \sigma' \rangle
@@ -40,7 +40,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
         }
     \end{align*}
 
-    \item $[\text{seq}_{\text{sos}}^2]$
+    \item $\infruleSos[2]{seq}$
     \begin{align*}
         \frac{
             \langle S_1, \sigma \rangle \Rightarrow \sigma'
@@ -50,19 +50,19 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
     \end{align*}
 
 
-    \item $[\text{if}_{\text{sos}}^{\true}]$
+    \item $\infruleSos[\true]{if}$
     \begin{align*}
         \langle \texttt{if } b \texttt{ then } S_1 \texttt{ else } S_2, \sigma \rangle \Rightarrow \langle S_1, \sigma \rangle
     \end{align*}
     falls $\Bsem{b}(\sigma) = \true$
 
-    \item $[\text{if}_{\text{sos}}^{\false}]$
+    \item $\infruleSos[\false]{if}$
     \begin{align*}
         \langle \texttt{if } b \texttt{ then } S_1 \texttt{ else } S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma \rangle
     \end{align*}
     falls $\Bsem{b}(\sigma) = \false$
 
-    \item $[\text{while}_{\text{sos}}]$
+    \item $\infruleSos{while}$
     \[
     \langle \texttt{while } b \texttt{ do } S, \sigma \rangle \Rightarrow \langle \texttt{if } b \texttt{ then } \texttt{(S; while } b \texttt{ do } S) \texttt{ else skip}, \sigma \rangle
     \]

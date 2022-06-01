@@ -50,7 +50,12 @@
 \newcommand{\Asem}[1]{\mathcal{A}\lsem#1\rsem}
 \newcommand{\Nsem}[1]{\mathcal{N}\lsem#1\rsem}
 \newcommand{\Ssem}[1]{\mathcal{S}\lsem#1\rsem}
+% Zustandsüberführungsrelation natürliche Semantik
 \newcommand{\strans}[3]{\langle #1, #2 \rangle \to #3}
+% Schlussregel natürliche Semantik
+\newcommand{\infruleNs}[2][]{[\text{#2}_{\text{ns}}^{#1}]}
+% Schlussregel strukturelle Semantik
+\newcommand{\infruleSos}[2][]{[\text{#2}_{\text{sos}}^{#1}]}
 
 \newcommand{\figref}[1]{Abbildung~\ref{#1}}
 \newcommand{\secref}[1]{Abschnitt~\ref{#1}}
