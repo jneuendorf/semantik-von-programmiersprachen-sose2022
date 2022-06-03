@@ -12,3 +12,5 @@
 \contentsline {subsection}{\numberline {3.4}Natürliche operationelle Semantik (``big step'')}{15}{subsection.3.4}%
 \contentsline {subsubsection}{\numberline {3.4.1}Schlussregeln für die natürliche Semantik von \texttt {while}}{15}{subsubsection.3.4.1}%
 \contentsline {subsection}{\numberline {3.5}Strukturelle operationelle Semantik (``small step'')}{20}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Eigenschaften der SOS}{22}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}Semantische Funktion $\mathcal {S_{\text {sos}}}$}{23}{subsection.3.7}%

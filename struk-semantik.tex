@@ -87,3 +87,194 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 
     $\gamma_0 \Rightarrow^* \gamma'$ für ``$\gamma'$ geht aus endlich vielen Schritten hervor'' (auch null).
 \end{notation}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\hfill 03.06.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{example}
+    Sei $\sigma$ ein Zustand mit $\sigma(x) = 5, \sigma(y) = 7$. Betrachte die Auswertung von \texttt{(z := x; x := y); y = z;} in der SOS für Startzustand $\sigma$.
+
+    \begin{align*}
+        & \langle \texttt{(z := x; x := y); y = z;}, \sigma \rangle \\
+        \overset{\infruleSos[1]{seq}}{\Rightarrow} \quad & \langle \texttt{x := y; y := z}, \sigma[z \mapsto 5] \rangle \tag{i} \\
+        \overset{\infruleSos[2]{seq}}{\Rightarrow} \quad & \langle \texttt{y := z}, \sigma[z \mapsto 5][y \mapsto 7] \rangle \tag{ii} \\
+        \overset{\infruleSos{zuw}}{\Rightarrow} \quad & \sigma[z \mapsto 5][x \mapsto 7][y \mapsto 5]
+    \end{align*}
+
+    zu (i):
+    \begin{align*}
+        \infruleSos[1]{seq}\; \cfrac{
+            \infruleSos[2]{seq}\; \cfrac{
+                \infruleSos{zuw}\; \cfrac{}{
+                    \stranssos{\texttt{z := x}}{\sigma}{\sigma[z \mapsto 5]}
+                }
+            }{
+                \stranssos{\texttt{z := x; x := y}}{\sigma}{\langle \texttt{x := y}, \sigma[z \mapsto 5] \rangle}
+            }
+        }{
+            \stranssos{\texttt{(z := x; x := y); y := z}}{\sigma}{\langle \texttt{x := y; y := z}, \sigma[z \mapsto 5] \rangle}
+        }
+    \end{align*}
+
+    zu (ii):
+    \begin{align*}
+        \infruleSos[2]{seq}\; \cfrac{
+            \infruleSos{zuw}\; \cfrac{}{
+                \stranssos{x :=y}{\sigma[z \mapsto 5]}{\langle y :=z, \sigma[z \mapsto5][x \mapsto 7] \rangle}
+            }
+        }{
+            \stranssos{x :=y; y :=z}{\sigma[z \mapsto 5]}{\langle y :=z, \sigma[z \mapsto5][x \mapsto 7] \rangle}
+        }
+    \end{align*}
+\end{example}
+
+
+
+\subsection{Eigenschaften der SOS}
+
+\begin{lemma}
+    Seiten $S_1, S_2$ Anweisungen, $\sigma, \sigma''$ Zustände und $k \in \mathbb{N}$.
+    Dann gilt: Falls $\langle S_1; S_2, \sigma \rangle \Rightarrow^k \sigma''$ gilt, es existieren zwei Zahlen $k_1, k_2 \in \mathbb{N}$ mit
+    \[
+        \langle S_1, \sigma \rangle \Rightarrow^{k_1} \sigma'
+        \;,\quad
+        \langle S_2, \sigma' \rangle \Rightarrow^{k_2} \sigma''
+    \]
+    und
+    \[
+        k_1 + k_2 = k
+    \]
+\end{lemma}
+\begin{proof}
+    Induktion nach $k$.
+
+    \emph{Induktionsanfang:}
+    \begin{enumerate}
+        \item $k = 1$: Voraussetzung kann dafür nicht erfüllt sein, also stimmt die Aussage.
+        \item $k = 2$: Wie kann $\langle S_1; S_2, \sigma \rangle \Rightarrow^2 \sigma''$ gelten?
+            Das kann nur sein, wenn im ersten Schritt $\infruleSos[2]{seq}$ augewendet wird. D.\,h. die Schlussregel
+            \[
+                \frac{\stranssos{S_1}{\sigma}{\sigma'}}{\stranssos{S_1; S_2}{\sigma}{\langle S_2, \sigma' \rangle}}
+            \]
+            wurde erfüllt für ein $\sigma'$.
+
+            Wir wissen also, es existiert ein Zwischenzustand $\sigma'$ mit $\stranssos{S_1}{\sigma}{\sigma'}$ und erster Schritt von $\langle S_1; S_2, \sigma \rangle \Rightarrow^2 \sigma''$ ist $\langle S_1; S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma' \rangle$
+            Der zweite Schritt $\langle S_1; S_2, \sigma \rangle \Rightarrow^2 \sigma''$ muss jetzt aber der Form $\langle S_2, \sigma' \rangle \Rightarrow \sigma''$ sein.
+
+            D.\,h. die Aussage gilt mit $k_1 = 1, k_2 = 1$ und $\sigma'$.
+    \end{enumerate}
+
+        \par\bigskip
+    \emph{Induktionsschritt:} $k - 1 \mapsto k$ mit $k \geq 3$
+
+    Betrachten den ersten Schritt $\langle S_1; S_2, \sigma \rangle \Rightarrow^k \sigma''$.
+    Zwei Fälle
+    \begin{enumerate}
+        \item $\infruleSos[1]{seq}$ Der erste Schritt hat die Form $\langle S_1; S_2, \sigma \rangle \Rightarrow^k \langle S_1'; S_2, \sigma''' \rangle$
+
+            Dann muss aber gelten $\langle S_1'; S_2, \sigma''' \rangle \Rightarrow^{k-1} \sigma''$.
+            Nach IV existiert $k_1', k_2' \in \mathbb{N}, \sigma'$, sodass $\langle S_1',  \sigma''' \rangle \Rightarrow^{k_1'} \sigma'$ und $\langle S_2',  \sigma' \rangle \Rightarrow^{k_2'} \sigma''$ und $k_1' + k_2' = k - 1$.
+
+            Da wir im ersten Schritt $\infruleSos[1]{seq}$ angewandt haben, muss die Schlussregel dafür erfüllt gewesen sein, \dh{} es gilt $\langle S_1, \sigma \rangle \Rightarrow \langle S_1', \sigma''' \rangle$. Also gilt auch $\langle S_1', \sigma \rangle \Rightarrow^{k_1'} \sigma'$ also $\langle S_1, \sigma \rangle \Rightarrow^{k_1+1} \sigma'$.
+
+            Also gilt die Aussage für $k_1 + 1, k_2 = k_2', \sigma'$.
+        \item $\infruleSos[2]{seq}$ Der erste Schritt hat die Form $\langle S_1; S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma' \rangle$ und es gilt $\langle S_1, \sigma \rangle \Rightarrow \sigma'$.
+
+            Also gilt die Aussage für $k_1 = 1, k_2 = k - 1, \sigma'$.
+    \end{enumerate}
+\end{proof}
+
+
+\begin{lemma}[Determinierheit]
+    SOS ist \emph{determiniert}. Anders als bei der natürlichen Semantik müssen auch alle Zwischenzustände gleich sein, \dh{}
+
+        Für jedes $S, \sigma$ existiert gibt es eine Ableitungsfolge, die mit $\langle S, \sigma \rangle$ beginnt.
+\end{lemma}
+
+
+\begin{definition}[Semantische Äquivalenz]
+    Seien $S_1, S_2$ zwei Anweisungen. $S_1, S_2$ heißen \emph{semantische äquivalent} gdw. folgendes für allen Zustände $\sigma$ gilt:
+
+    \begin{enumerate}
+        \item Für alle steckengebliebenen Konfigurationen $\gamma$ und alle Endzustände $\sigma'$ gilt
+            \[
+                \langle S_1, \sigma \rangle \Rightarrow^* \gamma \Leftrightarrow \langle S_2, \sigma \rangle \Rightarrow^* \gamma
+            \]
+            und
+            \[
+                \langle S_1, \sigma \rangle \Rightarrow^* \sigma' \Leftrightarrow \langle S_2, \sigma \rangle \Rightarrow^* \sigma'
+            \]
+        \item Es existiert eine undendliche Ableitungsfolge für $\langle S_1, \sigma \rangle$ gdw. es existiert eine unendliche Folge für $\langle S_2, \sigma \rangle$.
+    \end{enumerate}
+\end{definition}
+
+\par\medskip
+\begin{example}
+    \texttt{$S_1$; ($S_2$; $S_3$)} und \texttt{($S_1$; $S_2$); $S_3$} sind semantische äquivalent.
+\end{example}
+
+
+
+\subsection{Semantische Funktion $\mathcal{S_{\text{sos}}}$}
+
+\begin{definition}
+    Definiere $\mathcal{S_{\text{sos}}}: \SExp \to (\State \to \State)$ als
+    \[
+        \mathcal{S_{\text{sos}}}\lsem S \rsem(\sigma) = \begin{cases}
+            \sigma' & \text{falls} \langle S, \sigma \rangle \Rightarrow^* \sigma' \\
+            \bot & \text{sonst}
+        \end{cases}
+    \]
+
+    Diese Funktion ist wohldefiniert, da SOS determiniert ist.
+\end{definition}
+
+\begin{theorem}
+    Sei $S$ eine Anweisung und seien $\sigma, \sigma'$ Zustände. Dann gilt
+    \[
+        \mathcal{S_{\text{ns}}}\lsem S \rsem(\sigma) = \sigma'
+        \quad\Leftrightarrow\quad
+        \mathcal{S_{\text{sos}}}\lsem S \rsem(\sigma) = \sigma'
+    \]
+
+    D.\,h. SOS und NS sind äquivalent für unser \emph{konkretes Beispiel} der \texttt{while}-Sprache.
+\end{theorem}
+
+\begin{proof}
+    Zwei Richtungen:
+    \begin{enumerate}
+        \item ``$\Rightarrow$'': $\mathcal{S_{\text{ns}}}\lsem S \rsem(\sigma) = \sigma' \Rightarrow \mathcal{S_{\text{sos}}}\lsem S \rsem(\sigma) = \sigma'$
+
+            \dh{} $\langle S, \sigma \rangle \to \sigma' \implies \langle S, \sigma \rangle \Rightarrow^* \sigma'$
+
+            Wir wissen $\langle S, \sigma \rangle \to \sigma'$, \dh{} es existiert ein endliche Ableitungsbaum $T$ dafür. Mache Induktion nach der Tiefe von $T$.
+
+            \par\medskip
+            \emph{Induktionsanfang:} $T$ hat Tiefe 0, \dh{} $T$ besteht nur aus einer Wurzel. Das bedeutet, $\langle S, \sigma \rangle \to \sigma'$ erfolgt durch Anwendung eines Axioms. Davon gibt es drei Stück: $\infruleNs{zuw}, \infruleNs{skip}, \infruleNs[\false]{while}$
+
+            Exemplarisch für $\infruleNs[\false]{while}$:
+
+            Wir wissen $S$ hat die Form \texttt{while $b$ do $S$} und $\Bsem{b}(\sigma) = \false$. D.\,h. $T$ hat die Form
+            \[
+                \frac{}{
+                    \strans{\texttt{while $b$ do $S'$}}{\sigma}{\underbrace{\sigma'}_{\sigma}}
+                }
+            \]
+            Jetzt gilt
+            \begin{align*}
+                & \langle \texttt{while $b$ do $S'$}, \sigma \rangle \\
+                \overset{\infruleSos[]{while}}{\Rightarrow} \quad & \langle \texttt{if $b$ then ($S'$; while $b$ do $S'$) else skip} , \sigma \rangle \\
+                \overset{\infruleSos[\false]{if}}{\Rightarrow} \quad & \langle \texttt{skip}, \sigma \rangle \quad\quad \text{da } \Bsem{b}(\sigma) = \false \\
+                \overset{\infruleSos{skip}}{\Rightarrow} \quad & \sigma \\
+            \end{align*}
+            Also $\langle \texttt{while $b$ do $S'$}, \sigma \rangle \Rightarrow^* \sigma$ wie gewünscht.
+
+            \par\bigskip
+            \emph{Induktionsschritt:}
+
+    \end{enumerate}
+\end{proof}
