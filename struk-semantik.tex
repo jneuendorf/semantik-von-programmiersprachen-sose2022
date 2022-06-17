@@ -73,7 +73,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 
     Eine Ableitungsfolge für $\langle S, \sigma \rangle$ ist entweder
     \begin{enumerate}
-        \item eine endliche Folge $\gamma_0 \Rightarrow \gamma_1 \Rightarrow \dots \Rightarrow \gamma_k$ von Konfigurationen, sodass $\gamma_0 = \langle S, \sigma \rangle$ ist, $\gamma_i \Rightarrow \gamma_{i+1}$ für $0, \dots, k-1$ gilt und $\gamma_k$ entweder ein Zustand $\sigma'$ oder eine Konfiguration $\langle S', \sigma' \rangle$ ist, für die es mit $\Rightarrow$ nicht weiter geht \emph{(steckengebliebe Konfiguration)}.
+        \item eine endliche Folge $\gamma_0 \Rightarrow \gamma_1 \Rightarrow \dots \Rightarrow \gamma_k$ von Konfigurationen, sodass $\gamma_0 = \langle S, \sigma \rangle$ ist, $\gamma_i \Rightarrow \gamma_{i+1}$ für $0, \dots, k-1$ gilt und $\gamma_k$ entweder ein Zustand $\sigma'$ oder eine Konfiguration $\langle S', \sigma' \rangle$ ist, für die es mit $\Rightarrow$ nicht weiter geht \emph{(steckengebliebene Konfiguration)}.
 
         \item eine unendliche Folge $\gamma_0 \Rightarrow \gamma_1 \Rightarrow \dots$ von Konfigurationen mit $\gamma_0 = \langle S, \sigma \rangle$ mit $\gamma_i \Rightarrow \gamma_{i+1}$ für $i \geq 0$.
     \end{enumerate}
@@ -222,7 +222,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 \subsection{Semantische Funktion $\mathcal{S_{\text{sos}}}$}
 
 \begin{definition}
-    Definiere $\mathcal{S_{\text{sos}}}: \SExp \to (\State \to \State)$ als
+    Definiere $\mathcal{S_{\text{sos}}}: \Stm \to (\State \to \State)$ als
     \[
         \mathcal{S_{\text{sos}}}\lsem S \rsem(\sigma) = \begin{cases}
             \sigma' & \text{falls} \langle S, \sigma \rangle \Rightarrow^* \sigma' \\
@@ -267,14 +267,314 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
             Jetzt gilt
             \begin{align*}
                 & \langle \texttt{while $b$ do $S'$}, \sigma \rangle \\
-                \overset{\infruleSos[]{while}}{\Rightarrow} \quad & \langle \texttt{if $b$ then ($S'$; while $b$ do $S'$) else skip} , \sigma \rangle \\
+                \overset{\infruleSos{while}}{\Rightarrow} \quad & \langle \texttt{if $b$ then ($S'$; while $b$ do $S'$) else skip} , \sigma \rangle \\
                 \overset{\infruleSos[\false]{if}}{\Rightarrow} \quad & \langle \texttt{skip}, \sigma \rangle \quad\quad \text{da } \Bsem{b}(\sigma) = \false \\
                 \overset{\infruleSos{skip}}{\Rightarrow} \quad & \sigma \\
             \end{align*}
             Also $\langle \texttt{while $b$ do $S'$}, \sigma \rangle \Rightarrow^* \sigma$ wie gewünscht.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\hfill 10.06.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
             \par\bigskip
             \emph{Induktionsschritt:}
+            \begin{enumerate}
+                \item $\infruleNs[\true]{while}$
+                \item $\infruleNs[*]{if}$
+                \item $\infruleNs{seq}$
+            \end{enumerate}
 
+            Wir machen exemplarisch (a).
+
+            Es gilt $\strans{S}{\sigma}{\sigma'}$, \dh{} $T$: \[
+                \frac{
+                    \cfrac{T_1}{\strans{S'}{\sigma}{\sigma''}}
+                    \;,\quad
+                    \cfrac{T_2}{\strans{\texttt{while b do S'}}{\sigma''}{\sigma'}}
+                }{
+                    \strans{\texttt{while b do S'}}{\sigma}{\sigma'}
+                }
+            \]
+            $T_1$ und $T_2$ existieren, da $T$ existiert. Außerdem sind die Höhen von $T_1, T_2 < $ Höhe von $T$. Also folgt aus der IV, dass
+
+            wegen $\strans{S'}{\sigma}{\sigma''}$ auch \[
+                \langle S', \sigma \rangle \Rightarrow^* \sigma''
+            \]
+            und wegen $\strans{S'}{\sigma''}{\sigma'}$ auch \[
+                \langle S, \sigma'' \rangle \Rightarrow^* \sigma'
+            \]
+            gilt.
+
+            \begin{align*}
+                \langle \texttt{while b do S}, \sigma \rangle \Rightarrow & \quad \langle \texttt{if b then (S'; while b do S') else skip}, \sigma \rangle \\
+                \overset{\infruleSos[\true]{if}}{\Rightarrow} & \quad \langle \texttt{S'; while b do S'}, \sigma \rangle \quad \text{weil } \Bsem{b}(\sigma) = \true \\
+                \overset{\text{IV}}{\Rightarrow^*} & \quad \sigma' \quad \text{(Übung)}
+            \end{align*}
+
+        \item ``$\Leftarrow$'': Übung
     \end{enumerate}
 \end{proof}
+
+
+
+\subsection{Erweiterungen der \texttt{while}-Sprache}
+
+
+\subsubsection{Programmabbruch}
+
+Füge eine neue Anweisung \texttt{abort} zur Sprache hinzu. Die Bedeutung ist, dass das Programm fehlerhaft abgebrochen wird.
+\[
+    S \to \dots \;\vert\; \texttt{abort}
+\]
+Wir fügen für \texttt{abort} \emph{keine neuen Schlussregeln} hinzu -- weder für die NS noch die SOS).
+
+\begin{example}
+    Wir betrachten folgende Anweisung, in der die Schleife die Fakultät berechnet:
+
+    $S =$ \texttt{if $\neg(x \geq 1)$ then abort else (y := 1; while $\neg(x = 1)$ do (y := y * x; x := x - 1))}
+
+    \par\bigskip
+    \hrule
+    \emph{Wie sieht es bei der NS aus?}
+
+    Sie $\sigma(x) = -1$. Wie sieht dann der Ableitungsbaum aus?
+    \begin{align*}
+        \infruleNs[\true]{if}\; \frac{
+            \cfrac{
+                T
+            }{
+                \strans{\texttt{abort}}{\sigma}{\sigma'}
+            }
+        }{
+            \strans{S}{\sigma}{\sigma'}
+        }
+    \end{align*}
+    Dabei existiert $T$ nicht! Daraus folgt \[
+        \Ssem{S}(\sigma) = \bot
+    \] (für unseren konkreten Zustand $\sigma$).
+
+    $S$ ist \textbf{semantisch äquivalent} zu
+
+    $S' =$ \texttt{if $\neg(x \geq 1)$ then (while true do skip) else (y := 1; while $\neg(x = 1)$ do (y := y * x; x := x - 1))}
+
+    denn auch für \texttt{while true do skip} existiert auch kein endlicher Ableitungsbaum. D.\,h. in der natürlichen Semantik können wir nicht zwischen Abbruch und Endlossschleife unterscheiden.
+
+    \par\bigskip
+    \hrule
+    \emph{Wie sieht es bei der SOS aus?}
+    \begin{align*}
+        \langle S, \sigma \rangle \overset{\infruleSos[\true]{if}}{\Rightarrow} \langle \texttt{abort}, \sigma \rangle
+    \end{align*}
+    Die rechte Konfiguration ist eine steckengebliebene Konfiguration.
+    \begin{align*}
+        \langle S', \sigma \rangle \overset{\infruleSos[\true]{if}}{\Rightarrow} & \quad \langle \texttt{while true do skip}, \sigma \rangle \\
+        \Rightarrow^* & \quad \langle \texttt{while true do skip}, \sigma \rangle \\
+        \Rightarrow^* & \quad \dots
+    \end{align*}
+    D.\,h. in der SOS sind $S$ und $S'$ \textbf{nicht semantisch äquivalent}.
+\end{example}
+
+
+
+\subsubsection{Blöcke und lokale Variablen}
+
+\emph{Idee:} Erlaube Definition lokaler Variablen innerhalb eines Bereichs.
+
+\begin{align*}
+    S & \to \dots \;\vert\; \texttt{begin $D_V$ $S$ end} \\
+    D_V & \to \texttt{var} \text{ Var } \texttt{:= A; $D_V$} \;\vert\; \varepsilon
+\end{align*}
+
+$D_V$ entspricht der syntaktischen Kategorie Dec$_V$.
+
+\begin{example}
+Betrachte
+\begin{lstlisting}[language=Pascal]
+begin
+    var y := 1;
+    x := 1;
+    begin
+        var x := 2;
+        y := x + 1  (* (1) 2 + 1 *)
+    end
+    y := y + x (* (2) 3 + 1 *)
+end
+\end{lstlisting}
+
+In (1) und (2) überdeckt das lokale $x$ das globale $x$ \emph{in diesem Block}.
+\end{example}
+
+
+
+\subsubsection{Formalisierung lokaler Blöcke in der NS}
+
+\begin{definition}
+    Sei $D_V$ eine Variablendeklaration. Die Menge der in ihr deklarierten Variablen $\DV(D_V)$ ist definiert als:
+    \begin{align*}
+        \DV(\varepsilon) & := \varnothing \\
+        \DV(\texttt{var } x := a \texttt{; } D_V') & := \{ x \} \cup \DV(D_V')
+    \end{align*}
+
+    Wir führen eine neue Relation ``$\to_D$'' ein. Sie hat die Form \[
+        \langle D_V, \sigma \rangle \to_D \sigma'
+    \]
+    wobei $\sigma'$ ein lokaler Zustand ist.
+\end{definition}
+
+
+
+\subsubsection{Schlussregeln für $D_V$, $\to_D$ und Blöcke}
+
+\begin{align*}
+    \langle \varepsilon, \sigma \rangle \to_D \sigma \\
+    \\
+    \frac{
+        \langle D_V, \sigma[x \mapsto \Asem{a}(\sigma)] \rangle \to_D \sigma'
+    }{
+        \langle \texttt{var } x := a \texttt{; } D_V, \sigma \rangle \to_D \sigma'
+    } \\
+    \\
+    \frac{
+        \langle D_V, \sigma \rangle \to_D \sigma'', \langle S, \sigma'' \rangle \to \sigma'
+    }{
+        \langle \texttt{begin $D_V$ $S$ end}, \sigma \rangle \to \sigma'[\DV(D_V) \mapsto \sigma]
+    }
+\end{align*}
+wobei
+\begin{align*}
+    \sigma'[X \mapsto \sigma](x) = \begin{cases}
+        \sigma(x) & \text{falls } x \in X \\
+        \sigma'(x) & \text{falls } x \not\in X
+    \end{cases}
+\end{align*}
+\dh{} alle lokale deklarierten Variablen werden auf ihren ursprünglichen Wert zurückgesetzt.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\hfill 17.06.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Unterprogramme / Prozeduren / Subroutine / Methode}
+
+Wir wollen ein neues Sprachkonstrukt für \texttt{while} einführen: Prozeduren (wie in Pascal).
+
+Dazu erweitern wir im ersten Schritt die Grammatik:
+\begin{align*}
+    S & \to \dots \;\vert\; \texttt{begin $D_V$ $D_p$ $S$ end} \;\vert\; \texttt{call $p$} \\
+    D_p & \to \texttt{proc $p$ is $S$; $D_p$} \;\vert\; \varepsilon
+\end{align*}
+
+$p$ steht für den Bezeichner der Prozedur. $D_p$ entspricht der syntaktischen Kategorie $p_{\text{Name}}$.
+$D_p$ entspricht der syntaktischen Kategorie für Unterprogramm-Deklarationen.
+
+\par\medskip
+\begin{example}
+Betrachte
+\begin{lstlisting}[language=Pascal, caption=Programm mit Unterprogrammen]
+begin
+    var x := 0;
+    proc p is x := x * 2;
+    proc q is call p;
+
+    begin
+        var x := 5;
+        proc p is x := x + 1;
+        call q;
+        y := x
+    end
+end
+\end{lstlisting}
+
+\emph{Frage: Was soll hier herauskommen?}
+
+Das hängt von den Regeln über die Gülitigkeitsbereiche ab (\emph{scope rules}).
+
+Beim Aufruf von $q$ gibt es zwei Möglichkeiten: statisches Scoping (Bindung durch Syntax) oder dynamisches Scoping (Bindung durch aktuellen Kontext bei der Ausführung).
+
+Wir müssen uns also entscheiden: Wenn ein Bezeichner in einer Funktion verwendet wird, bezieht er sich auf die Umgebung im Quelltext (\emph{statischer Gülitigkeitsbereich}) oder auf die Umgebung zum Zeitpunkt der Programmausführung (\emph{dynamischer Gülitigkeitsbereich})?
+
+Diese Entscheidung kann man separat für jede Klasse von Bezeichnern treffen.
+\end{example}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c||c|c}
+        Unterprogramme \textbackslash Variablen & statisch & dynamisch \\ \hline \hline
+        statisch  & $y = 5$ & $y = 10$ \\ \hline
+        dynamisch & $y = 6$ & $y = 6$
+    \end{tabular}
+    \caption{Ergebnisse in Abhängigkeit von den scoping rules}
+\end{table}
+
+
+
+\subsubsection{Natürlichen operationelle Semantik für Unterprogramme mit dynamische Gülitigkeitsbereichen}
+
+Um die Zuordnung von Prozedurname und Prozedurkörper (\emph{procedure body}) zu verwalten, müssen wir die Übergangsrelation ``$\to$'' um einen \emph{lokalen Kontext} erweitern. Dieser ist als Funktion \[
+\Env_p: p_{\text{Name}} \to \Stm
+\] formalisiert. Die Übergangsrelation hat nun die Form \[
+    \env_p \vdash \langle S, \sigma \rangle \to \sigma'
+\] mit $\env_p \in \Env_p$ (also eine Funktion), $S \in \Stm$ und $\sigma, \sigma' \in \State$. Das neue Symbol ``$\vdash$'' bedeutet ``im Kontext von''.
+
+\emph{Interpretation:} Im lokalen Kontext $\env_p$ und mit Startzustand $\sigma$ terminiert die Anweisung $S$ nach endliche vielen Schritten und erreicht den Endzustand $\sigma'$.
+
+\par\medskip
+\begin{remark}
+    Für statische Gülitigkeitsbereiche müssten wir auch für Variablen einen Kontext erzeugen.
+\end{remark}
+
+
+
+
+\subsubsection{Schlussregeln für Unterprogramme mit dynamischen Gültigkeitsbereichen}
+
+Die meisten Schlussregeln werden übernommen, nur dass $\env_p$ ``mitgeschleppt'' wird.
+
+\begin{example}
+    $\infruleNs{seq}$ \begin{align*}
+        \frac{
+        \env_p \vdash \langle S_1, \sigma \rangle \to \sigma', \env_p \vdash \langle S_2, \sigma' \rangle \to \sigma''
+        }{
+            \env_p \vdash \langle \texttt{$S_1$; $S_2$}, \sigma \rangle \to \sigma''
+        }
+    \end{align*}
+\end{example}
+
+Wichtig / interessant sind nun $\infruleNs{block}$ und $\infruleNs{call}$ (neu):
+\begin{enumerate}
+    \item $\infruleNs{block}$ \begin{align*}
+        \frac{
+            \langle D_V, \sigma \rangle \to_D \sigma'',
+            \quad
+            \akt_p(D_p, \env_p) \vdash \langle S, \sigma'' \rangle \to \sigma'
+        }{
+            \env_p \vdash \langle \texttt{begin $D_V$ $D_p$ $S$ end}, \sigma \rangle \to \sigma'[DV(D_V) \mapsto \sigma]
+        }
+    \end{align*}
+    Dabei bedeutet $\akt_p$: ``Passe den lokalen Kontext an!'' und ist wie folgt definiert:
+    \begin{align*}
+        \akt_p: D_p \times \Env_p & \to \Env_p \\
+        \akt_p(\varepsilon, \env_p) & = \env_p \\
+        \akt_p(\texttt{proc $p$ is $S$; $D_p$}, \env_p) & = \akt_p(D_p, \env_p[p \mapsto S])
+    \end{align*}
+
+    \item $\infruleNs{call}$ \begin{align*}
+        \frac{
+            \env_p \vdash \langle S, \sigma \rangle \to \sigma'
+        }{
+            \env_p \vdash \langle \texttt{call $p$}, \sigma \rangle \to \sigma'
+        }
+    \end{align*}
+    wobei $\env_p(p) = S$, \dh{} nur wenn $p$ im aktuellen Kontext deklariert ist. Ansonsten kann man diese Regel nicht anwenden, \dh{} die Anweisung würde dann steckenbleiben.
+\end{enumerate}
+
+\begin{remark}
+    Bei $\to_D$ benötigen wir keinen lokalen Kontext.
+
+    Alles ist dynamisch, \dh{} $\env_p$ und $\sigma$ hängen vom aktuellen Programmzustand ab.
+
+    Mit mehr Arbeit ($\leadsto$ zusätzliche Indirektion und umfangreicherer lokaler Kontext) kann man auch statische Gülitigkeitsbereiche modellieren.
+\end{remark}

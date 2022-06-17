@@ -14,3 +14,12 @@
 \contentsline {subsection}{\numberline {3.5}Strukturelle operationelle Semantik (``small step'')}{20}{subsection.3.5}%
 \contentsline {subsection}{\numberline {3.6}Eigenschaften der SOS}{22}{subsection.3.6}%
 \contentsline {subsection}{\numberline {3.7}Semantische Funktion $\mathcal {S_{\text {sos}}}$}{23}{subsection.3.7}%
+\contentsline {subsection}{\numberline {3.8}Erweiterungen der \texttt {while}-Sprache}{25}{subsection.3.8}%
+\contentsline {subsubsection}{\numberline {3.8.1}Programmabbruch}{25}{subsubsection.3.8.1}%
+\contentsline {subsubsection}{\numberline {3.8.2}Blöcke und lokale Variablen}{26}{subsubsection.3.8.2}%
+\contentsline {subsubsection}{\numberline {3.8.3}Formalisierung lokaler Blöcke in der NS}{27}{subsubsection.3.8.3}%
+\contentsline {subsubsection}{\numberline {3.8.4}Schlussregeln für $D_V$, $\to _D$ und Blöcke}{27}{subsubsection.3.8.4}%
+\contentsline {subsubsection}{\numberline {3.8.5}Unterprogramme / Prozeduren / Subroutine / Methode}{28}{subsubsection.3.8.5}%
+\contentsline {subsubsection}{\numberline {3.8.6}Natürlichen operationelle Semantik für Unterprogramme mit dynamische Gülitigkeitsbereichen}{29}{subsubsection.3.8.6}%
+\contentsline {subsubsection}{\numberline {3.8.7}Schlussregeln für Unterprogramme mit dynamischen Gültigkeitsbereichen}{29}{subsubsection.3.8.7}%
+\contentsline {section}{\numberline {4}Denotationelle Semantik}{31}{section.4}%

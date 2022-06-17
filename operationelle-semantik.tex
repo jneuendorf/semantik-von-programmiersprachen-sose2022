@@ -3,7 +3,7 @@
 Das Folgende bezieht sich auf die \texttt{while}-Sprache (siehe \secref{section:while}).
 
 \begin{definition}
-    $\AExp, \BExp, \SExp$: Mengen aller gültigen Ableitungen aus $A$, $B$ bzw. $S$ als Syntaxbaum. Der Ausdruck \texttt{5+7-2*8} lässt sich aus $A$ ableiten. Der entsprechende Syntaxbaum (siehe \figref{fig:syntaxbaum}) ist dann Teil von $\AExp$.
+    $\AExp, \BExp, \Stm$: Mengen aller gültigen Ableitungen aus $A$, $B$ bzw. $S$ als Syntaxbaum. Der Ausdruck \texttt{5+7-2*8} lässt sich aus $A$ ableiten. Der entsprechende Syntaxbaum (siehe \figref{fig:syntaxbaum}) ist dann Teil von $\AExp$.
     \[
     a \in \AExp
     \]
@@ -83,7 +83,7 @@ Sei $State = \{ \sigma \,\vert\, \sigma: \Var \to \mathbb{Z} \}$, \zb
 \end{align*}
 
 \[
-S: \SExp \to (\State + \State)
+S: \Stm \to (\State + \State)
 \]
 
 \textbf{Jetzt:} Definition von $\A$ durch Induktion über die Struktur des Syntaxbaums. Die Definition von $\N$ und $\B$ ist eine Übung.

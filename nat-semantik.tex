@@ -10,7 +10,7 @@ $\Asem{\cdot}$ und $\Bsem{\cdot}$ \emph{benutzen} den Zustand $\sigma$ während 
 Idee: Definiere $\Ssem{\cdot}$ mithilfe einer Zustandsüberführungerelation.
 
 \begin{definition}
-    Sei $s \in \SExp$ eine Anweisungsfolge und seien $\sigma, \sigma' \in \State$ Zustände. Die Zustandsüberführungsrelation
+    Sei $s \in \Stm$ eine Anweisungsfolge und seien $\sigma, \sigma' \in \State$ Zustände. Die Zustandsüberführungsrelation
     \[
     \strans{S}{\sigma}{\sigma'}
     \]
@@ -86,7 +86,7 @@ Im Folgenden schreiben wir $[\cdot]_{\text{ns}}$ um anzuzeigen, dass es sich um 
 Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
 
 \begin{definition}
-    Sei $S \in \SExp$ ein Programm und seien $\sigma, \sigma' \in \State$. Dann gilt
+    Sei $S \in \Stm$ ein Programm und seien $\sigma, \sigma' \in \State$. Dann gilt
     \[
     \langle S, \sigma \rangle \to \sigma'
     \]

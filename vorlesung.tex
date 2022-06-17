@@ -40,8 +40,8 @@
 % Defining \lsem and \rsem without using MnSymbol because it causes other symbols (like \in) to look different
 \newcommand{\lsem}{\mathrm{[}\kern-.14em\mathrm{[}}
 \newcommand{\rsem}{\mathrm{]}\kern-.14em\mathrm{]}}
-\newcommand{\zb}{z.\,B.\;}
-\renewcommand{\dh}{d.\,h.\;}
+\newcommand{\zb}{z.\,B.}
+\renewcommand{\dh}{d.\,h.}
 \newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
 \newcommand{\half}[1]{\frac{#1}{2}}
@@ -66,7 +66,7 @@
 \DeclareMathOperator{\bits}{\{0,1\}}
 \DeclareMathOperator{\AExp}{AExp}
 \DeclareMathOperator{\BExp}{BExp}
-\DeclareMathOperator{\SExp}{SExp}
+\DeclareMathOperator{\Stm}{Stm}
 \DeclareMathOperator{\Num}{Num}
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\State}{State}
@@ -74,6 +74,10 @@
 \DeclareMathOperator{\B}{\mathcal{B}}
 \DeclareMathOperator{\N}{\mathcal{N}}
 \DeclareMathOperator{\FV}{FV}
+\DeclareMathOperator{\DV}{DV}
+\DeclareMathOperator{\Env}{Env}
+\DeclareMathOperator{\env}{env}
+\DeclareMathOperator{\akt}{akt}
 \DeclareMathOperator{\true}{w}
 \DeclareMathOperator{\false}{f}
 
@@ -134,6 +138,8 @@
 \include{operationelle-semantik}
 \include{nat-semantik}
 \include{struk-semantik}
+
+\include{denotationelle-semantik}
 
 
 \end{document}
