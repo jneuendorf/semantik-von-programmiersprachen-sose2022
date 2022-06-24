@@ -4,3 +4,165 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Denotationelle Semantik}
+
+
+\begin{remark}[Ziel]
+    Die Definition einer semantischen Funktion direkt ohne Umweg über eine simulierte Programmausführung (\dh{} ohne eine Übergangsrelation).
+
+    Dabei ist die Zusammengsetztheit (\emph{compositionality}) bei der Definition der semantischen Funktion für ein Sprachkonstrukt wichtig, \dh{} man darf nur die Werte der semantischen Funktion für die Bestandteile des Sprachkonstrukts verwenden.
+\end{remark}
+
+\begin{example}
+    \[ \A: \AExp \to \mathbb{Z}, \quad \B: \BExp \to \bool \]
+    sind denotationell definiert.
+\end{example}
+
+\begin{example}[Gegenbeispiel]
+    $\infruleNs[\true]{while}$: \[
+        \frac{
+            \strans{S}{\sigma}{\sigma''}, \strans{\texttt{while $b$ do $S$}}{\sigma''}{\sigma}
+        }{
+            \strans{\underbrace{\texttt{while $b$ do $S$}}_{\text{gleiches Konstrukt}}}{\sigma}{\sigma'}
+        }
+    \]
+\end{example}
+
+
+
+\subsection{Direkte Definition der semantischen Funktion}
+
+\begin{definition}
+    Wir definieren $\mathcal{S}_{\text{ds}} : \Stm \to (\State \to \State)$.
+
+    Die grundlegenden Definition bleiben gleich:
+    \begin{align*}
+        \Sdssem{\texttt{x := a}}(\sigma) & = \sigma[x \mapsto \Asem{a}(\sigma)] \\
+        \Sdssem{\texttt{skip}}(\sigma) & = \sigma \\
+        \Sdssem{\texttt{$S_1$; $S_2$}}(\sigma) & = (\underbrace{\Sdssem{S_2}}_{\State \to \State} \circ\;\, \Sdssem{S_1})(\sigma)
+    \end{align*}
+
+    \emph{Achtung:} Die Zustandsüberführungsfunktionen können eventuell nur partiell definiert sein. Dann liefert die Komposition auch nur $\bot$.
+
+    Zur Definition von Verzweigungen ($\leadsto$ \texttt{if}) benutzen wir eine Hilfsfunktion \emph{cond} (siehe \defref{def:cond}). Damit ist die Definition von Verzweigungen wie folgt:
+    \[
+        \Sdssem{\texttt{if $b$ then $S_1$ then $S_2$}} = \cond(\Bsem{b}, \Sdssem{S_1}, \Sdssem{S_2})
+    \]
+\end{definition}
+
+\begin{definition}[cond] \label{def:cond}
+    \[
+        \cond : (\State \to \bool) \times (\State \to \State) \times (\State \to \State) \to (\State \to \State)
+    \]
+    \[
+        \cond(p, f_1, f_2) = \begin{cases}
+            f_1(\sigma) & \text{falls } p(\sigma) = \true \\
+            f_2(\sigma) & \text{falls } p(\sigma) = \false
+        \end{cases}
+    \]
+\end{definition}
+
+\par\bigskip
+\emph{Herausforderung:} Definition von $\Sdssem{\texttt{while $b$ do $S$}}$ unter Berücksichtigung der Zusammengsetztheit.
+
+\emph{Beobachtung:} \texttt{while $b$ do $S$} und \texttt{if $b$ then (S; while $b$ do $S$) else skip} sollen semantisch äquivalent sein.
+
+Also eigentlich wollen wir schreiben: \[
+    \Sdssem{\texttt{while $b$ do $S$}} = \cond(\Bsem{b}, \Sdssem{\underbrace{\texttt{while $b$ do $S$}}_{\text{gleiches Konstrukt}}} \;\circ\; \Sdssem{S}, \id)
+\]
+Das verletzt aber die Zusammengsetztheit.
+
+\par\medskip
+Wenn wir diese Gleichung betrachten, erkennen wir
+\begin{remark}[Erkenntnis]
+    $\Sdssem{\texttt{while $b$ do $S$}}$ ist die Lösung der Gleichung \[
+        f = \cond(\Bsem{b}, f \circ \Sdssem{S}, \id)
+    \]
+\end{remark}
+
+\emph{Wie lösen wir diese Gleichung?}
+
+
+
+\subsubsection{Problemtransfer zu Fixpunkt eines Funktionals}
+
+Wir überführen das Problem des Lösens der Gleichung zu einem Problem des Findens eines Fixpunktes.
+
+\begin{definition}
+    Dafür definieren wir ein \emph{Funktional} (Argument und Ergebnis sind Funktionen): \[
+        F : (\State \to \State) \to (\State \to \State)
+    \] durch \[
+        F(f) = \cond(\Bsem{b}, f \;\circ\; \Sdssem{S}, \id)
+    \]
+    Ein \emph{Fixpunkt} von $F$ ist ein $f^* : \State \to \State$ mit $F(f^*) = f^*$, \dh{} Stellen an denen die Funktion Werte auf sich selbst abbildet.
+\end{definition}
+
+Durch diese Herangehensweise, können wir die Funktion auch im Umfeld der Lösung betrachten oder sie benutzen, um sich der Lösung anzunähern.
+
+\begin{definition}
+    Wir definieren einen \emph{Fixpunktoperator} \[
+        \fix : ((\State \to \State) \to (\State \to \State) \to (\State \to \State))
+    \]
+    der einem Funktional $F$ einen Fixpunkt $f^*$ zuordnet.
+
+    Dann können wir schreiben \[
+        \Sdssem{\texttt{while $b$ do $S$}} = \fix(F)
+    \]
+    wobei \[
+        F : f \mapsto \cond(\Bsem{b}, f \;\circ\; \Sdssem{S}, \id)
+    \]
+\end{definition}
+
+Das heißt die Semantik der \texttt{while}-Schleife ist der Fixpunkt des Funktionals.
+
+\begin{question}
+    Was können wir über $\fix(f)$ sagen?
+    \begin{enumerate}
+        \item Existiert für \emph{jedes} Funktional $G : (\State \to \State) \to (\State \to \State)$ ein Fixpunkt?
+
+            \textbf{Nein.}
+
+            Betrachte $G$ mit \[
+                G(g) = \begin{cases}
+                    g_1 & \text{falls } g = g_2 \\
+                    g_2 & \text{sonst}
+                \end{cases}
+            \]
+            für $g_1 \neq g_2$.
+
+            Aber vielleicht hat unser Funktional $F$ immer einen Fixpunkt.
+
+        \item Falls es einen Fixpunkt gibt, ist dieser eindeutig?
+
+            \textbf{Im Allgemeinen nein.}
+
+            Betrachte $G$ mit \[ G(g) = g \] Hier sind alle $g$ Fixpunkte.
+
+            Aber vielleicht hat unser Funktional $F$ immer höchstens einen Fixpunkt.
+    \end{enumerate}
+\end{question}
+
+\par\bigskip
+Wir müssen uns also anschauen, was der Fixpunktoperator $\fix$ mit unserem speziellen $F$ macht.
+
+\begin{remark}[Intuition]
+    Wie löst man eigentlich eine Fixpunkt-Gleichung $f = F(f)$?
+
+    Fixpunkt-Iteration: Start mit \begin{align*}
+        f_0 & \\
+        f_1 & = F(f_0) \\
+        f_2 & = F(f_1) \\
+        f_3 & = F(f_2) \\
+        \dots
+    \end{align*}
+\end{remark}
+
+\begin{example}[Kein Fixpunkt]
+    \begin{align*}
+        x & = 2x - 7 \\
+        x_0 & = 20 \\
+        x_1 & = 33 \\
+        x_2 & = 59 \\
+        x_3 & = 111 \\
+        \dots
+    \end{align*}
+\end{example}

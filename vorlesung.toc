@@ -23,3 +23,5 @@
 \contentsline {subsubsection}{\numberline {3.8.6}Natürlichen operationelle Semantik für Unterprogramme mit dynamische Gülitigkeitsbereichen}{29}{subsubsection.3.8.6}%
 \contentsline {subsubsection}{\numberline {3.8.7}Schlussregeln für Unterprogramme mit dynamischen Gültigkeitsbereichen}{29}{subsubsection.3.8.7}%
 \contentsline {section}{\numberline {4}Denotationelle Semantik}{31}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Direkte Definition der semantischen Funktion}{31}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Problemtransfer zu Fixpunkt eines Funktionals}{32}{subsubsection.4.1.1}%
