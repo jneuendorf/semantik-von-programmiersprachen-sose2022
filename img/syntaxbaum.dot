@@ -1,0 +1,11 @@
+digraph G {
+    ordering="out";
+    mult[label="*"];
+    minus[label="-"];
+    plus[label="+"];
+    zahl1[label="Zahl"]; zahl2[label="Zahl"]; zahl3[label="Zahl"]; zahl4[label="Zahl"];
+    minus -> plus -> zahl1 -> 5;
+             plus -> zahl2 -> 7;
+    minus -> mult -> zahl3 -> 2;
+             mult -> zahl4 -> 8;
+}

@@ -1,0 +1,131 @@
+<svg width="696" height="712" viewBox="0 0 382 166.22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="translate(4,162.22000122070312) scale(1)">
+<title>G</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-162.22 378,-162.22 378,4 -4,4"/>
+<!-- 0 -->
+<!-- w1&#45;&gt;w2 -->
+<g id="edge2" class="edge">
+<title>w1-&gt;w2</title>
+<path fill="none" stroke="orange" d="M52.51,-72.81C61.57,-70.44 72.01,-67.71 81.78,-65.16"/>
+<polygon fill="orange" stroke="orange" points="82.83,-68.5 91.62,-62.59 81.06,-61.73 82.83,-68.5"/>
+</g>
+<!-- w3 -->
+<!-- w3 -->
+<g id="node3" class="node">
+<title>w3</title>
+<ellipse fill="none" stroke="black" cx="207" cy="-56.22" rx="27" ry="18"/>
+<text text-anchor="middle" x="207" y="-52.02" font-family="Times,serif" font-size="14.00">w</text>
+</g>
+<!-- w2&#45;&gt;w3 -->
+<g id="edge10" class="edge">
+<title>w1-&gt;fix</title>
+<path fill="none" stroke="green" d="M53.92,-81.26C65.03,-82.04 78.14,-82.83 90,-83.22 194.19,-86.57 226.63,-104.44 324,-67.22 334.25,-63.3 344.75,-56.8 352.68,-51.28"/>
+<polygon fill="green" stroke="green" points="354.9,-54 360.91,-45.27 350.77,-48.35 354.9,-54"/>
+</g>
+<g id="node1" class="node">
+<title>w1</title>
+<ellipse fill="none" stroke="black" cx="27" cy="-79.22" rx="27" ry="18"/>
+<text text-anchor="middle" x="27" y="-75.02" font-family="Times,serif" font-size="14.00">w</text>
+</g>
+<!-- f&#45;&gt;f -->
+<g id="node2" class="node">
+<title>w2</title>
+<ellipse fill="none" stroke="black" cx="117" cy="-56.22" rx="27" ry="18"/>
+<text text-anchor="middle" x="117" y="-52.02" font-family="Times,serif" font-size="14.00">w</text>
+</g>
+
+<!-- w2&#45;&gt;w3 -->
+<g id="edge3" class="edge">
+<title>w2-&gt;w3</title>
+<path fill="none" stroke="orange" d="M144.4,-56.22C152.39,-56.22 161.31,-56.22 169.82,-56.22"/>
+<polygon fill="orange" stroke="orange" points="169.92,-59.72 179.92,-56.22 169.92,-52.72 169.92,-59.72"/>
+</g><g id="edge6" class="edge">
+<title>w1-&gt;bot2</title>
+<path fill="none" stroke="rgb(0, 0, 255)" d="M43.41,-64.75C55.43,-53.99 72.92,-39.44 90,-29.22 96.53,-25.31 104.7,-22.09 110.12,-20.17"/>
+<polygon fill="blue" stroke="blue" points="112.41,-14.12 115.61,-23.6 113.71,-24.23 110.52,-14.76 112.41,-14.12"/>
+<polyline fill="none" stroke="rgb(0, 0, 255)" points="114.96,-18.54 110.22,-20.14 "/>
+</g>
+<!-- w2&#45;&gt;f -->
+<g id="edge11" class="edge">
+<title>w2-&gt;fix</title>
+<path fill="none" stroke="green" d="M131.55,-40.97C143.09,-29.22 160.82,-13.88 180,-7.22 241.57,14.18 319.52,-18.07 351.41,-33.62"/>
+<polygon fill="green" stroke="green" points="349.86,-36.76 360.36,-38.15 353.02,-30.51 349.86,-36.76"/>
+</g>
+<!-- w3&#45;&gt;f -->
+<g id="edge12" class="edge">
+<title>w3-&gt;fix</title>
+<path fill="none" stroke="green" d="M232.93,-51.01C244.2,-48.85 257.72,-46.55 270,-45.22 297.88,-42.17 330.55,-41.4 349.69,-41.23"/>
+<polygon fill="green" stroke="green" points="349.93,-44.73 359.91,-41.19 349.9,-37.73 349.93,-44.73"/>
+</g>
+<!-- w3&#45;&gt;f -->
+
+<!-- w -->
+<g id="node9" class="node">
+<title>w</title>
+<ellipse fill="none" stroke="black" cx="297" cy="-140.22" rx="27" ry="18"/>
+<text text-anchor="middle" x="297" y="-136.02" font-family="Times,serif" font-size="14.00">w</text>
+</g><g id="node4" class="node">
+<title>fix</title>
+<ellipse fill="none" stroke="rgb(0, 128, 0)" cx="367" cy="-41.22" rx="7" ry="7"/>
+</g><g id="node5" class="node">
+<title>bot1</title>
+<ellipse fill="white" stroke="white" cx="367" cy="-140.22" rx="1.8" ry="1.8"/>
+</g>
+<!-- w&#45;&gt;w1 -->
+<g id="edge1" class="edge">
+<title>w-&gt;w1</title>
+<path fill="none" stroke="orange" d="M269.87,-140.63C230,-140.51 152.06,-137.26 90,-116.22 77.39,-111.94 64.56,-104.84 53.88,-97.99"/>
+<polygon fill="orange" stroke="orange" points="55.72,-95.01 45.46,-92.37 51.83,-100.84 55.72,-95.01"/>
+</g><!-- f&#45;&gt;f -->
+<!-- f&#45;&gt;f -->
+<g id="edge7" class="edge">
+<title>w2-&gt;bot3</title>
+<path fill="none" stroke="rgb(0, 0, 255)" d="M140.07,-46.54C151.9,-41.37 166.73,-34.91 180,-29.22 186.99,-26.21 195.07,-22.81 200.34,-20.59"/>
+<polygon fill="blue" stroke="blue" points="202.15,-14.41 206.02,-23.63 204.18,-24.4 200.31,-15.18 202.15,-14.41"/>
+<polyline fill="none" stroke="rgb(0, 0, 255)" points="205.01,-18.63 200.4,-20.57 "/>
+</g>
+<!-- w&#45;&gt;f -->
+<g id="node6" class="node">
+<title>bot2</title>
+<ellipse fill="white" stroke="white" cx="117" cy="-18.22" rx="1.8" ry="1.8"/>
+</g>
+<!-- f&#45;&gt;f -->
+<!-- w&#45;&gt;bot1 -->
+<!-- w&#45;&gt;bot1 -->
+<!-- w&#45;&gt;bot1 -->
+<g id="edge5" class="edge">
+<title>w-&gt;bot1</title>
+<path fill="none" stroke="rgb(0, 0, 255)" d="M324.1,-140.22C336.94,-140.22 351.38,-140.22 359.52,-140.22"/>
+<polygon fill="blue" stroke="blue" points="363.99,-135.22 363.99,-145.22 361.99,-145.22 361.99,-135.22 363.99,-135.22"/>
+<polyline fill="none" stroke="rgb(0, 0, 255)" points="364.99,-140.22 359.99,-140.22 "/>
+</g><g id="edge9" class="edge">
+<title>w-&gt;fix</title>
+<path fill="none" stroke="green" d="M311.35,-124.56C315.54,-119.45 320.08,-113.69 324,-108.22 336.48,-90.78 349.36,-69.68 357.52,-55.88"/>
+<polygon fill="green" stroke="green" points="360.72,-57.33 362.74,-46.93 354.68,-53.8 360.72,-57.33"/>
+</g><g id="node7" class="node">
+<title>bot3</title>
+<ellipse fill="white" stroke="white" cx="207" cy="-18.22" rx="1.8" ry="1.8"/>
+</g>
+<g id="node8" class="node">
+<title>bot4</title>
+<ellipse fill="white" stroke="white" cx="297" cy="-56.22" rx="1.8" ry="1.8"/>
+</g>
+
+<g id="edge8" class="edge">
+<title>w3-&gt;bot4</title>
+<path fill="none" stroke="rgb(0, 0, 255)" d="M234.4,-56.22C253.86,-56.22 278.8,-56.22 290.04,-56.22"/>
+<polygon fill="blue" stroke="blue" points="294.1,-51.22 294.1,-61.22 292.1,-61.22 292.1,-51.22 294.1,-51.22"/>
+<polyline fill="none" stroke="rgb(0, 0, 255)" points="295.1,-56.22 290.1,-56.22 "/>
+</g><g id="edge4" class="edge">
+<title>w3-&gt;w</title>
+<path fill="none" stroke="orange" d="M223.33,-70.85C237.21,-84.1 257.83,-103.78 273.57,-118.8"/>
+<polygon fill="orange" stroke="orange" points="271.2,-121.38 280.85,-125.75 276.03,-116.31 271.2,-121.38"/>
+</g>
+
+
+<!-- w&#45;&gt;bot1 -->
+
+<!-- w&#45;&gt;bot1 -->
+
+</g>
+</svg>

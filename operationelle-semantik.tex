@@ -19,21 +19,9 @@ Das Folgende bezieht sich auf die \texttt{while}-Sprache (siehe \secref{section:
     $\Var$ sind Variablen, die nach Belieben vorhanden sind. Es sind abzählbar unendlich viele.
 \end{definition}
 
-% https://dreampuf.github.io/GraphvizOnline/
-% digraph G {
-%     ordering="out";
-%     mult[label="*"];
-%     minus[label="-"];
-%     plus[label="+"];
-%     zahl1[label="Zahl"]; zahl2[label="Zahl"]; zahl3[label="Zahl"]; zahl4[label="Zahl"];
-%     minus -> plus -> zahl1 -> 5;
-%              plus -> zahl2 -> 7;
-%     minus -> mult -> zahl3 -> 2;
-%              mult -> zahl4 -> 8;
-% }
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.4\textwidth]{syntaxbaum.png}
+    \includegraphics[width=.4\textwidth]{img/syntaxbaum.png}
     \caption{\texttt{5+7-2*8} $\in \AExp$ als verkürzt dargestellter Syntaxbaum}
     \label{fig:syntaxbaum}
 \end{figure}

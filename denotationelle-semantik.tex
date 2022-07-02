@@ -87,7 +87,7 @@ Wenn wir diese Gleichung betrachten, erkennen wir
 
 Wir überführen das Problem des Lösens der Gleichung zu einem Problem des Findens eines Fixpunktes.
 
-\begin{definition}
+\begin{definition}[Funktional] \label{def:funktional}
     Dafür definieren wir ein \emph{Funktional} (Argument und Ergebnis sind Funktionen): \[
         F : (\State \to \State) \to (\State \to \State)
     \] durch \[
@@ -166,3 +166,196 @@ Wir müssen uns also anschauen, was der Fixpunktoperator $\fix$ mit unserem spez
         \dots
     \end{align*}
 \end{example}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\hfill 01.07.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Der Fixpunktoperator}
+
+\begin{remark}[Recap]
+    Aus der letzten Vorlesung:
+
+    \emph{Aufgabe:} Definiere die Semantik von \texttt{while $b$ do $S$} denotationell.
+
+    \emph{Idee:} Betrachte Funktional $F$ (siehe \defref{def:funktional}). Dann sollte die Zustands"-über"-führungs"-funktion ein Fixpunkt von $F$ sein, \dh{} $f^* = F(f^*)$.
+\end{remark}
+
+\par\bigskip
+\begin{question}
+    Woher wissen wir, dass $F$ einen Fixpunkt besitzt? Wie sieht dieser Fixpunkt aus?
+\end{question}
+
+\par\bigskip
+Versuch einer Visualisierung:
+
+Wir haben $\Bsem{b}$ (Punkte sind Zustände mit Wahrheitswerten) und $\Ssem{S}$ (partielle Zustandsüberführungsfunktion, gelb), eine Funktion (Kandidat für Fixpunkt, blau) und das $f$-Funktional $F(f)$ (grün).
+
+$F$ erzeugt also eine neue Zustandsüberführungsfunktion, die für Zustände mit $\false$ auf den Zustand selbst abbildet und für Zustände mit $\true$ durch $f \circ \mathcal{S}$ abbildet, \dh{} erst dem gelben, dann dem blauen Pfeil folgt.
+
+Die Aufgabe des Findes eines Fixpunktes beduetet also, ein $f$ (blau) zu finden, sodass nach Anwendung von $F(f)$ (grün) die gleichen Pfeile entstehen wie in $f$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\textwidth]{img/F_0}
+    \label{fig:F0}
+\end{figure}
+
+
+
+\subsubsection{Wie muss ein Fixpunkt aussehen?}
+
+\begin{enumerate}
+    \item Für alle Zustände mit Wahrheitswert $\false$ muss der Fixpunkt eine Schleife ($\id$) liefern.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=.15\textwidth]{img/F_1}
+            \label{fig:F1}
+        \end{figure}
+    \item Es gibt Zustände mit Wahrheitswert $\true$, die nach endlich vielen Schritten mit $\mathcal{S}$ (gelb) einen Zustand mit Wahrheitswert $\false$ erreichen.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=.35\textwidth]{img/F_2}
+            \label{fig:F2}
+        \end{figure}
+    \item Es gibt Zustände mit Wahrheitswert $\true$, die nicht nach endliche vielen Schritten einen Zustand mit Wahrheitswert $\false$ erreichen.
+        \begin{enumerate}
+            \item $w \to w \to w \to \dots$
+\begin{lstlisting}[language=Pascal]
+x := 1;
+while true do
+    x := x + 1
+\end{lstlisting}
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=.6\textwidth]{img/F_3.1}
+                    \label{fig:F3_1}
+                \end{figure}
+                Hier müssen alle Pfeile zum selben Zustand zeigen, egal welcher genau das ist.
+            \item  $w_1 \to w_2 \to w_2 \to w_1$
+\begin{lstlisting}[language=Pascal]
+x := 0;
+while x != -1 do
+    x := (x + 1) mod 10
+\end{lstlisting}
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=.6\textwidth]{img/F_3.2}
+                    \label{fig:F3_2}
+                \end{figure}
+                Hier müssen ebenfalls alle Pfeile zum selben Zustand zeigen, egal welcher genau das ist.
+            \item $w \to w \to w \to \bot$
+\begin{lstlisting}[language=Pascal]
+x := 1;
+while x < 20 do
+    x := x + 1;
+    if x = 10 then
+        while true do skip
+    else
+        ...
+\end{lstlisting}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=.6\textwidth]{img/F_3.3}
+            \label{fig:F3_3}
+        \end{figure}
+        \end{enumerate}
+        Für die Fälle (a) und (b) ist der Fixpunkt also fix aber beliebig (inklusive $\bot$).
+\end{enumerate}
+
+\par\bigskip
+Das Ergebnis unserer informellen Überlegung ist:
+\begin{itemize}
+    \item Wir erwarten, dass \emph{immer ein Fixpunkt existiert}.
+    \item Ein solcher Fixpunkt ist nicht immer eindeutig. Für Zustände, bei denen die \texttt{while}-Schleife nicht terminiert, kann es ggf. mehrere Möglichkeiten für einen Fixpunkt geben.
+
+        In diesem Fall hätten wir gern den Fixpunkt, der $\bot$ für nicht-terminierende Schleifen liefert.
+\end{itemize}
+
+
+\subsubsection{Fixpunktiteration}
+
+\begin{remark}[Idee]
+    Finde die richtigen Fixpunkt durch Fixpunktiteration. Starte mit der Zustandsüberführungsfunktion \[
+    f_{\bot} : f_{\bot}(\sigma) = \bot \quad \forall \sigma \in \State
+    \]
+    welche $F$ wiederholt auf $f_{\bot}$ an, schaue was passiert.
+
+    $\Rightarrow$ Der ``Grenzwert'' ist der gewünschte Fixpunkt.
+
+    Z.\,B. bei (c.a) und (c.b) bleibt die Funktion nach wiederholter Anwendung überall $\bot$.
+\end{remark}
+
+\begin{definition}[Fixpunktoperator]
+    \begin{align*}
+        f_0 & = f_{\bot} \\
+        f_n &= F(f_{n-1}) \quad n \geq 1 \\
+        \fix(f) & := \lim_{n \to \infty} f_n
+    \end{align*}
+
+    Aber wie ist der Grenzwert in diesem Kontext definiert?
+\end{definition}
+
+\begin{definition}
+    Sei $\mathcal{F} = \{ f \;\vert\; f: \State \to \State \}$ die Menge aller partiellen Zustandsüberführungsfunktionen. Wir definieren auf $\mathcal{F}$ eine Relation $\sqsubseteq$ durch \[
+        f \sqsubseteq g :\Longleftrightarrow \forall \sigma, \sigma' \in \State: f(\sigma) = \sigma' \Rightarrow g(\sigma) = \sigma'
+        \]
+        \dh{} überall, wo $f$ definiert ist, ist auch $g$ definiert und liefert denselben Wert.
+\end{definition}
+
+\par\medskip
+\begin{example}
+    $g_1, g_2, g_3, g_4 : \State \to \State$
+    \begin{align*}
+        g_1(\sigma) & = \sigma \quad \forall \sigma \in \State \\
+        g_2(\sigma) & = \begin{cases}
+            \sigma & \text{falls } \sigma(x) \geq 0 \\
+            \bot & \text{sonst} \\
+        \end{cases} \\
+        g_3(\sigma) & = \begin{cases}
+            \sigma & \text{falls } \sigma(x) \leq 0 \\
+            \bot & \text{sonst} \\
+        \end{cases} \\
+        g_4(\sigma) & = \begin{cases}
+            \sigma & \text{falls } \sigma(x) = 0 \\
+            \bot & \text{sonst} \\
+        \end{cases} \\
+    \end{align*}
+    Behauptung:
+    \begin{align*}
+        g_4 \sqsubseteq g_2 \sqsubseteq g_1 \\
+        g_4 \sqsubseteq g_3 \sqsubseteq g_1 \\
+        g_4 \sqsubseteq g_1 \tag{*}
+    \end{align*}
+    $(*)$ folgt aus Transivität da die Relation eine Ordnungsrelation ist, aber das haben wir noch nicht bewiesen.
+
+    Jedoch sind $g_2$ und $g_3$ nicht vergleichbar.
+\end{example}
+
+\par\bigskip
+\begin{remark}[Fakt]
+    $\sqsubseteq$ ist eine Ordnungsrelation auf $\mathcal{F}$. Das bedeutet, sie ist
+    \begin{itemize}
+        \item reflexiv: $f \sqsubseteq f$
+        \item transitiv: $f \sqsubseteq g \wedge g \sqsubseteq h \Rightarrow f \sqsubseteq h$
+        \item antisymmetrisch: $f \sqsubseteq g \wedge g \sqsubseteq f \Rightarrow f = g$
+    \end{itemize}
+
+    $(\mathcal{F}, \sqsubseteq)$ ist eine Halbordnung (poset bzw. partially ordered set).
+\end{remark}
+
+\par\medskip
+\begin{definition}
+    Ein Element $f \in \mathcal{F}$ heißt \emph{Minimum}, falls für alle $g \in \mathcal{F}$ gilt \[
+    f \sqsubseteq g
+    \]
+\end{definition}
+
+\begin{remark}[Beobachtungen]
+    Im Allgemeinen, muss es kein Minimum in einem poset geben (\zb{} unendliche Ordnung oder mehrere nicht vergleichbare minimale Elemente). Wenn ein Minimum existiert, dann ist es eindeutig (wegen Antisymmetrie).
+
+    Aber $(\mathcal{F}, \sqsubseteq)$ hat ein Minimum und zwar $f_{\bot}$.
+\end{remark}
+
+

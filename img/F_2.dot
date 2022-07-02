@@ -1,0 +1,15 @@
+digraph G {
+    ordering="in";
+    rankdir=LR;
+    w1[label="w"];
+    w2[label="w"];
+    w3[label="w"];
+    edge[weight=2];
+    w -> w1 -> w2 -> w3 -> f -> f [color="orange"];
+    edge[weight=1];
+    w -> f [color="green"];
+    w1 -> f [color="green"];
+    w2 -> f [color="green"];
+    w3 -> f [color="green"];
+    f -> f [color="green"];
+}
