@@ -1,0 +1,89 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\hfill 22.04.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Einführung}
+
+Diese Vorlesung orientiert sich an folgender Literatur:
+\begin{itemize}
+    \item Semantics with applications, Hanne Riis Nielson and Flemming Nielson, 1999
+    % TODO: name, jahr
+    \item Semantik von Programmiersprachen, Fehr, ????
+\end{itemize}
+
+
+
+\subsection{Programmiersprachen}
+
+Eine Programmiersprache ist eine künstliche, entworfene Sprache zur Kommunikation zwischen Mensch und Rechner. Davon gibt es heutzutage sehr viele.
+
+Keine Programmiersprache ist perfekt: Es gibt verschiedene Ziele und Aspekte beim Entwurf von Programmiersprachen und somit verschiedene Vor- und Nachteile:
+\begin{itemize}
+    \item Komfort
+    \begin{itemize}
+        \item Ausdrucksfähigkeit vs. Nützlichkeit
+        \item Lesbarkeit (\zb{} COBOL) vs. Prägnanz (\zb{} FORTRAN)
+    \end{itemize}
+    \item Vermeidung von Fehlern im Programm
+    \item leichte algorithmische Verarbeitung ($\leadsto$ parsing)
+    \item effizienter erzeugter Code
+    \begin{itemize}
+        \item Dies ist eigentlich Aufgabe des Übersetzers ($\leadsto$ Vorlesung Übersetzer-Bau)
+        \item abstrakt vs. hardware-nah
+    \end{itemize}
+\end{itemize}
+
+\par\bigskip
+In dieser Vorlesung befassen wir uns mit der theoretische Analyse von Programmiersprachen. Konkret beinhaltet dies:
+\begin{enumerate}
+    \item einzelne Sprachkonstrukte mathematisch modellieren,
+    \item Beziehung zwischen Kontrukten verstehen,
+    \item Güte der Konstrukte beweisen,
+    \item theoretische Garantien ableiten.
+\end{enumerate}
+
+\par\bigskip
+Jede Programmiersprache besitzt drei wesentliche Eigenschaften:
+\begin{itemize}
+    \item Syntax
+    \item Semantik
+    \item Idiomatik
+\end{itemize}
+
+
+
+\subsubsection{Syntax}
+
+Die Syntax ist eine endliche Folge von Zeichen über einem Alphabet $\Sigma$, \zb{} \texttt{x = 5 + 2;} aus dem Alphabet ASCII.
+
+Dabei sind nicht alle Zeichenfolgen korrekte Programme.
+
+Die \emph{konkrete Syntax} beschreibt Zeichenfolgen, die gültige Programme darstellen. Dafür werden eine kontextfreie Grammatik und zusätzliche Regeln (\zb{} dass nur zuvor deklarierte Variablen verwendet werden dürfen) benutzt.
+
+Die \emph{abstrakte Syntax} ist die aus der aus der Grammatik resultierende, hierarchische Struktur eines gültigen Programms. Diese wird durch einen Syntaxbaum dargestellt.
+\begin{align*}
+    \text{Block} - \text{Anweisung} - \text{Zuweisung} - \begin{cases}
+        \text{Variable} - x \\
+        \\
+        \text{Ausdruck} - \oplus - \begin{cases}
+            5 \\
+            \\
+            2
+        \end{cases}
+    \end{cases}
+\end{align*}
+
+Die \emph{Syntaxanalyse} erzeugt einen Syntaxbaum aus einem konkreten Programm. Dies ist Inhalt der Vorlesung Übersetzer-Bau. Hier, in dieser Vorlesung gehen wir davon aus, dass der abstrakte Syntaxbaum gegeben ist.
+
+
+
+\subsubsection{Semantik}
+
+Diese Eigenschaft beleuchten wir in dieser Vorlesung ab dem nächsten \secref{sec:semantik}.
+
+
+
+\subsubsection{Idiomatik}
+
+Die \emph{Idiomatik} umfasst Konventionen, Muster bzw. Faustregeln bei der Verwendung einer bestimmten Programmiersprache ($\leadsto$ pattern, anti-patterns, best practices). Somit macht sie in der Praxis den eigentlichen Gehalt\,/\,Kultur einer Programmiersprache aus.
