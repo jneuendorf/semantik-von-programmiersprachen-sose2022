@@ -31,5 +31,5 @@
 \contentsline {subsection}{\numberline {5.1}Direkte Definition der semantischen Funktion}{33}{subsection.5.1}%
 \contentsline {subsubsection}{\numberline {5.1.1}Problemtransfer zu Fixpunkt eines Funktionals}{34}{subsubsection.5.1.1}%
 \contentsline {subsection}{\numberline {5.2}Der Fixpunktoperator}{36}{subsection.5.2}%
-\contentsline {subsubsection}{\numberline {5.2.1}Wie muss ein Fixpunkt aussehen?}{37}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.1}Wie muss ein Fixpunkt aussehen?}{36}{subsubsection.5.2.1}%
 \contentsline {subsubsection}{\numberline {5.2.2}Fixpunktiteration}{38}{subsubsection.5.2.2}%

@@ -198,8 +198,8 @@ $F$ erzeugt also eine neue Zustandsüberführungsfunktion, die für Zustände mi
 Die Aufgabe des Findes eines Fixpunktes beduetet also, ein $f$ (blau) zu finden, sodass nach Anwendung von $F(f)$ (grün) die gleichen Pfeile entstehen wie in $f$.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.7\textwidth]{img/F_0}
-    \label{fig:F0}
+    \includegraphics[page=1,width=.4\textwidth]{img/f-combined}
+    \caption{Visualisierung der Funktionsverkettung durch $F$}
 \end{figure}
 
 
@@ -210,14 +210,12 @@ Die Aufgabe des Findes eines Fixpunktes beduetet also, ein $f$ (blau) zu finden,
     \item Für alle Zustände mit Wahrheitswert $\false$ muss der Fixpunkt eine Schleife ($\id$) liefern.
         \begin{figure}[H]
             \centering
-            \includegraphics[width=.15\textwidth]{img/F_1}
-            \label{fig:F1}
+            \includegraphics[page=2,width=.15\textwidth]{img/f-combined}
         \end{figure}
     \item Es gibt Zustände mit Wahrheitswert $\true$, die nach endlich vielen Schritten mit $\mathcal{S}$ (gelb) einen Zustand mit Wahrheitswert $\false$ erreichen.
         \begin{figure}[H]
             \centering
-            \includegraphics[width=.35\textwidth]{img/F_2}
-            \label{fig:F2}
+            \includegraphics[page=3,width=.6\textwidth]{img/f-combined}
         \end{figure}
     \item Es gibt Zustände mit Wahrheitswert $\true$, die nicht nach endliche vielen Schritten einen Zustand mit Wahrheitswert $\false$ erreichen.
         \begin{enumerate}
@@ -229,8 +227,7 @@ while true do
 \end{lstlisting}
                 \begin{figure}[H]
                     \centering
-                    \includegraphics[width=.6\textwidth]{img/F_3.1}
-                    \label{fig:F3_1}
+                    \includegraphics[page=4,width=.6\textwidth]{img/f-combined}
                 \end{figure}
                 Hier müssen alle Pfeile zum selben Zustand zeigen, egal welcher genau das ist.
             \item  $w_1 \to w_2 \to w_2 \to w_1$
@@ -241,8 +238,7 @@ while x != -1 do
 \end{lstlisting}
                 \begin{figure}[H]
                     \centering
-                    \includegraphics[width=.6\textwidth]{img/F_3.2}
-                    \label{fig:F3_2}
+                    \includegraphics[page=5,width=.22\textwidth]{img/f-combined}
                 \end{figure}
                 Hier müssen ebenfalls alle Pfeile zum selben Zustand zeigen, egal welcher genau das ist.
             \item $w \to w \to w \to \bot$
@@ -257,8 +253,7 @@ while x < 20 do
 \end{lstlisting}
         \begin{figure}[H]
             \centering
-            \includegraphics[width=.6\textwidth]{img/F_3.3}
-            \label{fig:F3_3}
+            \includegraphics[page=6,width=.6\textwidth]{img/f-combined}
         \end{figure}
         \end{enumerate}
         Für die Fälle (a) und (b) ist der Fixpunkt also fix aber beliebig (inklusive $\bot$).
