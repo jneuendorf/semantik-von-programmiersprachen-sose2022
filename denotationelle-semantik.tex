@@ -293,7 +293,7 @@ Das Ergebnis unserer informellen Überlegung ist:
 \end{definition}
 
 \begin{definition}
-    Sei $\mathcal{F} = \{ f \;\vert\; f: \State \to \State \}$ die Menge aller partiellen Zustandsüberführungsfunktionen. Wir definieren auf $\mathcal{F}$ eine Relation $\sqsubseteq$ durch \[
+    Sei $\mathcal{F} = \{ f \;\vert\; f: \State \to \State \}$ die Menge aller \emph{partiellen} Zustandsüberführungsfunktionen. Wir definieren auf $\mathcal{F}$ eine Relation $\sqsubseteq$ durch \[
         f \sqsubseteq g :\Longleftrightarrow \forall \sigma, \sigma' \in \State: f(\sigma) = \sigma' \Rightarrow g(\sigma) = \sigma'
         \]
         \dh{} überall, wo $f$ definiert ist, ist auch $g$ definiert und liefert denselben Wert.
@@ -337,7 +337,7 @@ Das Ergebnis unserer informellen Überlegung ist:
         \item antisymmetrisch: $f \sqsubseteq g \wedge g \sqsubseteq f \Rightarrow f = g$
     \end{itemize}
 
-    $(\mathcal{F}, \sqsubseteq)$ ist eine Halbordnung (poset bzw. partially ordered set).
+    $(\mathcal{F}, \sqsubseteq)$ ist eine \emph{Halbordnung} (poset bzw. partially ordered set).
 \end{remark}
 
 \par\medskip
@@ -348,9 +348,158 @@ Das Ergebnis unserer informellen Überlegung ist:
 \end{definition}
 
 \begin{remark}[Beobachtungen]
-    Im Allgemeinen, muss es kein Minimum in einem poset geben (\zb{} unendliche Ordnung oder mehrere nicht vergleichbare minimale Elemente). Wenn ein Minimum existiert, dann ist es eindeutig (wegen Antisymmetrie).
+    Im Allgemeinen, muss es kein Minimum in einem poset geben (\zb{} unendliche Ordnung oder mehrere nicht vergleichbare minimale Elemente). Wenn ein \emph{Minimum} existiert, dann ist es \emph{eindeutig} (wegen Antisymmetrie).
 
     Aber $(\mathcal{F}, \sqsubseteq)$ hat ein Minimum und zwar $f_{\bot}$.
 \end{remark}
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\hfill 08.07.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{remark}[Ziel für den Rest der Vorlesung]
+    Konvergenz der Fixpunktiteration beweisen.
+\end{remark}
+
+\begin{definition}[Obere Schranke, Supremum]
+    Sei $\mathcal{G} \subseteq \mathcal{F}$, dann ist auch $(\mathcal{G}, \sqsubseteq)$ eine Halbordnung.
+
+    Ein Element $f \in \mathcal{F}$ heißt \emph{obere Schranke} von $\mathcal{G}$, falls \[
+        \forall g \in \mathcal{G}: g \sqsubseteq f
+    \]
+
+    Eine obere Schranke von $\mathcal{G}$ heißt \emph{Supremum} ``$\sup \mathcal{G}$'', falls für alle oberen Schranken $f'$ von $\mathcal{G}$ gilt $f \sqsubseteq f'$ \dh{} es ist die kleinste obere Schranke.
+
+    Falls ein \emph{Supremum} existiert, so ist es \emph{eindeutig}. Falls die obere Schranke innerhalb von $\mathcal{G}$ liegt, so ist sie auch das Maximum und Supremum von $\mathcal{G}$.
+\end{definition}
+
+\par\bigskip
+\begin{definition}
+    Sei $\mathcal{G} \subseteq \mathcal{F}$. Wir nennen $\mathcal{G}$ eine \emph{Kette} (chain), falls $\mathcal{G}$ total geordnet ist, \dh{} \[
+        \forall g_1, g_2 \in \mathcal{G}: g1 \sqsubseteq g_2 \vee g_2 \sqsubseteq g_1
+    \]
+\end{definition}
+
+\begin{example}
+    Folgende Beispiele sind Ketten:
+    \begin{itemize}
+        \item Die leere Menge $\varnothing \subseteq \mathcal{F}$ ist eine Kette.
+        \item Jede 1-elementige Menge ist eine Kette.
+        \item Sei $x \in \Var$ eine Variable. Für $n \in \mathbb{N}$ definiere wir $g_n \in \mathcal{F}$ durch \begin{align*}
+                g_n: & \State \to \State \\
+                g_n(\sigma) & = \begin{cases}
+                    \bot & \text{falls } \sigma(x) > n \\
+                    \sigma[x \mapsto -1] & \text{falls } \sigma(x) \in \{ 0, \dots, n \} \\
+                    \sigma & \text{falls } \sigma(x) < 0
+                \end{cases}
+            \end{align*}
+            Die Menge $\{ g_n \mid n \in \mathbb{N} \}$ ist eine Kette in $(\mathcal{F}, \sqsubseteq)$, denn es gilt \[
+                    g_n \sqsubseteq g_m \Leftrightarrow n \leq m
+                \]
+\begin{lstlisting}[escapeinside={/*}{*/}, language=Pascal, caption=Snippet für $g_n$]
+while x >= 0 do  /*\label{code:loopdec}*/
+    x := x - 1
+\end{lstlisting}
+            % TODO: foto
+            \emph{Ziel:} Die Funktion \begin{align*}
+                g_{\infty}: & \State \to \State \\
+                g_{\infty} & = \begin{cases}
+                    \sigma[x \mapsto -1] & \text{falls } \sigma(x) \geq 0 \\
+                    \sigma & \text{sonst}
+                \end{cases}
+            \end{align*}
+            ist die Semantik von Listing~\ref{code:loopdec}.
+
+            Nun sehen wir, dass \[
+                g_{\infty} = \sup \{ g_n \mid n \in \mathbb{N} \}
+            \]
+    \end{itemize}
+\end{example}
+
+\par\bigskip
+\begin{definition}[Kettenvollständigkeit]
+    Eine Halbordnung heißt \emph{kettenvollständig} (ccpo: chain-complete-partial order), falls jede Kette ein Supremum besitzt.
+\end{definition}
+
+\par\medskip
+\begin{example}
+    $(\mathbb{N}, \leq)$ ist nicht kettenvollständig. Die Menge der geraden Zahlen $\{ 2, 4, \dots \}$ ist eine Kette ohne Supremum.
+
+    \par\medskip
+    $(\mathcal{P}(\{ 1, 2, 3 \}), \subseteq)$ ist kettenvollständig.
+    % TODO: Hasse diagramm wie in uebung
+
+    \par\medskip
+    $(\mathcal{P}(\mathbb{N}), \subseteq)$ ist auch kettenvollständig. Sei $X \in (\mathcal{P}(\mathbb{N}), \subseteq)$ eine Kette, also eine Menge von Teilmengen von $\mathbb{N}$, sodass $\forall A, B \in X: A \subseteq B \vee B \subseteq A$.\\
+    Es ist $\sup X = \bigcup_{A \in X} A = Z$, da \begin{enumerate}
+        \item Sei $A = X$. Dann ist $A \subseteq Z$.
+        \item $Z$ ist kleinste obere Schranke. Sei $Y$ obere Schranke von $X$.
+
+            Zu zeigen: $Z \subseteq Y$.
+
+            Nimm $z \in Z$, zeige, dass $z \in Y$.
+            \begin{align*}
+                z \in Z \Rightarrow \exists A \subseteq Z \text{ mit } z \in A
+            \end{align*}
+            Da $Y$ obere Schranke von $X$ ist und $a \in X$, muss $A \subseteq Y$. Also folgt, $z \in Y$.
+    \end{enumerate}
+\end{example}
+
+\par\bigskip
+\begin{remark}[Fakt]
+    Sei $(\mathcal{D}, \sqsubseteq)$ ccpo. Dann besitzt $\mathcal{D}$ ein Minimum, nämlich \[
+            d_{\bot} = \sup \varnothing
+        \]
+\end{remark}
+
+\begin{proof}
+    Sei $d_{\bot} = \sup \varnothing$. $d_{\bot}$ existiert nach Annahme. Und sei $d \in \mathcal{D}$. Nach Definition ist $d$ eine obere Schranke von $\varnothing$. Da $d_{\bot} = \sup \varnothing$, muss $d_{\bot} \sqsubseteq d$ sein, \dh{} $d_{\bot}$ ist Minimum.
+\end{proof}
+
+\par\bigskip
+\begin{theorem}
+    $(\mathcal{F}, \sqsubseteq)$ ist kettenvollständig.
+
+    Sei $\mathcal{G} \subseteq \mathcal{F}$ eine Kette. Dann ist $\sup \mathcal{G}$ die Funktion mit \[
+        \graph(\sup \mathcal{G}) = \bigcup \, \{ \graph(g) \mid g \in \mathcal{G} \}
+    \]
+    \dh{} \[
+        (\sup \mathcal{G})(\sigma) = \sigma' \Leftrightarrow \exists g \in \mathcal{G}: g(\sigma) = \sigma'
+    \]
+\end{theorem}
+
+\begin{proof}
+    Wir müssen die folgenden Eigenschaften beweisen:
+    \begin{enumerate}
+        \item Wohldefiniertheit
+
+            Seien $g_1, g_2 \in \mathcal{G}$ und sei $\sigma \in \State$, sodass $g_1(\sigma) \neq \bot \neq g_2(\sigma)$. Da $\mathcal{G}$ eine Kette ist, muss gelten $g_1 \sqsubseteq g_2 \vee g_2 \sqsubseteq g_1$. In beiden Fällen folgt $g_1(\sigma) = g_2(\sigma)$. Also ist der Wert von $(\sup \mathcal{G})(\sigma)$ wohldefiniert.
+        \item obere Schranke
+
+            Aus der Definition folgt direkt, dass $(\sup \mathcal{G})$ eine obere Schrank ist: \[
+                g \in \mathcal{G}, \; \sigma, \sigma' \in \State, \; g(\sigma) = \sigma' \implies (\sup \mathcal{G})(\sigma) = \sigma'
+            \]
+        \item kleinste obere Schranke
+
+            $(\sup \mathcal{G})$ ist obere Schranke. Sei $h$ eine obere Schranke.
+
+            Zu zeigen: $(\sup \mathcal{G}) \sqsubseteq h$.
+
+            Sei $\sigma, \sigma' \in \State$. $(\sup \mathcal{G})(\sigma) = \sigma'$, \dh{} $\exists g \in \mathcal{G}: g(\sigma) = \sigma'$, \dh{} $h$ ist obere Schranke, \dh{} $g \sqsubseteq h$, also muss $h(\sigma) = \sigma'$.
+    \end{enumerate}
+\end{proof}
+
+Idee der Fixpunktiteration: \begin{align*}
+    f_0 & = f_{\bot} \\
+    f_1 & = F(f_0) \\
+    \vdots \\
+    f_{\infty} & = \sup \, \{ f_n \mid n \in \mathbb{N} \}
+\end{align*}
+Dann soll gelten: $f_{\infty} = F(f_{\infty})$.
+
+Wenn also gelten würde \[
+    F\left(\lim_{n \to \infty} f_n\right) = \lim_{n \to \infty} F(f_n)
+\] wären wir fertig. Das ist die \emph{Stetigkeit}.

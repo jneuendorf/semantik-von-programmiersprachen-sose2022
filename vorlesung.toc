@@ -1,35 +1,7 @@
 \babel@toc {ngerman}{}\relax 
-\contentsline {section}{\numberline {1}Einführung}{3}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Programmiersprachen}{3}{subsection.1.1}%
-\contentsline {subsubsection}{\numberline {1.1.1}Syntax}{4}{subsubsection.1.1.1}%
-\contentsline {subsubsection}{\numberline {1.1.2}Semantik}{4}{subsubsection.1.1.2}%
-\contentsline {subsubsection}{\numberline {1.1.3}Idiomatik}{4}{subsubsection.1.1.3}%
-\contentsline {section}{\numberline {2}Semantik}{5}{section.2}%
-\contentsline {section}{\numberline {3}Mathematische Formalisierung}{7}{section.3}%
-\contentsline {subsection}{\numberline {3.1}\texttt {while}-Sprache}{7}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Axiomatische Semantik}{8}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Operationelle Semantik}{8}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Denotationelle Semantik}{9}{subsection.3.4}%
-\contentsline {section}{\numberline {4}Operationelle Semantik}{10}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Semantik arithmetischer Ausdrücke}{11}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Freie Variablen}{13}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Substitution}{15}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Natürliche operationelle Semantik (``big step'')}{17}{subsection.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.1}Schlussregeln für die natürliche Semantik von \texttt {while}}{17}{subsubsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.5}Strukturelle operationelle Semantik (``small step'')}{22}{subsection.4.5}%
-\contentsline {subsection}{\numberline {4.6}Eigenschaften der SOS}{24}{subsection.4.6}%
-\contentsline {subsection}{\numberline {4.7}Semantische Funktion $\mathcal {S_{\text {sos}}}$}{25}{subsection.4.7}%
-\contentsline {subsection}{\numberline {4.8}Erweiterungen der \texttt {while}-Sprache}{27}{subsection.4.8}%
-\contentsline {subsubsection}{\numberline {4.8.1}Programmabbruch}{27}{subsubsection.4.8.1}%
-\contentsline {subsubsection}{\numberline {4.8.2}Blöcke und lokale Variablen}{28}{subsubsection.4.8.2}%
-\contentsline {subsubsection}{\numberline {4.8.3}Formalisierung lokaler Blöcke in der NS}{29}{subsubsection.4.8.3}%
-\contentsline {subsubsection}{\numberline {4.8.4}Schlussregeln für $D_V$, $\to _D$ und Blöcke}{29}{subsubsection.4.8.4}%
-\contentsline {subsubsection}{\numberline {4.8.5}Unterprogramme / Prozeduren / Subroutine / Methode}{30}{subsubsection.4.8.5}%
-\contentsline {subsubsection}{\numberline {4.8.6}Natürlichen operationelle Semantik für Unterprogramme mit dynamische Gülitigkeitsbereichen}{31}{subsubsection.4.8.6}%
-\contentsline {subsubsection}{\numberline {4.8.7}Schlussregeln für Unterprogramme mit dynamischen Gültigkeitsbereichen}{31}{subsubsection.4.8.7}%
-\contentsline {section}{\numberline {5}Denotationelle Semantik}{33}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Direkte Definition der semantischen Funktion}{33}{subsection.5.1}%
-\contentsline {subsubsection}{\numberline {5.1.1}Problemtransfer zu Fixpunkt eines Funktionals}{34}{subsubsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.2}Der Fixpunktoperator}{36}{subsection.5.2}%
-\contentsline {subsubsection}{\numberline {5.2.1}Wie muss ein Fixpunkt aussehen?}{36}{subsubsection.5.2.1}%
-\contentsline {subsubsection}{\numberline {5.2.2}Fixpunktiteration}{38}{subsubsection.5.2.2}%
+\contentsline {section}{\numberline {1}Denotationelle Semantik}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Direkte Definition der semantischen Funktion}{3}{subsection.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.1}Problemtransfer zu Fixpunkt eines Funktionals}{4}{subsubsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.2}Der Fixpunktoperator}{6}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Wie muss ein Fixpunkt aussehen?}{6}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Fixpunktiteration}{8}{subsubsection.1.2.2}%
