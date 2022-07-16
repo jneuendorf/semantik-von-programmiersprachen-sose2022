@@ -292,6 +292,10 @@ Das Ergebnis unserer informellen Überlegung ist:
     Aber wie ist der Grenzwert in diesem Kontext definiert?
 \end{definition}
 
+
+
+\subsection{Relationen und Ordnungen}
+
 \begin{definition}
     Sei $\mathcal{F} = \{ f \;\vert\; f: \State \to \State \}$ die Menge aller \emph{partiellen} Zustandsüberführungsfunktionen. Wir definieren auf $\mathcal{F}$ eine Relation $\sqsubseteq$ durch \[
         f \sqsubseteq g :\Longleftrightarrow \forall \sigma, \sigma' \in \State: f(\sigma) = \sigma' \Rightarrow g(\sigma) = \sigma'
@@ -347,11 +351,11 @@ Das Ergebnis unserer informellen Überlegung ist:
     \]
 \end{definition}
 
-\begin{remark}[Beobachtungen]
+\begin{observations}
     Im Allgemeinen, muss es kein Minimum in einem poset geben (\zb{} unendliche Ordnung oder mehrere nicht vergleichbare minimale Elemente). Wenn ein \emph{Minimum} existiert, dann ist es \emph{eindeutig} (wegen Antisymmetrie).
 
     Aber $(\mathcal{F}, \sqsubseteq)$ hat ein Minimum und zwar $f_{\bot}$.
-\end{remark}
+\end{observations}
 
 
 
@@ -430,7 +434,17 @@ while x >= 0 do  /*\label{code:loopdec}*/
 
     \par\medskip
     $(\mathcal{P}(\{ 1, 2, 3 \}), \subseteq)$ ist kettenvollständig.
-    % TODO: Hasse diagramm wie in uebung
+    \begin{figure}[H]
+        \centering
+        % https://tex.stackexchange.com/questions/584458/drawing-a-hasse-diagram-in-latex
+        \begin{tikzcd}[row sep=1.5cm, column sep=1.7cm]
+                             & \{1,2,3\} \\
+            \{1,2\}\urar       & \{1,3\}\uar \arrow[from=dr]                        & \{2,3\}\ular \\
+            \{1\}\uar\urar & \{2\}\ular[crossing over] \urar[crossing over] & \{3\}\uar\\
+                             & \varnothing \ular\uar\urar
+        \end{tikzcd}
+        \caption{Hasse-Diagramm für $(\mathcal{P}(\{1,2,3\}), \subseteq)$}
+    \end{figure}
 
     \par\medskip
     $(\mathcal{P}(\mathbb{N}), \subseteq)$ ist auch kettenvollständig. Sei $X \in (\mathcal{P}(\mathbb{N}), \subseteq)$ eine Kette, also eine Menge von Teilmengen von $\mathbb{N}$, sodass $\forall A, B \in X: A \subseteq B \vee B \subseteq A$.\\
@@ -460,7 +474,7 @@ while x >= 0 do  /*\label{code:loopdec}*/
 \end{proof}
 
 \par\bigskip
-\begin{theorem}
+\begin{theorem} \label{theorem:fkette}
     $(\mathcal{F}, \sqsubseteq)$ ist kettenvollständig.
 
     Sei $\mathcal{G} \subseteq \mathcal{F}$ eine Kette. Dann ist $\sup \mathcal{G}$ die Funktion mit \[
@@ -503,3 +517,195 @@ Dann soll gelten: $f_{\infty} = F(f_{\infty})$.
 Wenn also gelten würde \[
     F\left(\lim_{n \to \infty} f_n\right) = \lim_{n \to \infty} F(f_n)
 \] wären wir fertig. Das ist die \emph{Stetigkeit}.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\hfill 15.07.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{remark}[Letztes Mal]
+    Satz~\ref{theorem:fkette}: $(\mathcal{F}, \sqsubseteq)$ ist kettenvollständig.
+
+    Was bisher fehlt ist ein in Konzept von Stetigkeit, sodass man Folgendes schreiben kann: \[
+        \lim_{n \to \infty} f(x_n) = f\left(\lim_{n \to \infty} x_n\right)
+    \]
+\end{remark}
+
+
+\par\medskip
+\begin{definition}[Monotonie]
+    Eine totale Funktion $f: D \to Z$ heißt \emph{monoton}, falls für alle $d_1, d_2 \in D$ gilt \[
+        d_1 \sqsubseteq d_2 \Rightarrow f(d_1) \sqsubseteq' f(d_2)
+    \]
+\end{definition}
+
+\begin{observations}
+    Wir beobachten folgende Eigenschaften:
+    \begin{enumerate}
+        \item Seien $(\mathcal{D}, \sqsubseteq), (\mathcal{D}',\sqsubseteq'), (\mathcal{D}'',\sqsubseteq'')$ ccpos und $f_1: \mathcal{D} \to \mathcal{D}'$ und $f_2: \mathcal{D}' \to \mathcal{D}''$ monoton Funktionen.
+
+            Dann ist auch $f_1 \circ f_2$ monoton.
+        \item Seien $(\mathcal{D}, \sqsubseteq), (\mathcal{D}',\sqsubseteq')$ ccpos und $f: \mathcal{D} \to \mathcal{D}'$ eine monoton Funktion. Sei $\mathcal{K}$ eine Kette. Dann ist $f(\mathcal{K})$ eine Kette in $\mathcal{D}'$. Wenn $\mathcal{D}$ endlich ist, dann ist das Supremum von $\mathcal{D}'$: \[
+                \sup' \mathcal{D}' = f(\sup \mathcal{D})
+            \]
+
+            Im Allgemeinen gilt: $f(\sup S) \sqsubsetneqq' \sup' f(S)$
+    \end{enumerate}
+\end{observations}
+
+
+\par\bigskip
+\begin{definition}[Stetigkeit]
+    Seien $(\mathcal{D}, \sqsubseteq), (\mathcal{D}',\sqsubseteq')$ ccpos und $f: \mathcal{D} \to \mathcal{D}'$ heißt \emph{stetig} wenn:
+    \begin{enumerate}
+        \item $f$ ist monoton.
+        \item Für alle nichtleeren Ketten $\mathcal{S} \in \mathcal{D}$ gilt $\sup' f(\mathcal{S}) = f(\sup\, \mathcal{S})$.
+    \end{enumerate}
+\end{definition}
+
+\par\medskip
+\begin{observation}
+    Seien $(\mathcal{D}, \sqsubseteq), (\mathcal{D}',\sqsubseteq'), (\mathcal{D}'',\sqsubseteq'')$ ccpos und seien die beiden Funktionen $f: \mathcal{D} \to \mathcal{D}'$ und $f': \mathcal{D}' \to \mathcal{D}''$ stetig.
+
+    Dann ist $f' \circ f: \mathcal{D} \to \mathcal{D}''$ stetig.
+\end{observation}
+
+
+\par\bigskip
+\begin{theorem}
+    Sei $(\mathcal{D}, \sqsubseteq)$ ccpo mit Minimum $d_h$ und sei $F : \mathcal{D} \to \mathcal{D}$ eine stetige Funktion. Setze $f_0 = d_{\bot}$ und $f_n = f(f_{n-1})$.
+
+    \begin{enumerate}
+        \item Dann ist $\{ f_n \mid n \in \mathbb{N} \}$ eine Kette.
+        \item Sei $\fix(F) = \sup \{ f_n \mid n \in \mathbb{N} \}$. Dann gilt $F(\fix(F)) = \fix(F)$.
+        \item Außerdem gilt $\forall g \in \mathcal{D}, F(g) = g: g \geq \fix(F)$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    Wir führen den Beweis stückweise.
+    \begin{enumerate}
+        \item $\{ f_n \mid n \in \mathbb{N} \}$ ist eine Kette. \\
+            Seien $f_n, f_m$ mit $m > n$. Zu zeigen $f_n \sqsubseteq f_m$.
+
+            Setze $a = n - m > 0$. Da $f_0 = d_{\bot}$ Minimum ist, gilt $f_0 \sqsubseteq f_a$. Da $F$ stetig ist, folgt
+            \begin{align*}
+                F(f_0) & \sqsubseteq F(f_n) \\
+                \Rightarrow f_1 & \sqsubseteq f_{a+1} \\
+                & n\text{-mal} \dots \\
+                \Rightarrow f_n & \sqsubseteq f_{a+n}
+            \end{align*}
+
+        \item $\fix(F)$ ist Fixpunkt von $F$.
+            \begin{align*}
+                F(\fix(F)) & = F(\sup \{f_n \mid n \in \mathbb{N} \}) \tag{Def} \\
+                & = \sup F(\{f_n \mid n \in \mathbb{N} \}) \tag{Stetigkeit} \\
+                & = \sup \{F(f_n) \mid n \in \mathbb{N} \} \\
+                & = \sup \{f_{n+1} \mid n \in \mathbb{N} \} \tag{Def} \\
+                & = \sup (\{f_{n+1} \mid n \in \mathbb{N} \} \cup \{ d_{\bot} \}) \tag{Minimum} \\
+                & = \fix(F) \tag{Def}
+            \end{align*}
+
+        \item $\fix(f)$ ist minimaler Fixpunkt.
+
+            Sei $g \in \mathcal{D}$ und $F(g) = g$. Es gilt $g \sqsupseteq d_{\bot}$ ($d_{\bot}$ ist Minimum).
+
+            Also auch $F(g) \sqsupseteq F(d_{\bot})$ bzw. $g \sqsupseteq f_1$. Also auch $F(g) \sqsupseteq F(f_1)$ bzw. $g \sqsupseteq f_2$ usw.
+
+            Also gilt nach Induktion $g \sqsupseteq f_n, n \in \mathbb{N}$. $g$ ist eine obere Schranke von $\{f_n \mid n \in \mathbb{N} \}$. Nach Defintion vom Supremum, ist $g$ die kleinste obere Schranke.
+            \[ \fix(f) = \sup \{ f_n \mid n \in \mathbb{N} \} \sqsubseteq g \]
+    \end{enumerate}
+\end{proof}
+
+\par\medskip
+\emph{Zurück zum ursprünglichem Ziel:} Nun möchten wir schreiben: \[ \Sdssem{\texttt{while $b$ do $S$}} = \fix(F)
+\] wobei $F(g) = \cond(\Bsem{b}, g \circ \Sdssem{S}, \id)$ und $f \circ g: \State \to \State$.
+
+
+Nach dem Satz müssen wir jetzt nur noch überprüfen, dass $F$ stetig ist.
+Das funktioniert so: Wir beobachten, dass sich $F$ schreiben lässt als $F = F_2 \circ F_1$, wobei $F_1(g) = g \circ \Sdssem{S}$
+und $F_2(g) = \cond(\Bsem{b}, g, \id)$.
+
+$\Sdssem{\cdot}$ ist schwierig, also beweisen wir die Stetigkeit getrennt.
+
+\begin{proof}[Skizze]
+    Zu zeigen:
+    \begin{enumerate}
+        \item $F_2$ ist stetig, durch detaillierte Analyse.
+        \item $F_1$ ist stetig. Beobachtung: Für jedes feste $g_0: \State \to \State$:
+
+            Ist $F_1(f) = f \circ g_0$ stetig?
+    \end{enumerate}
+    $\Rightarrow F_2 \circ F_1$ ist stetig.
+\end{proof}
+
+
+\begin{theorem}
+    $\Sdssem{\cdot}$ definiert eine semantische Funktion auf der Menge aller \texttt{while}-Programme.
+\end{theorem}
+
+\begin{proof}[Skizze]
+    Durch strukturelle Induktion nach der Anweisung $S$.
+\end{proof}
+
+
+
+\subsection{Eigenschaften der denotatiollen Semantik}
+
+Seien $S_1, S_2$ Anweisungen. Wir sagen, sie sind semantisch äquivalent, wenn \[
+    \Sdssem{S_1} = \Sdssem{S_2}
+\] (Vergleich als mathematische Funktionen).
+
+\par\medskip
+\begin{example}
+    $S$ und $S; \texttt{skip}$ sind semantisch äquivalent.
+
+    \begin{align*}
+        \Sdssem{S_1} & = \Sdssem{S_1; \texttt{skip}} \\
+        & =\Sdssem{\texttt{skip}} \circ \Sdssem{S_1} \\
+        & = \id \circ \; \Sdssem{S_1} \\
+        & = \Sdssem{S_1} \quad \checkmark
+    \end{align*}
+
+    oder auch \[
+        S_1; (S_2; S_3) \text{ und } (S_1; S_2); S_3
+    \] durch Assoziositivität der Funktionskompositon. Und auch \[
+        \texttt{while $b$ do $S$} \text{ und } \texttt{if $b$ then ($S$; while $b$ do $S$) else skip}
+    \]
+\end{example}
+
+
+\begin{theorem}
+    Sei $S$ eine Anweisung in der \texttt{while}-Sprache, dann gilt: \[
+        \Sdssem{S} = \Ssossem{S}
+    \]
+\end{theorem}
+
+\begin{proof}[Skizze]
+    Durch Fallunterscheidung/Induktion.
+
+    Der Beweis verwendet die Antisymmetrie von $(\mathcal{F}, \sqsubseteq)$. Wir zeigen, dass \[
+        \Sdssem{\cdot} \sqsubseteq \Ssossem{\cdot} \text{ und } \Ssossem{\cdot} \sqsubseteq \Sdssem{\cdot}
+    \]
+
+    \begin{enumerate}
+        \item $\Ssossem{\cdot} \sqsubseteq \Sdssem{\cdot}$ \\
+            Sei $S$ eine Anweisung, dann gilt $\Ssossem{\cdot} \sqsubseteq \Sdssem{\cdot}$, \dh{} für alle $\sigma, \sigma'$ gilt:
+            Falls $\Ssossem{s}(\sigma) = \sigma'$, dann auch $\Sdssem{s}(\sigma) = \sigma'$.
+
+            Nach Definition gilt \[
+                \Ssossem{S}(\sigma) = \sigma' \Longleftrightarrow \langle S, \sigma \rangle \Rightarrow^* \sigma
+            \]
+            Dann zeigen wir: Wenn $\langle S, \sigma \rangle = \sigma'$, dann gilt $\Sdssem{S}(\sigma)=\sigma'$.
+            Und wenn gilt $\langle S, \sigma \rangle = \langle S', \sigma' \rangle$, dann gilt $\Sdssem{S}(\sigma) = \Sdssem{S'}(\sigma')$.
+
+        \item $\Sdssem{\cdot} \sqsubseteq \Ssossem{\cdot}$ \\
+
+            Sei $S$ eine Anweisung, dann gilt $\Sdssem{\cdot} \sqsubseteq \Ssossem{\cdot}$. Also gilt \[
+                    \Sdssem{S}(\sigma) = \sigma' \implies \Ssossem{S}(\sigma) \Rightarrow^* \sigma'
+            \]
+            Beweis: Strukturelle Induktion und Definition des Fixpunktoperators (Beweis ist lang).
+    \end{enumerate}
+\end{proof}

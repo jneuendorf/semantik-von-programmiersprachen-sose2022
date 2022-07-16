@@ -18,6 +18,8 @@
 \usepackage{float}
 \usepackage{bookmark}
 \usepackage[parfill]{parskip} % https://tex.stackexchange.com/questions/74170/have-new-line-between-paragraphs-no-indentation#74173
+\usepackage{mathabx} % https://tex.stackexchange.com/a/225862
+\usepackage{tikz-cd} % requires package 'german' not to be used
 
 
 
@@ -33,6 +35,8 @@
 
 \theoremstyle{remark}
 \newtheorem*{remark}{Bemerkung}
+\newtheorem*{observation}{Beobachtung}
+\newtheorem*{observations}{Beobachtungen}
 \newtheorem*{notation}{Notation}
 \newtheorem*{question}{Frage}
 
@@ -50,6 +54,7 @@
 \newcommand{\Asem}[1]{\mathcal{A}\lsem#1\rsem}
 \newcommand{\Nsem}[1]{\mathcal{N}\lsem#1\rsem}
 \newcommand{\Ssem}[1]{\mathcal{S}\lsem#1\rsem}
+\newcommand{\Ssossem}[1]{\mathcal{S}_{\text{sos}}\lsem#1\rsem}
 \newcommand{\Sdssem}[1]{\mathcal{S}_{\text{ds}}\lsem#1\rsem}
 % Zustandsüberführungsrelation natürliche Semantik
 \newcommand{\strans}[3]{\langle #1, #2 \rangle \to #3}
@@ -137,14 +142,14 @@
 \newpage
 \tableofcontents
 
-% \include{intro}
-% \include{semantik}
+\include{intro}
+\include{semantik}
 
-% \include{formalisierung}
+\include{formalisierung}
 
-% \include{operationelle-semantik}
-% \include{nat-semantik}
-% \include{struk-semantik}
+\include{operationelle-semantik}
+\include{nat-semantik}
+\include{struk-semantik}
 
 \include{denotationelle-semantik}
 
