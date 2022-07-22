@@ -709,3 +709,176 @@ Seien $S_1, S_2$ Anweisungen. Wir sagen, sie sind semantisch äquivalent, wenn \
             Beweis: Strukturelle Induktion und Definition des Fixpunktoperators (Beweis ist lang).
     \end{enumerate}
 \end{proof}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\hfill 22.07.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Programmanalyse mit denotationeller Semantik}
+
+\emph{Ziel:} Erhalte Informationen über das \emph{dynamische} Verhalten eines Programms durch eine \emph{statische} Analyse ohne das Programm auszuführen, \zb{} mit \texttt{lint} für die Sprache C.
+
+\begin{example}
+    Verschiedene Anwendungen für statische Programmanalyse:
+    \begin{itemize}
+        \item definition-use-Analyse: Sind Variablen initizialisiert bevor sie benutzt werden?
+        \item constant-propagation: Werte/Ausdrücke, im Vorhinein auswerten, die nicht vom Zustand des Programms abhängen.
+        \item Intervall-Analyse: Bestimme Intervalle für mögliche Variablenwerte.
+    \end{itemize}
+
+\end{example}
+
+\emph{Hier:} Sonderfall der Intervall-Analyse: \emph{Vorzeichenanalyse}, \dh{} bestimme statisch mögliche Vorzeichen für die Variablen im Programm.
+
+
+
+\subsubsection{Vorzeichenanalyse}
+
+\emph{Idee:} Arbeite mit Funktionen, die Eigenschaften von Zuständen abbilden und nicht die Zustände selbst (\emph{property states}). Dazu benötigen wir die Menge abstrakter Eigenschaften von Programmvariablen $\mathcal{P}$.
+
+\par\medskip
+\begin{definition} \label{def:vorzeichenanalyse}
+    \[
+    \mathcal{P} = \{ \text{POS}, \text{NEG}, \text{NULL}, \text{BEL} \}
+    \]
+    wobei BEL ``beliebig'' bedeutet.
+
+    Wir definieren außerdem eine partielle Ordnung $\sqsubseteq_{\mathcal{P}}$ auf $\mathcal{P}$ mit der Bedeutung ``$p_1 \sqsubseteq_{\mathcal{P}} p_2$'': $p_1$ ist mindestens so spezifisch wie $p_2$, \zb{} POS $\sqsubseteq_{\mathcal{P}}$ BEL.
+
+    Wir nehmen an, dass $\sqsubseteq_{\mathcal{P}}$ so definiert ist, dass alle Teilmengen $Y \subseteq \mathcal{P}$ ein Supremum besitzen (\emph{vollständiger Verband}). Dann gibt das Supremum die allgemeinste Eigenschaft einer Menge von Eigenschaften an.
+\end{definition}
+
+In der Programmanalyse arbeiten wir mit \emph{abstrakten Zustandseigenschaften} (property states), die jeder Variable eine Eigenschaft zuordnen statt eines konkreten Wertes: \[
+    \PState: \Var \to \mathcal{P}
+\]
+
+\begin{lemma}
+    Wenn $\mathcal{P}$ ein vollständiger Verband ist (siehe \defref{def:vorzeichenanalyse}), dann gilt das auch für $\PState$.
+
+    Genaue Formulierung nicht hier \dots
+\end{lemma}
+
+\par\bigskip
+\emph{Idee:} Bisher hatten wir $\mathcal{S} : \Stm \to (\State \to \State)$. Nun bentrachten wir die Analysefunktion $\mathcal{DS}: \Stm \to (\PState \to \PState)$.
+
+\begin{remark}[Halteproblem]
+    Wir können nicht erwarten, dass die Programmanalyse immer die genauest mögliche Antwort liefert.
+
+\begin{lstlisting}[language=Pascal]
+y := 1;
+if bla then
+    x := 1;
+else
+    S;
+    x := -1;
+y := x
+\end{lstlisting}
+
+    Hier hängt die Vorzeichenanalyse für $y$ davon ab, ob $S$ terminiert oder nicht, \dh{} unsere Analyse ist notwendigerweise approximativ und wird sagen, dass $y$ negativ sein könnte.
+\end{remark}
+
+
+
+\subsubsection{Vorzeichenanalyse von \texttt{while}}
+
+\begin{enumerate}
+    \item Wir definieren die gewünschte Eigenschaft, \dh{} eine Variable ist entweder POS, NEG oder NULL.
+
+        Füge zusätzliche Eigenschaften hinzu, um Analuse detaillierter zu machen und einen vollständigen Verband zu erhalten: NONPOS, NONNEG, NONNULL, BEL und NONE (letzteres aus technischen Gründen: um für die leere Menge ein Supremum zu haben).
+
+        Definiere Ordnung:
+        \begin{figure}[H]
+            \centering
+            \begin{tikzcd}[row sep=1.5cm, column sep=1.7cm]
+                                 & \text{BEL} \\
+                \text{NONPOS}\urar       & \text{NONNULL}\uar \arrow[from=dr]                        & \text{NONNEG}\ular \\
+                \text{NEG}\uar\urar & \text{NULL}\ular[crossing over] \urar[crossing over] & \text{POS}\uar\\
+                                 & \text{NONE} \ular\uar\urar
+            \end{tikzcd}
+            \caption{Hasse-Diagramm für $(\mathcal{P}, \sqsubseteq_{\mathcal{P}})$ (nach oben allgemeiner, nach unten spezifischer)}
+        \end{figure}
+
+    \item Definiere property states: Definiere Verhältnis zwischen Zuständen und Zustandseigenschaften: \begin{align*}
+            \abs_{\mathbb{Z}} & : \mathbb{Z} \to \mathcal{P} \\
+            \abs_{\mathbb{Z}}(z) & = \begin{cases}
+                \text{POS} & \text{falls } z > 0 \\
+                \text{NULL} & \text{falls } z = 0 \\
+                \text{NEG} & \text{falls } z < 0
+            \end{cases}
+        \end{align*}
+
+        Dann ist $\PState: \Var \to \mathcal{P}$. Wir definieren \begin{align*}
+            \abs & : \State \to \PState \\
+            \big(\abs(\sigma)\big)(x) & = \abs_{\mathbb{Z}}(\sigma(x))
+        \end{align*}
+
+    \item Da die Wahrheitswerte im Programm vom Zustand abhängen, benötigen wir abstrakte Eigenschaften für die Wahrheitswerte, die aus den abstrakten Eigenschaften der Variablen folgen. \[
+            \mathcal{T} = \{ \true, \false, \text{BEL}, \text{NONE} \}
+        \]
+
+        Wieder brauchen wir eine Ordnung:
+        \begin{figure}[H]
+            \centering
+            \begin{tikzcd}[row sep=1cm, column sep=0.8cm]
+                            & \text{BEL} \\
+                \true\urar  &           & \false\ular \\
+                            & \text{NONE} \ular\urar
+            \end{tikzcd}
+            \caption{Hasse-Diagramm für $\mathcal{T}$}
+        \end{figure}
+
+    \item Definiere \emph{Analysefunktion}: Analog zur semantischen Funktion, operiert aber auf Zustandseigenschaften anstelle von Zuständen: Für alle syntaktischen Kategorien definiere:
+
+        \begin{enumerate}
+            \item Arithmetische Ausdrücke \begin{align*}
+                    \mathcal{DA} : \AExp \to (\PState & \to \mathcal{P}) \\
+                    \mathcal{DA}\lsem z \rsem(\tau) & = \abs_{\mathbb{Z}}(\mathcal{N}(z)) \\
+                    \mathcal{DA}\lsem x \rsem(\tau) & = \tau(z) \\
+                    \mathcal{DA}\lsem a_1 \square a_2 \rsem(\tau) & = \mathcal{DA}\lsem a_1 \rsem(\tau) \square_v \mathcal{DA}\lsem a_2 \rsem(\tau) \tag{*} \\
+                \end{align*}
+
+                Hierbei (in (*)) simulieren $+_v$, $-_v$ und $\cdot_v$ das Verhalten des Vorzeichens \texttt{+}, \texttt{-} und \texttt{*}:
+                \begin{align*}
+                    \square_v : \mathcal{P} \times \mathcal{P} & \to \mathcal{P} \\
+                    \text{\zb{}} \; \text{POS} +_v \text{POS} & = \text{POS} \\
+                    \text{POS} +_v \text{NEG} & = \text{BEL} \\
+                    \vdots
+                \end{align*}
+
+            \item Boolesche Ausdrücke \begin{align*}
+                    \mathcal{DB} : \BExp \to (\PState & \to \mathcal{P}) \\
+                    \mathcal{DB}\lsem\texttt{true}\rsem(\tau) & = \true \\
+                    \mathcal{DB}\lsem\texttt{false}\rsem(\tau) & = \false \\
+                    \mathcal{DB}\lsem a_1 \square a_2 \rsem(\tau) & = \mathcal{DA}\lsem a_1 \rsem(\tau) \square_v \mathcal{DA}\lsem a_2 \rsem(\tau) \\
+                    \mathcal{DB}\lsem \neg b \rsem(\tau) & = \neg_{\tau} \mathcal{DB}\lsem b \rsem(\tau) \\
+                    \mathcal{DB}\lsem b_1 \square b_2 \rsem(\tau) & = \mathcal{DB}\lsem b_1 \rsem(\tau) \square_{\tau} \mathcal{DB}\lsem b_2 \rsem(\tau)
+                \end{align*}
+
+            \item Anweisungen \begin{align*}
+                    \mathcal{DS} : \Stm \to (\PState & \to \mathcal{P}) \\
+                    \mathcal{DS}\lsem x \texttt{ := } a \rsem(\tau) & = \sigma[x \mapsto \mathcal{DA}\lsem a \rsem(\sigma)] \\
+                    \mathcal{DS}\lsem \texttt{skip} \rsem(\tau) & = \sigma \\
+                    \mathcal{DS}\lsem S_1 \texttt{; } S_2 \rsem(\tau) & = \mathcal{DS}\lsem S_2 \rsem(\tau) \circ \mathcal{DS}\lsem S_1 \rsem(\tau) \\
+                    \mathcal{DS}\lsem \texttt{if $b$ then $S_1$ else $S_2$} \rsem(\tau) & = \cond_{\infty}(\mathcal{DB}\lsem b \rsem, \mathcal{DS}\lsem S_1 \rsem, \mathcal{DS}\lsem S_2 \rsem) \\
+                    \mathcal{DS}\lsem \texttt{while $b$ do $S$} \rsem(\tau) & = \fix(H) \\
+                    H: h & \mapsto \cond_{\infty}(\mathcal{DB}(b), h \circ \mathcal{DS}(S), \id)
+                \end{align*}
+
+                mit \begin{align*}
+                    \cond_{\infty}(f, h_1, h_2)(\sigma) & = \begin{cases}
+                        \text{INIT} & \text{falls } f(\tau) = \text{NONE} \\
+                        h_1(\tau) & \text{falls } f(\tau) = \true \\
+                        h_2(\tau) & \text{falls } f(\tau) = \false \\
+                        \sup \{ h_1(\tau), h_2(\tau) \} & \text{falls } f(\tau) = \text{BEL} \\
+                    \end{cases}
+                \end{align*}
+
+                mit \begin{align*}
+                    \text{INIT} & : \Var \to \mathcal{P} \\
+                    \forall x \in \Var & : \text{INIT}(x) = \text{NONE}
+                \end{align*}
+        \end{enumerate}
+\end{enumerate}
