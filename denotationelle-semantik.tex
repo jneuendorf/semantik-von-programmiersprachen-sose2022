@@ -724,7 +724,7 @@ Seien $S_1, S_2$ Anweisungen. Wir sagen, sie sind semantisch äquivalent, wenn \
 \begin{example}
     Verschiedene Anwendungen für statische Programmanalyse:
     \begin{itemize}
-        \item definition-use-Analyse: Sind Variablen initizialisiert bevor sie benutzt werden?
+        \item definition-use-Analyse: Sind Variablen initialisiert bevor sie benutzt werden?
         \item constant-propagation: Werte/Ausdrücke, im Vorhinein auswerten, die nicht vom Zustand des Programms abhängen.
         \item Intervall-Analyse: Bestimme Intervalle für mögliche Variablenwerte.
     \end{itemize}
@@ -787,7 +787,7 @@ y := x
 \begin{enumerate}
     \item Wir definieren die gewünschte Eigenschaft, \dh{} eine Variable ist entweder POS, NEG oder NULL.
 
-        Füge zusätzliche Eigenschaften hinzu, um Analuse detaillierter zu machen und einen vollständigen Verband zu erhalten: NONPOS, NONNEG, NONNULL, BEL und NONE (letzteres aus technischen Gründen: um für die leere Menge ein Supremum zu haben).
+        Füge zusätzliche Eigenschaften hinzu, um die Analyse detaillierter zu machen und einen vollständigen Verband zu erhalten: NONPOS, NONNEG, NONNULL, BEL und NONE (letzteres aus technischen Gründen, um für die leere Menge ein Supremum zu haben).
 
         Definiere Ordnung:
         \begin{figure}[H]
@@ -798,7 +798,7 @@ y := x
                 \text{NEG}\uar\urar & \text{NULL}\ular[crossing over] \urar[crossing over] & \text{POS}\uar\\
                                  & \text{NONE} \ular\uar\urar
             \end{tikzcd}
-            \caption{Hasse-Diagramm für $(\mathcal{P}, \sqsubseteq_{\mathcal{P}})$ (nach oben allgemeiner, nach unten spezifischer)}
+            \caption{Hasse-Diagramm für $(\mathcal{P}, \sqsubseteq_{\mathcal{P}})$ (oben allgemein, unten spezifisch)}
         \end{figure}
 
     \item Definiere property states: Definiere Verhältnis zwischen Zuständen und Zustandseigenschaften: \begin{align*}
@@ -835,9 +835,9 @@ y := x
         \begin{enumerate}
             \item Arithmetische Ausdrücke \begin{align*}
                     \mathcal{DA} : \AExp \to (\PState & \to \mathcal{P}) \\
-                    \mathcal{DA}\lsem z \rsem(\tau) & = \abs_{\mathbb{Z}}(\mathcal{N}(z)) \\
-                    \mathcal{DA}\lsem x \rsem(\tau) & = \tau(z) \\
-                    \mathcal{DA}\lsem a_1 \square a_2 \rsem(\tau) & = \mathcal{DA}\lsem a_1 \rsem(\tau) \square_v \mathcal{DA}\lsem a_2 \rsem(\tau) \tag{*} \\
+                    \mathcal{DA}\lsem z \rsem(\sigma) & = \abs_{\mathbb{Z}}(\mathcal{N}(z)) \\
+                    \mathcal{DA}\lsem x \rsem(\sigma) & = \sigma(z) \\
+                    \mathcal{DA}\lsem a_1 \square a_2 \rsem(\sigma) & = \mathcal{DA}\lsem a_1 \rsem(\sigma) \square_v \mathcal{DA}\lsem a_2 \rsem(\sigma) \tag{*} \\
                 \end{align*}
 
                 Hierbei (in (*)) simulieren $+_v$, $-_v$ und $\cdot_v$ das Verhalten des Vorzeichens \texttt{+}, \texttt{-} und \texttt{*}:
@@ -849,30 +849,30 @@ y := x
                 \end{align*}
 
             \item Boolesche Ausdrücke \begin{align*}
-                    \mathcal{DB} : \BExp \to (\PState & \to \mathcal{P}) \\
-                    \mathcal{DB}\lsem\texttt{true}\rsem(\tau) & = \true \\
-                    \mathcal{DB}\lsem\texttt{false}\rsem(\tau) & = \false \\
-                    \mathcal{DB}\lsem a_1 \square a_2 \rsem(\tau) & = \mathcal{DA}\lsem a_1 \rsem(\tau) \square_v \mathcal{DA}\lsem a_2 \rsem(\tau) \\
-                    \mathcal{DB}\lsem \neg b \rsem(\tau) & = \neg_{\tau} \mathcal{DB}\lsem b \rsem(\tau) \\
-                    \mathcal{DB}\lsem b_1 \square b_2 \rsem(\tau) & = \mathcal{DB}\lsem b_1 \rsem(\tau) \square_{\tau} \mathcal{DB}\lsem b_2 \rsem(\tau)
+                    \mathcal{DB} : \BExp \to (\PState & \to \mathcal{T}) \\
+                    \mathcal{DB}\lsem\texttt{true}\rsem(\sigma) & = \true \\
+                    \mathcal{DB}\lsem\texttt{false}\rsem(\sigma) & = \false \\
+                    \mathcal{DB}\lsem a_1 \square a_2 \rsem(\sigma) & = \mathcal{DA}\lsem a_1 \rsem(\sigma) \square_v \mathcal{DA}\lsem a_2 \rsem(\sigma) \\
+                    \mathcal{DB}\lsem \neg b \rsem(\sigma) & = \neg_{\tau} \mathcal{DB}\lsem b \rsem(\sigma) \\
+                    \mathcal{DB}\lsem b_1 \square b_2 \rsem(\sigma) & = \mathcal{DB}\lsem b_1 \rsem(\sigma) \square_{\tau} \mathcal{DB}\lsem b_2 \rsem(\sigma)
                 \end{align*}
 
             \item Anweisungen \begin{align*}
                     \mathcal{DS} : \Stm \to (\PState & \to \mathcal{P}) \\
-                    \mathcal{DS}\lsem x \texttt{ := } a \rsem(\tau) & = \sigma[x \mapsto \mathcal{DA}\lsem a \rsem(\sigma)] \\
-                    \mathcal{DS}\lsem \texttt{skip} \rsem(\tau) & = \sigma \\
-                    \mathcal{DS}\lsem S_1 \texttt{; } S_2 \rsem(\tau) & = \mathcal{DS}\lsem S_2 \rsem(\tau) \circ \mathcal{DS}\lsem S_1 \rsem(\tau) \\
-                    \mathcal{DS}\lsem \texttt{if $b$ then $S_1$ else $S_2$} \rsem(\tau) & = \cond_{\infty}(\mathcal{DB}\lsem b \rsem, \mathcal{DS}\lsem S_1 \rsem, \mathcal{DS}\lsem S_2 \rsem) \\
-                    \mathcal{DS}\lsem \texttt{while $b$ do $S$} \rsem(\tau) & = \fix(H) \\
+                    \mathcal{DS}\lsem x \texttt{ := } a \rsem(\sigma) & = \sigma[x \mapsto \mathcal{DA}\lsem a \rsem(\sigma)] \\
+                    \mathcal{DS}\lsem \texttt{skip} \rsem(\sigma) & = \sigma \\
+                    \mathcal{DS}\lsem S_1 \texttt{; } S_2 \rsem(\sigma) & = \mathcal{DS}\lsem S_2 \rsem(\sigma) \circ \mathcal{DS}\lsem S_1 \rsem(\sigma) \\
+                    \mathcal{DS}\lsem \texttt{if $b$ then $S_1$ else $S_2$} \rsem(\sigma) & = \cond_{\infty}(\mathcal{DB}\lsem b \rsem, \mathcal{DS}\lsem S_1 \rsem, \mathcal{DS}\lsem S_2 \rsem) \\
+                    \mathcal{DS}\lsem \texttt{while $b$ do $S$} \rsem(\sigma) & = \fix(H) \\
                     H: h & \mapsto \cond_{\infty}(\mathcal{DB}(b), h \circ \mathcal{DS}(S), \id)
                 \end{align*}
 
                 mit \begin{align*}
                     \cond_{\infty}(f, h_1, h_2)(\sigma) & = \begin{cases}
-                        \text{INIT} & \text{falls } f(\tau) = \text{NONE} \\
-                        h_1(\tau) & \text{falls } f(\tau) = \true \\
-                        h_2(\tau) & \text{falls } f(\tau) = \false \\
-                        \sup \{ h_1(\tau), h_2(\tau) \} & \text{falls } f(\tau) = \text{BEL} \\
+                        \text{INIT} & \text{falls } f(\sigma) = \text{NONE} \\
+                        h_1(\sigma) & \text{falls } f(\sigma) = \true \\
+                        h_2(\sigma) & \text{falls } f(\sigma) = \false \\
+                        \sup \{ h_1(\sigma), h_2(\sigma) \} & \text{falls } f(\sigma) = \text{BEL} \\
                     \end{cases}
                 \end{align*}
 
