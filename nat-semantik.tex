@@ -92,7 +92,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
     \]
     gdw.\ ein \emph{endlicher Ableitungsbaum} dafür existiert.
 
-    Der Ableitungsbaum entsteht durch wiederholte Anwendung der Schlussregeln. Die Wurzel ist ist $\langle S, \sigma \rangle \to \sigma'$, die Blätter sind Axiome, die Knoten entsprechen  korrekte Anwendung der Schlussregeln.
+    Der Ableitungsbaum entsteht durch wiederholte Anwendung der Schlussregeln. Die Wurzel ist $\langle S, \sigma \rangle \to \sigma'$, die Blätter sind Axiome, die Knoten entsprechen der korrekten Anwendung der Schlussregeln.
 \end{definition}
 
 \begin{example}
@@ -184,7 +184,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
     \begin{enumerate}
         \item ``$\Rightarrow$''
 
-            Nimm an, es gilt $\strans{S_1}{\sigma}{\sigma'}$. Also exisitert nach Definition ein endlicher Ableitungsbaum für $\strans{S_1}{\sigma}{\sigma'}$.
+            Angenommen, es gilt $\strans{S_1}{\sigma}{\sigma'}$. Also existiert nach Definition ein endlicher Ableitungsbaum für $\strans{S_1}{\sigma}{\sigma'}$.
             \begin{enumerate}
                 \item $\Bsem{b}(\sigma) = \true$
 
@@ -253,7 +253,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
 \end{proof}
 
 \begin{lemma}
-    Die natürliche Semantik der \texttt{while}-Sprache ist \emph{determiniert}, \dh für alle Anweisungen $S$ und Zustände $\sigma, \sigma_1, \sigma_2$ gilt:
+    Die natürliche Semantik der \texttt{while}-Sprache ist \emph{determiniert}, \dh{} für alle Anweisungen $S$ und Zustände $\sigma, \sigma_1, \sigma_2$ gilt:
 
     Wenn $\strans{S}{\sigma}{\sigma_1}$ und $\strans{S}{\sigma}{\sigma_2}$, dann $\sigma_1 = \sigma_2$.
 \end{lemma}
