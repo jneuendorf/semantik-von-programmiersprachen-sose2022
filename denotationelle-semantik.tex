@@ -20,7 +20,7 @@
 \begin{example}[Gegenbeispiel]
     $\infruleNs[\true]{while}$: \[
         \frac{
-            \strans{S}{\sigma}{\sigma''}, \strans{\texttt{while $b$ do $S$}}{\sigma''}{\sigma}
+            \strans{S}{\sigma}{\sigma''}, \strans{\texttt{while $b$ do $S$}}{\sigma''}{\sigma'}
         }{
             \strans{\underbrace{\texttt{while $b$ do $S$}}_{\text{gleiches Konstrukt}}}{\sigma}{\sigma'}
         }
@@ -100,7 +100,7 @@ Durch diese Herangehensweise, können wir die Funktion auch im Umfeld der Lösun
 
 \begin{definition}
     Wir definieren einen \emph{Fixpunktoperator} \[
-        \fix : ((\State \to \State) \to (\State \to \State) \to (\State \to \State))
+        \fix : ((\State \to \State) \to (\State \to \State)) \to (\State \to \State)
     \]
     der einem Funktional $F$ einen Fixpunkt $f^*$ zuordnet.
 
