@@ -100,8 +100,8 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 
     \begin{align*}
         & \langle \texttt{(z := x; x := y); y = z;}, \sigma \rangle \\
-        \overset{\infruleSos[1]{seq}}{\Rightarrow} \quad & \langle \texttt{x := y; y := z}, \sigma[z \mapsto 5] \rangle \tag{i} \\
-        \overset{\infruleSos[2]{seq}}{\Rightarrow} \quad & \langle \texttt{y := z}, \sigma[z \mapsto 5][y \mapsto 7] \rangle \tag{ii} \\
+        \overset{\infruleSos[1]{seq}\infruleSos[2]{seq}\infruleSos{zuw}}{\Rightarrow} \quad & \langle \texttt{x := y; y := z}, \sigma[z \mapsto 5] \rangle \tag{i} \\
+        \overset{\infruleSos[2]{seq}\infruleSos{zuw}}{\Rightarrow} \quad & \langle \texttt{y := z}, \sigma[z \mapsto 5][y \mapsto 7] \rangle \tag{ii} \\
         \overset{\infruleSos{zuw}}{\Rightarrow} \quad & \sigma[z \mapsto 5][x \mapsto 7][y \mapsto 5]
     \end{align*}
 
