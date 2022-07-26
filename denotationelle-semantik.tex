@@ -693,10 +693,10 @@ Seien $S_1, S_2$ Anweisungen. Wir sagen, sie sind semantisch äquivalent, wenn \
     \begin{enumerate}
         \item $\Ssossem{\cdot} \sqsubseteq \Sdssem{\cdot}$ \\
             Sei $S$ eine Anweisung, dann gilt $\Ssossem{\cdot} \sqsubseteq \Sdssem{\cdot}$, \dh{} für alle $\sigma, \sigma'$ gilt:
-            Falls $\Ssossem{s}(\sigma) = \sigma'$, dann auch $\Sdssem{s}(\sigma) = \sigma'$.
+            Falls $\Ssossem{S}(\sigma) = \sigma'$, dann auch $\Sdssem{S}(\sigma) = \sigma'$.
 
             Nach Definition gilt \[
-                \Ssossem{S}(\sigma) = \sigma' \Longleftrightarrow \langle S, \sigma \rangle \Rightarrow^* \sigma
+                \Ssossem{S}(\sigma) = \sigma' \Longleftrightarrow \langle S, \sigma \rangle \Rightarrow^* \sigma'
             \]
             Dann zeigen wir: Wenn $\langle S, \sigma \rangle = \sigma'$, dann gilt $\Sdssem{S}(\sigma)=\sigma'$.
             Und wenn gilt $\langle S, \sigma \rangle = \langle S', \sigma' \rangle$, dann gilt $\Sdssem{S}(\sigma) = \Sdssem{S'}(\sigma')$.
