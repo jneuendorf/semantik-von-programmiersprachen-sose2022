@@ -20,7 +20,7 @@
 \begin{example}[Gegenbeispiel]
     $\infruleNs[\true]{while}$: \[
         \frac{
-            \strans{S}{\sigma}{\sigma''}, \strans{\texttt{while $b$ do $S$}}{\sigma''}{\sigma}
+            \strans{S}{\sigma}{\sigma''}, \strans{\texttt{while $b$ do $S$}}{\sigma''}{\sigma'}
         }{
             \strans{\underbrace{\texttt{while $b$ do $S$}}_{\text{gleiches Konstrukt}}}{\sigma}{\sigma'}
         }
@@ -69,7 +69,7 @@
 Also eigentlich wollen wir schreiben: \[
     \Sdssem{\texttt{while $b$ do $S$}} = \cond(\Bsem{b}, \Sdssem{\underbrace{\texttt{while $b$ do $S$}}_{\text{gleiches Konstrukt}}} \;\circ\; \Sdssem{S}, \id)
 \]
-Das verletzt aber die Zusammengsetztheit.
+Das verletzt aber die Zusammengesetztheit.
 
 \par\medskip
 Wenn wir diese Gleichung betrachten, erkennen wir
@@ -100,7 +100,7 @@ Durch diese Herangehensweise, können wir die Funktion auch im Umfeld der Lösun
 
 \begin{definition}
     Wir definieren einen \emph{Fixpunktoperator} \[
-        \fix : ((\State \to \State) \to (\State \to \State) \to (\State \to \State))
+        \fix : ((\State \to \State) \to (\State \to \State)) \to (\State \to \State)
     \]
     der einem Funktional $F$ einen Fixpunkt $f^*$ zuordnet.
 
@@ -147,7 +147,7 @@ Wir müssen uns also anschauen, was der Fixpunktoperator $\fix$ mit unserem spez
 \begin{remark}[Intuition]
     Wie löst man eigentlich eine Fixpunkt-Gleichung $f = F(f)$?
 
-    Fixpunkt-Iteration: Start mit \begin{align*}
+    Fixpunktiteration: Start mit \begin{align*}
         f_0 & \\
         f_1 & = F(f_0) \\
         f_2 & = F(f_1) \\
@@ -195,7 +195,7 @@ Wir haben $\Bsem{b}$ (Punkte sind Zustände mit Wahrheitswerten) und $\Ssem{S}$ 
 
 $F$ erzeugt also eine neue Zustandsüberführungsfunktion, die für Zustände mit $\false$ auf den Zustand selbst abbildet und für Zustände mit $\true$ durch $f \circ \mathcal{S}$ abbildet, \dh{} erst dem gelben, dann dem blauen Pfeil folgt.
 
-Die Aufgabe des Findes eines Fixpunktes beduetet also, ein $f$ (blau) zu finden, sodass nach Anwendung von $F(f)$ (grün) die gleichen Pfeile entstehen wie in $f$.
+Die Aufgabe des Findens eines Fixpunktes bedeutet also, ein $f$ (blau) zu finden, sodass nach Anwendung von $F(f)$ (grün) die gleichen Pfeile entstehen wie in $f$.
 \begin{figure}[H]
     \centering
     \includegraphics[page=1,width=.4\textwidth]{img/f-combined}
@@ -230,11 +230,11 @@ while true do
                     \includegraphics[page=4,width=.6\textwidth]{img/f-combined}
                 \end{figure}
                 Hier müssen alle Pfeile zum selben Zustand zeigen, egal welcher genau das ist.
-            \item  $w_1 \to w_2 \to w_2 \to w_1$
+            \item  $w_0 \to w_1 \to w_2 \to w_3 \to w_0$
 \begin{lstlisting}[language=Pascal]
 x := 0;
 while x != -1 do
-    x := (x + 1) mod 10
+    x := (x + 1) mod 4
 \end{lstlisting}
                 \begin{figure}[H]
                     \centering
@@ -272,7 +272,7 @@ Das Ergebnis unserer informellen Überlegung ist:
 \subsubsection{Fixpunktiteration}
 
 \begin{remark}[Idee]
-    Finde die richtigen Fixpunkt durch Fixpunktiteration. Starte mit der Zustandsüberführungsfunktion \[
+    Finde den richtigen Fixpunkt durch Fixpunktiteration. Starte mit der Zustandsüberführungsfunktion \[
     f_{\bot} : f_{\bot}(\sigma) = \bot \quad \forall \sigma \in \State
     \]
     welche $F$ wiederholt auf $f_{\bot}$ an, schaue was passiert.
@@ -327,7 +327,7 @@ Das Ergebnis unserer informellen Überlegung ist:
         g_4 \sqsubseteq g_3 \sqsubseteq g_1 \\
         g_4 \sqsubseteq g_1 \tag{*}
     \end{align*}
-    $(*)$ folgt aus Transivität da die Relation eine Ordnungsrelation ist, aber das haben wir noch nicht bewiesen.
+    $(*)$ folgt aus Transitivität da die Relation eine Ordnungsrelation ist, aber das haben wir noch nicht bewiesen.
 
     Jedoch sind $g_2$ und $g_3$ nicht vergleichbar.
 \end{example}
@@ -547,7 +547,7 @@ Wenn also gelten würde \[
         \item Seien $(\mathcal{D}, \sqsubseteq), (\mathcal{D}',\sqsubseteq'), (\mathcal{D}'',\sqsubseteq'')$ ccpos und $f_1: \mathcal{D} \to \mathcal{D}'$ und $f_2: \mathcal{D}' \to \mathcal{D}''$ monoton Funktionen.
 
             Dann ist auch $f_1 \circ f_2$ monoton.
-        \item Seien $(\mathcal{D}, \sqsubseteq), (\mathcal{D}',\sqsubseteq')$ ccpos und $f: \mathcal{D} \to \mathcal{D}'$ eine monoton Funktion. Sei $\mathcal{K}$ eine Kette. Dann ist $f(\mathcal{K})$ eine Kette in $\mathcal{D}'$. Wenn $\mathcal{D}$ endlich ist, dann ist das Supremum von $\mathcal{D}'$: \[
+        \item Seien $(\mathcal{D}, \sqsubseteq), (\mathcal{D}',\sqsubseteq')$ ccpos und $f: \mathcal{D} \to \mathcal{D}'$ eine monotone Funktion. Sei $\mathcal{K}$ eine Kette. Dann ist $f(\mathcal{K})$ eine Kette in $\mathcal{D}'$. Wenn $\mathcal{D}$ endlich ist, dann ist das Supremum von $\mathcal{D}'$: \[
                 \sup' \mathcal{D}' = f(\sup \mathcal{D})
             \]
 
@@ -614,7 +614,7 @@ Wenn also gelten würde \[
 
             Also auch $F(g) \sqsupseteq F(d_{\bot})$ bzw. $g \sqsupseteq f_1$. Also auch $F(g) \sqsupseteq F(f_1)$ bzw. $g \sqsupseteq f_2$ usw.
 
-            Also gilt nach Induktion $g \sqsupseteq f_n, n \in \mathbb{N}$. $g$ ist eine obere Schranke von $\{f_n \mid n \in \mathbb{N} \}$. Nach Defintion vom Supremum, ist $g$ die kleinste obere Schranke.
+            Also gilt nach Induktion $g \sqsupseteq f_n, n \in \mathbb{N}$. $g$ ist eine obere Schranke von $\{f_n \mid n \in \mathbb{N} \}$. Nach Definition vom Supremum, ist $g$ die kleinste obere Schranke.
             \[ \fix(f) = \sup \{ f_n \mid n \in \mathbb{N} \} \sqsubseteq g \]
     \end{enumerate}
 \end{proof}
@@ -652,7 +652,7 @@ $\Sdssem{\cdot}$ ist schwierig, also beweisen wir die Stetigkeit getrennt.
 
 
 
-\subsection{Eigenschaften der denotatiollen Semantik}
+\subsection{Eigenschaften der denotationellen Semantik}
 
 Seien $S_1, S_2$ Anweisungen. Wir sagen, sie sind semantisch äquivalent, wenn \[
     \Sdssem{S_1} = \Sdssem{S_2}
@@ -671,7 +671,7 @@ Seien $S_1, S_2$ Anweisungen. Wir sagen, sie sind semantisch äquivalent, wenn \
 
     oder auch \[
         S_1; (S_2; S_3) \text{ und } (S_1; S_2); S_3
-    \] durch Assoziositivität der Funktionskompositon. Und auch \[
+    \] durch Assoziativität der Funktionskomposition. Und auch \[
         \texttt{while $b$ do $S$} \text{ und } \texttt{if $b$ then ($S$; while $b$ do $S$) else skip}
     \]
 \end{example}
@@ -693,10 +693,10 @@ Seien $S_1, S_2$ Anweisungen. Wir sagen, sie sind semantisch äquivalent, wenn \
     \begin{enumerate}
         \item $\Ssossem{\cdot} \sqsubseteq \Sdssem{\cdot}$ \\
             Sei $S$ eine Anweisung, dann gilt $\Ssossem{\cdot} \sqsubseteq \Sdssem{\cdot}$, \dh{} für alle $\sigma, \sigma'$ gilt:
-            Falls $\Ssossem{s}(\sigma) = \sigma'$, dann auch $\Sdssem{s}(\sigma) = \sigma'$.
+            Falls $\Ssossem{S}(\sigma) = \sigma'$, dann auch $\Sdssem{S}(\sigma) = \sigma'$.
 
             Nach Definition gilt \[
-                \Ssossem{S}(\sigma) = \sigma' \Longleftrightarrow \langle S, \sigma \rangle \Rightarrow^* \sigma
+                \Ssossem{S}(\sigma) = \sigma' \Longleftrightarrow \langle S, \sigma \rangle \Rightarrow^* \sigma'
             \]
             Dann zeigen wir: Wenn $\langle S, \sigma \rangle = \sigma'$, dann gilt $\Sdssem{S}(\sigma)=\sigma'$.
             Und wenn gilt $\langle S, \sigma \rangle = \langle S', \sigma' \rangle$, dann gilt $\Sdssem{S}(\sigma) = \Sdssem{S'}(\sigma')$.
@@ -762,7 +762,7 @@ In der Programmanalyse arbeiten wir mit \emph{abstrakten Zustandseigenschaften} 
 \end{lemma}
 
 \par\bigskip
-\emph{Idee:} Bisher hatten wir $\mathcal{S} : \Stm \to (\State \to \State)$. Nun bentrachten wir die Analysefunktion $\mathcal{DS}: \Stm \to (\PState \to \PState)$.
+\emph{Idee:} Bisher hatten wir $\mathcal{S} : \Stm \to (\State \to \State)$. Nun betrachten wir die Analysefunktion $\mathcal{DS}: \Stm \to (\PState \to \PState)$.
 
 \begin{remark}[Halteproblem]
     Wir können nicht erwarten, dass die Programmanalyse immer die genauest mögliche Antwort liefert.

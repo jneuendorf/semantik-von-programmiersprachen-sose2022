@@ -92,13 +92,13 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
     \]
     gdw.\ ein \emph{endlicher Ableitungsbaum} dafür existiert.
 
-    Der Ableitungsbaum entsteht durch wiederholte Anwendung der Schlussregeln. Die Wurzel ist ist $\langle S, \sigma \rangle \to \sigma'$, die Blätter sind Axiome, die Knoten entsprechen  korrekte Anwendung der Schlussregeln.
+    Der Ableitungsbaum entsteht durch wiederholte Anwendung der Schlussregeln. Die Wurzel ist $\langle S, \sigma \rangle \to \sigma'$, die Blätter sind Axiome, die Knoten entsprechen der korrekten Anwendung der Schlussregeln.
 \end{definition}
 
 \begin{example}
     Sei $\sigma \in \State$ mit $\sigma(x) = 1$ und $\sigma(y) = 5$.
 
-    Behauptung: $\langle (z := z; x := y); y := z, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]$
+    Behauptung: $\langle (z := x; x := y); y := z, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]$
 
     Nun müssen wir den endlichen Ableitungsbaum erzeugen.
 
@@ -106,12 +106,12 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
     \begin{enumerate}
         \item $\infruleNs{seq}$
             \[
-            \frac{\langle z := x; x ;= y, \sigma \rangle \to \sigma', \langle y := z, \sigma' \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}{\langle \underbrace{(z := z; x := y)}_{s_1}; \underbrace{y := z}_{S_2}, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
+            \frac{\langle z := x; x := y, \sigma \rangle \to \sigma', \langle y := z, \sigma' \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}{\langle \underbrace{(z := x; x := y)}_{s_1}; \underbrace{y := z}_{S_2}, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
             \]
 
             Welches $\sigma'$ brauchen wir? $\leadsto \sigma[z \mapsto 1][x \mapsto 5]$. Somit erhalten wir
             \[
-            \frac{\langle z := x; x := y, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5], \langle y := z, \sigma[z \mapsto 1][x \mapsto 5] \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}{\langle \underbrace{(z := z; x := y)}_{S_1}; \underbrace{y := z}_{S_2}, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
+            \frac{\langle z := x; x := y, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5], \langle y := z, \sigma[z \mapsto 1][x \mapsto 5] \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}{\langle \underbrace{(z := x; x := y)}_{S_1}; \underbrace{y := z}_{S_2}, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
             \]
 
         \item $\infruleNs{zuw}$ für den rechten Teil
@@ -125,7 +125,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
 
         \item $\infruleNs{seq}$
             \[
-            \frac{\langle z := x, \sigma \rangle \to \sigma[z \mapsto 1], \langle x := y, \sigma[z \mapsto 1] \rangle \to \sigma[z \mapsto 1][x \mapsto 5]}{\langle z := x; x ;= y, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5]}
+            \frac{\langle z := x, \sigma \rangle \to \sigma[z \mapsto 1], \langle x := y, \sigma[z \mapsto 1] \rangle \to \sigma[z \mapsto 1][x \mapsto 5]}{\langle z := x; x := y, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5]}
             \]
 
             Ab hier analog zum rechten Teil (mit zwei Mal $\infruleNs{zuw}$).
@@ -184,7 +184,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
     \begin{enumerate}
         \item ``$\Rightarrow$''
 
-            Nimm an, es gilt $\strans{S_1}{\sigma}{\sigma'}$. Also exisitert nach Definition ein endlicher Ableitungsbaum für $\strans{S_1}{\sigma}{\sigma'}$.
+            Angenommen, es gilt $\strans{S_1}{\sigma}{\sigma'}$. Also existiert nach Definition ein endlicher Ableitungsbaum für $\strans{S_1}{\sigma}{\sigma'}$.
             \begin{enumerate}
                 \item $\Bsem{b}(\sigma) = \true$
 
@@ -253,7 +253,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
 \end{proof}
 
 \begin{lemma}
-    Die natürliche Semantik der \texttt{while}-Sprache ist \emph{determiniert}, \dh für alle Anweisungen $S$ und Zustände $\sigma, \sigma_1, \sigma_2$ gilt:
+    Die natürliche Semantik der \texttt{while}-Sprache ist \emph{determiniert}, \dh{} für alle Anweisungen $S$ und Zustände $\sigma, \sigma_1, \sigma_2$ gilt:
 
     Wenn $\strans{S}{\sigma}{\sigma_1}$ und $\strans{S}{\sigma}{\sigma_2}$, dann $\sigma_1 = \sigma_2$.
 \end{lemma}

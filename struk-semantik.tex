@@ -1,6 +1,6 @@
 \subsection{Strukturelle operationelle Semantik (``small step'')}
 
-Hier geht es um die genaue Reihenfolge der Schritte bei der Ausführung. Das ist bespielsweise nützlich bei der parallelen Ausführungen eines Programms.
+Hier geht es um die genaue Reihenfolge der Schritte bei der Ausführung. Das ist beispielsweise nützlich bei der parallelen Ausführungen eines Programms.
 
 Wir definieren wieder eine Zustandsüberführungsrelation ``$\Rightarrow$''. Sie hat die Form
 \begin{align*}
@@ -11,7 +11,7 @@ Wir definieren wieder eine Zustandsüberführungsrelation ``$\Rightarrow$''. Sie
 
 Interpretation:
 \begin{enumerate}
-    \item[(*)] Ausführung ist noch nicht vorbei, sondern erreicht in \emph{einem Schritt} die \emph{Zwischenkonfiguration} $\langle s', \sigma' \rangle$.
+    \item[(*)] Ausführung ist noch nicht vorbei, sondern erreicht in \emph{einem Schritt} die \emph{Zwischenkonfiguration} $\langle S', \sigma' \rangle$.
     \item[(**)] Ausführung ist nach einem Schritt vorbei und erreicht den Endzustand $\sigma'$.
 \end{enumerate}
 
@@ -100,8 +100,8 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 
     \begin{align*}
         & \langle \texttt{(z := x; x := y); y = z;}, \sigma \rangle \\
-        \overset{\infruleSos[1]{seq}}{\Rightarrow} \quad & \langle \texttt{x := y; y := z}, \sigma[z \mapsto 5] \rangle \tag{i} \\
-        \overset{\infruleSos[2]{seq}}{\Rightarrow} \quad & \langle \texttt{y := z}, \sigma[z \mapsto 5][y \mapsto 7] \rangle \tag{ii} \\
+        \overset{\infruleSos[1]{seq}\infruleSos[2]{seq}\infruleSos{zuw}}{\Rightarrow} \quad & \langle \texttt{x := y; y := z}, \sigma[z \mapsto 5] \rangle \tag{i} \\
+        \overset{\infruleSos[2]{seq}\infruleSos{zuw}}{\Rightarrow} \quad & \langle \texttt{y := z}, \sigma[z \mapsto 5][y \mapsto 7] \rangle \tag{ii} \\
         \overset{\infruleSos{zuw}}{\Rightarrow} \quad & \sigma[z \mapsto 5][x \mapsto 7][y \mapsto 5]
     \end{align*}
 
@@ -137,7 +137,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 \subsection{Eigenschaften der SOS}
 
 \begin{lemma}
-    Seiten $S_1, S_2$ Anweisungen, $\sigma, \sigma''$ Zustände und $k \in \mathbb{N}$.
+    Seien $S_1, S_2$ Anweisungen, $\sigma, \sigma''$ Zustände und $k \in \mathbb{N}$.
     Dann gilt: Falls $\langle S_1; S_2, \sigma \rangle \Rightarrow^k \sigma''$ gilt, es existieren zwei Zahlen $k_1, k_2 \in \mathbb{N}$ mit
     \[
         \langle S_1, \sigma \rangle \Rightarrow^{k_1} \sigma'
@@ -162,7 +162,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
             \]
             wurde erfüllt für ein $\sigma'$.
 
-            Wir wissen also, es existiert ein Zwischenzustand $\sigma'$ mit $\stranssos{S_1}{\sigma}{\sigma'}$ und erster Schritt von $\langle S_1; S_2, \sigma \rangle \Rightarrow^2 \sigma''$ ist $\langle S_1; S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma' \rangle$
+            Wir wissen also, es existiert ein Zwischenzustand $\sigma'$ mit $\stranssos{S_1}{\sigma}{\sigma'}$ und erster Schritt von $\langle S_1; S_2, \sigma \rangle \Rightarrow^2 \sigma''$ ist $\langle S_1; S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma' \rangle$.
             Der zweite Schritt $\langle S_1; S_2, \sigma \rangle \Rightarrow^2 \sigma''$ muss jetzt aber der Form $\langle S_2, \sigma' \rangle \Rightarrow \sigma''$ sein.
 
             D.\,h. die Aussage gilt mit $k_1 = 1, k_2 = 1$ und $\sigma'$.
@@ -172,16 +172,16 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
     \emph{Induktionsschritt:} $k - 1 \mapsto k$ mit $k \geq 3$
 
     Betrachten den ersten Schritt $\langle S_1; S_2, \sigma \rangle \Rightarrow^k \sigma''$.
-    Zwei Fälle
+    Zwei Fälle:
     \begin{enumerate}
-        \item $\infruleSos[1]{seq}$ Der erste Schritt hat die Form $\langle S_1; S_2, \sigma \rangle \Rightarrow^k \langle S_1'; S_2, \sigma''' \rangle$
+        \item $\infruleSos[1]{seq}$ Der erste Schritt hat die Form $\langle S_1; S_2, \sigma \rangle \Rightarrow \langle S_1'; S_2, \sigma''' \rangle$
 
             Dann muss aber gelten $\langle S_1'; S_2, \sigma''' \rangle \Rightarrow^{k-1} \sigma''$.
             Nach IV existiert $k_1', k_2' \in \mathbb{N}, \sigma'$, sodass $\langle S_1',  \sigma''' \rangle \Rightarrow^{k_1'} \sigma'$ und $\langle S_2',  \sigma' \rangle \Rightarrow^{k_2'} \sigma''$ und $k_1' + k_2' = k - 1$.
 
-            Da wir im ersten Schritt $\infruleSos[1]{seq}$ angewandt haben, muss die Schlussregel dafür erfüllt gewesen sein, \dh{} es gilt $\langle S_1, \sigma \rangle \Rightarrow \langle S_1', \sigma''' \rangle$. Also gilt auch $\langle S_1', \sigma \rangle \Rightarrow^{k_1'} \sigma'$ also $\langle S_1, \sigma \rangle \Rightarrow^{k_1+1} \sigma'$.
+            Da wir im ersten Schritt $\infruleSos[1]{seq}$ angewandt haben, muss die Schlussregel dafür erfüllt gewesen sein, \dh{} es gilt $\langle S_1, \sigma \rangle \Rightarrow \langle S_1', \sigma''' \rangle$. Also gilt auch $\langle S_1', \sigma \rangle \Rightarrow^{k_1'} \sigma'$ und somit $\langle S_1, \sigma \rangle \Rightarrow^{k_1'+1} \sigma'$.
 
-            Also gilt die Aussage für $k_1 + 1, k_2 = k_2', \sigma'$.
+            Also gilt die Aussage für $k_1 = k_1' + 1, k_2 = k_2', \sigma'$.
         \item $\infruleSos[2]{seq}$ Der erste Schritt hat die Form $\langle S_1; S_2, \sigma \rangle \Rightarrow \langle S_2, \sigma' \rangle$ und es gilt $\langle S_1, \sigma \rangle \Rightarrow \sigma'$.
 
             Also gilt die Aussage für $k_1 = 1, k_2 = k - 1, \sigma'$.
@@ -189,15 +189,15 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 \end{proof}
 
 
-\begin{lemma}[Determinierheit]
-    SOS ist \emph{determiniert}. Anders als bei der natürlichen Semantik müssen auch alle Zwischenzustände gleich sein, \dh{}
+\begin{lemma}[Determiniertheit]
+    SOS ist \emph{determiniert}. Anders als bei der natürlichen Semantik müssen auch alle Zwischenzustände gleich sein, \dh{}:
 
-        Für jedes $S, \sigma$ existiert gibt es eine Ableitungsfolge, die mit $\langle S, \sigma \rangle$ beginnt.
+        Für jedes $S, \sigma$ existiert eine Ableitungsfolge, die mit $\langle S, \sigma \rangle$ beginnt.
 \end{lemma}
 
 
 \begin{definition}[Semantische Äquivalenz]
-    Seien $S_1, S_2$ zwei Anweisungen. $S_1, S_2$ heißen \emph{semantische äquivalent} gdw. folgendes für allen Zustände $\sigma$ gilt:
+    Seien $S_1, S_2$ zwei Anweisungen. $S_1, S_2$ heißen \emph{semantisch äquivalent} gdw. folgendes für alle Zustände $\sigma$ gilt:
 
     \begin{enumerate}
         \item Für alle steckengebliebenen Konfigurationen $\gamma$ und alle Endzustände $\sigma'$ gilt
@@ -214,7 +214,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 
 \par\medskip
 \begin{example}
-    \texttt{$S_1$; ($S_2$; $S_3$)} und \texttt{($S_1$; $S_2$); $S_3$} sind semantische äquivalent.
+    \texttt{$S_1$; ($S_2$; $S_3$)} und \texttt{($S_1$; $S_2$); $S_3$} sind semantisch äquivalent.
 \end{example}
 
 
@@ -225,7 +225,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
     Definiere $\mathcal{S_{\text{sos}}}: \Stm \to (\State \to \State)$ als
     \[
         \mathcal{S_{\text{sos}}}\lsem S \rsem(\sigma) = \begin{cases}
-            \sigma' & \text{falls} \langle S, \sigma \rangle \Rightarrow^* \sigma' \\
+            \sigma' & \text{falls } \langle S, \sigma \rangle \Rightarrow^* \sigma' \\
             \bot & \text{sonst}
         \end{cases}
     \]
@@ -251,7 +251,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 
             \dh{} $\langle S, \sigma \rangle \to \sigma' \implies \langle S, \sigma \rangle \Rightarrow^* \sigma'$
 
-            Wir wissen $\langle S, \sigma \rangle \to \sigma'$, \dh{} es existiert ein endliche Ableitungsbaum $T$ dafür. Mache Induktion nach der Tiefe von $T$.
+            Wir wissen $\langle S, \sigma \rangle \to \sigma'$, \dh{} es existiert ein endlicher Ableitungsbaum $T$ dafür. Führe Induktion nach der Tiefe von $T$ durch.
 
             \par\medskip
             \emph{Induktionsanfang:} $T$ hat Tiefe 0, \dh{} $T$ besteht nur aus einer Wurzel. Das bedeutet, $\langle S, \sigma \rangle \to \sigma'$ erfolgt durch Anwendung eines Axioms. Davon gibt es drei Stück: $\infruleNs{zuw}, \infruleNs{skip}, \infruleNs[\false]{while}$
@@ -308,7 +308,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
             gilt.
 
             \begin{align*}
-                \langle \texttt{while b do S}, \sigma \rangle \Rightarrow & \quad \langle \texttt{if b then (S'; while b do S') else skip}, \sigma \rangle \\
+                \langle \texttt{while b do S'}, \sigma \rangle \Rightarrow & \quad \langle \texttt{if b then (S'; while b do S') else skip}, \sigma \rangle \\
                 \overset{\infruleSos[\true]{if}}{\Rightarrow} & \quad \langle \texttt{S'; while b do S'}, \sigma \rangle \quad \text{weil } \Bsem{b}(\sigma) = \true \\
                 \overset{\text{IV}}{\Rightarrow^*} & \quad \sigma' \quad \text{(Übung)}
             \end{align*}
@@ -403,7 +403,7 @@ begin
 end
 \end{lstlisting}
 
-In (1) und (2) überdeckt das lokale $x$ das globale $x$ \emph{in diesem Block}.
+In (1) überdeckt das lokale $x$ das globale $x$ \emph{in diesem Block}. In (2) wird wieder das globale $x$ verwendet.
 \end{example}
 
 
@@ -449,7 +449,7 @@ wobei
         \sigma'(x) & \text{falls } x \not\in X
     \end{cases}
 \end{align*}
-\dh{} alle lokale deklarierten Variablen werden auf ihren ursprünglichen Wert zurückgesetzt.
+\dh{} alle lokal deklarierten Variablen werden auf ihren ursprünglichen Wert zurückgesetzt.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -490,11 +490,11 @@ end
 
 \emph{Frage: Was soll hier herauskommen?}
 
-Das hängt von den Regeln über die Gülitigkeitsbereiche ab (\emph{scope rules}).
+Das hängt von den Regeln über die Gültigkeitsbereiche ab (\emph{scope rules}).
 
 Beim Aufruf von $q$ gibt es zwei Möglichkeiten: statisches Scoping (Bindung durch Syntax) oder dynamisches Scoping (Bindung durch aktuellen Kontext bei der Ausführung).
 
-Wir müssen uns also entscheiden: Wenn ein Bezeichner in einer Funktion verwendet wird, bezieht er sich auf die Umgebung im Quelltext (\emph{statischer Gülitigkeitsbereich}) oder auf die Umgebung zum Zeitpunkt der Programmausführung (\emph{dynamischer Gülitigkeitsbereich})?
+Wir müssen uns also entscheiden: Wenn ein Bezeichner in einer Funktion verwendet wird, bezieht er sich auf die Umgebung im Quelltext (\emph{statischer Gültigkeitsbereich}) oder auf die Umgebung zum Zeitpunkt der Programmausführung (\emph{dynamischer Gültigkeitsbereich})?
 
 Diese Entscheidung kann man separat für jede Klasse von Bezeichnern treffen.
 \end{example}
@@ -511,7 +511,7 @@ Diese Entscheidung kann man separat für jede Klasse von Bezeichnern treffen.
 
 
 
-\subsubsection{Natürlichen operationelle Semantik für Unterprogramme mit dynamischem Gülitigkeitsbereich}
+\subsubsection{Natürlichen operationelle Semantik für Unterprogramme mit dynamischem Gültigkeitsbereich}
 
 Um die Zuordnung von Prozedurname und Prozedurkörper (\emph{procedure body}) zu verwalten, müssen wir die Übergangsrelation ``$\to$'' um einen \emph{lokalen Kontext} erweitern. Dieser ist als Funktion \[
 \Env_p: p_{\text{Name}} \to \Stm
@@ -523,7 +523,7 @@ Um die Zuordnung von Prozedurname und Prozedurkörper (\emph{procedure body}) zu
 
 \par\medskip
 \begin{remark}
-    Für statische Gülitigkeitsbereiche müssten wir auch für Variablen einen Kontext erzeugen.
+    Für statische Gültigkeitsbereiche müssten wir auch für Variablen einen Kontext erzeugen.
 \end{remark}
 
 
@@ -576,5 +576,5 @@ Wichtig / interessant sind nun $\infruleNs{block}$ und $\infruleNs{call}$ (neu):
 
     Alles ist dynamisch, \dh{} $\env_p$ und $\sigma$ hängen vom aktuellen Programmzustand ab.
 
-    Mit mehr Arbeit ($\leadsto$ zusätzliche Indirektion und umfangreicherer lokaler Kontext) kann man auch statische Gülitigkeitsbereiche modellieren.
+    Mit mehr Arbeit ($\leadsto$ zusätzliche Indirektion und umfangreicherer lokaler Kontext) kann man auch statische Gültigkeitsbereiche modellieren.
 \end{remark}

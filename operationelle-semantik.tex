@@ -9,12 +9,12 @@ Das Folgende bezieht sich auf die \texttt{while}-Sprache (siehe \secref{section:
     \]
     Mengen wie $\AExp$ bezeichnen wir als \textbf{syntaktische Kategorien}.
 
-    \textbf{Zahl} ist eine ganze Zahl aus $\mathbb{Z}$. Die zugehörige syntaktische Kategorie $\Num$. Num ist die Menge aller Zeichenkette, die ganze Zahlen darstellen.
+    \textbf{Zahl} ist eine ganze Zahl aus $\mathbb{Z}$. Die zugehörige syntaktische Kategorie $\Num$. Num ist die Menge aller Zeichenketten, die ganze Zahlen darstellen.
     \begin{align*}
         \texttt{1234} & \in \Num \\
         1234 & \in \mathbb{Z}
     \end{align*}
-    Beachte, dass eigentlich der Syntaxbaum von \texttt{1234} gemeint ist
+    Beachte, dass eigentlich der Syntaxbaum von \texttt{1234} gemeint ist.
 
     $\Var$ sind Variablen, die nach Belieben vorhanden sind. Es sind abzählbar unendlich viele.
 \end{definition}
@@ -71,7 +71,7 @@ Sei $State = \{ \sigma \,\vert\, \sigma: \Var \to \mathbb{Z} \}$, \zb
 \end{align*}
 
 \[
-S: \Stm \to (\State + \State)
+S: \Stm \to (\State \to \State)
 \]
 
 \textbf{Jetzt:} Definition von $\A$ durch Induktion über die Struktur des Syntaxbaums. Die Definition von $\N$ und $\B$ ist eine Übung.
@@ -88,7 +88,7 @@ S: \Stm \to (\State + \State)
         \item[(i)] $\A\lsem n \rsem(\sigma) = \N\lsem n \rsem$ \quad\quad (konstante Funktion)
         \item[(ii)] $\A\lsem x \rsem(\sigma) = \sigma(x)$ \quad\quad\quad alternativ: $\A\lsem n \rsem = (\sigma \mapsto \sigma(n))$
         \item[(iii)] $\A\lsem a_1 + a_2 \rsem(\sigma) = \A\lsem a_1 \rsem(\sigma) + \A\lsem a_2 \rsem(\sigma)$ \\[4pt]
-        \emph{Bemerkung.} In anderen Sprachen könnte der Aufruf des ersten Summanden Seiteneffekte haben, \dh{} ggf.\ muss man an dieser Stelle aufpassen. In diesem Fall würde der potentenziell veränderte Zustand mit zurückgegeben werden.
+        \emph{Bemerkung.} In anderen Sprachen könnte der Aufruf des ersten Summanden Seiteneffekte haben, \dh{} ggf.\ muss man an dieser Stelle aufpassen. In diesem Fall würde der potenziell veränderte Zustand mit zurückgegeben werden.
         \item[(iv)] Analog für Subtraktion
         \item[(v)] Analog für Multiplikation
     \end{enumerate}
@@ -130,7 +130,7 @@ S: \Stm \to (\State + \State)
 \par\bigskip
 \textbf{Nächste Schritte:}
 \begin{enumerate}
-    \item[(i)] Der Wert eines Ausdrucks hängt \emph{nur} von den Variables ab, die in ihm vorkommen. (\secref{section:freeVars})
+    \item[(i)] Der Wert eines Ausdrucks hängt \emph{nur} von den Variablen ab, die in ihm vorkommen. (\secref{section:freeVars})
     \item[(ii)] Was passiert in einem arithmetischen Ausdruck, wenn wir eine Variable durch einen Ausdruck ersetzen ($\leadsto$ \emph{Substitution})? (\secref{section:substitution})
 \end{enumerate}
 
@@ -147,7 +147,7 @@ S: \Stm \to (\State + \State)
         \item $\FV(a_1 \;\square\; a_2) = \FV(a_1) \cup \FV(a_2)$ \quad\quad für $\square \in \{ +, -, * \}$
     \end{enumerate}
 
-    Gebundene Variable betrachten wir im Kontekt der \texttt{while}-Sprache nicht. in anderen Sprachen können aber lokale Variablen \zb als solche betrachtet werden.
+    Gebundene Variablen betrachten wir im Kontext der \texttt{while}-Sprache nicht. In anderen Sprachen können aber lokale Variablen \zb{} als solche betrachtet werden.
 \end{definition}
 
 \begin{lemma}
@@ -269,7 +269,7 @@ S: \Stm \to (\State + \State)
     \end{align*}
 \end{lemma}
 
-Das Lemma setzt Semantik und Syntax in Verbindung: Wir können syntaktisch Variable durch Teilausdrücke ersetzen und das ist äquivalent dazu, erst den Teilausdruck auszuwerten und mit diesen Wert im Zustand den ursprünglichen Ausdruck auszuwerten.
+Das Lemma setzt Semantik und Syntax in Verbindung: Wir können syntaktisch Variablen durch Teilausdrücke ersetzen und das ist äquivalent dazu, erst den Teilausdruck auszuwerten und mit diesen Wert im Zustand den ursprünglichen Ausdruck auszuwerten.
 
 \begin{example}
     \begin{align*}
