@@ -18,7 +18,7 @@
 \contentsline {subsubsection}{\numberline {4.4.1}Schlussregeln für die natürliche Semantik von \texttt {while}}{17}{subsubsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.5}Strukturelle operationelle Semantik (``small step'')}{22}{subsection.4.5}%
 \contentsline {subsection}{\numberline {4.6}Eigenschaften der SOS}{24}{subsection.4.6}%
-\contentsline {subsection}{\numberline {4.7}Semantische Funktion $\mathcal {S_{\text {sos}}}$}{25}{subsection.4.7}%
+\contentsline {subsection}{\numberline {4.7}Semantische Funktion $\mathcal {S_{\text {sos}}}$}{26}{subsection.4.7}%
 \contentsline {subsection}{\numberline {4.8}Erweiterungen der \texttt {while}-Sprache}{27}{subsection.4.8}%
 \contentsline {subsubsection}{\numberline {4.8.1}Programmabbruch}{27}{subsubsection.4.8.1}%
 \contentsline {subsubsection}{\numberline {4.8.2}Blöcke und lokale Variablen}{28}{subsubsection.4.8.2}%

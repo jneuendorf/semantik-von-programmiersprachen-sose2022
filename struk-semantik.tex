@@ -174,7 +174,7 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
     Betrachten den ersten Schritt $\langle S_1; S_2, \sigma \rangle \Rightarrow^k \sigma''$.
     Zwei Fälle:
     \begin{enumerate}
-        \item $\infruleSos[1]{seq}$ Der erste Schritt hat die Form $\langle S_1; S_2, \sigma \rangle \Rightarrow^k \langle S_1'; S_2, \sigma''' \rangle$
+        \item $\infruleSos[1]{seq}$ Der erste Schritt hat die Form $\langle S_1; S_2, \sigma \rangle \Rightarrow \langle S_1'; S_2, \sigma''' \rangle$.
 
             Dann muss aber gelten $\langle S_1'; S_2, \sigma''' \rangle \Rightarrow^{k-1} \sigma''$.
             Nach IV existiert $k_1', k_2' \in \mathbb{N}, \sigma'$, sodass $\langle S_1',  \sigma''' \rangle \Rightarrow^{k_1'} \sigma'$ und $\langle S_2',  \sigma' \rangle \Rightarrow^{k_2'} \sigma''$ und $k_1' + k_2' = k - 1$.
@@ -186,16 +186,21 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 
             Also gilt die Aussage für $k_1 = 1, k_2 = k - 1, \sigma'$.
     \end{enumerate}
+
+    % https://github.com/jneuendorf/semantik-von-programmiersprachen-sose2022/pull/2#discussion_r931513559
+    Wir unterscheiden also zwischen den beiden Möglichkeiten für die Sequenz. Im ersten Fall benötigen wir mehr als einen Schritt, um $S_1$ abzuarbeiten, im zweiten Fall benötigt $S_1$ genau einen Schritt.
 \end{proof}
 
 
+\par\medskip
 \begin{lemma}[Determiniertheit]
-    SOS ist \emph{determiniert}. Anders als bei der natürlichen Semantik müssen auch alle Zwischenzustände gleich sein, \dh{}:
+    SOS ist \emph{determiniert}. Anders als bei der natürli"-chen Semantik müssen auch alle Zwischenzustände gleich sein, \dh{}:
 
         Für jedes $S, \sigma$ existiert eine Ableitungsfolge, die mit $\langle S, \sigma \rangle$ beginnt.
 \end{lemma}
 
 
+\par\medskip
 \begin{definition}[Semantische Äquivalenz]
     Seien $S_1, S_2$ zwei Anweisungen. $S_1, S_2$ heißen \emph{semantisch äquivalent} gdw. folgendes für alle Zustände $\sigma$ gilt:
 
