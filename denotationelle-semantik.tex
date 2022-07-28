@@ -72,11 +72,12 @@ Also eigentlich wollen wir schreiben: \[
 Das verletzt aber die Zusammengesetztheit.
 
 \par\medskip
-Wenn wir diese Gleichung betrachten, erkennen wir
 \begin{remark}[Erkenntnis]
-    $\Sdssem{\texttt{while $b$ do $S$}}$ ist die Lösung der Gleichung \[
+    Wenn wir diese Gleichung betrachten, erkennen wir, dass
+    $\Sdssem{\texttt{while $b$ do $S$}}$ die Lösung der Gleichung \[
         f = \cond(\Bsem{b}, f \circ \Sdssem{S}, \id)
     \]
+    ist.
 \end{remark}
 
 \emph{Wie lösen wir diese Gleichung?}
@@ -191,7 +192,7 @@ Wir müssen uns also anschauen, was der Fixpunktoperator $\fix$ mit unserem spez
 \par\bigskip
 Versuch einer Visualisierung:
 
-Wir haben $\Bsem{b}$ (Punkte sind Zustände mit Wahrheitswerten) und $\Ssem{S}$ (partielle Zustandsüberführungsfunktion, gelb), eine Funktion (Kandidat für Fixpunkt, blau) und das $f$-Funktional $F(f)$ (grün).
+Wir haben $\Bsem{b}$ (die Knoten sind Zustände mit Wahrheitswerten) und $\Ssem{S}$ (partielle Zustandsüberführungsfunktion, gelb), eine Funktion (Kandidat für Fixpunkt, blau) und das $f$-Funktional $F(f)$ (grün).
 
 $F$ erzeugt also eine neue Zustandsüberführungsfunktion, die für Zustände mit $\false$ auf den Zustand selbst abbildet und für Zustände mit $\true$ durch $f \circ \mathcal{S}$ abbildet, \dh{} erst dem gelben, dann dem blauen Pfeil folgt.
 
@@ -217,7 +218,7 @@ Die Aufgabe des Findens eines Fixpunktes bedeutet also, ein $f$ (blau) zu finden
             \centering
             \includegraphics[page=3,width=.6\textwidth]{img/f-combined}
         \end{figure}
-    \item Es gibt Zustände mit Wahrheitswert $\true$, die nicht nach endliche vielen Schritten einen Zustand mit Wahrheitswert $\false$ erreichen.
+    \item Es gibt Zustände mit Wahrheitswert $\true$, die \emph{nicht} nach endliche vielen Schritten einen Zustand mit Wahrheitswert $\false$ erreichen.
         \begin{enumerate}
             \item $w \to w \to w \to \dots$
 \begin{lstlisting}[language=Pascal]
@@ -275,7 +276,7 @@ Das Ergebnis unserer informellen Überlegung ist:
     Finde den richtigen Fixpunkt durch Fixpunktiteration. Starte mit der Zustandsüberführungsfunktion \[
     f_{\bot} : f_{\bot}(\sigma) = \bot \quad \forall \sigma \in \State
     \]
-    welche $F$ wiederholt auf $f_{\bot}$ an, schaue was passiert.
+    dann wende $F$ wiederholt auf $f_{\bot}$ an und schaue dann, was passiert.
 
     $\Rightarrow$ Der ``Grenzwert'' ist der gewünschte Fixpunkt.
 
@@ -415,6 +416,7 @@ while x >= 0 do  /*\label{code:loopdec}*/
                     \sigma & \text{sonst}
                 \end{cases}
             \end{align*}
+            % TODO: fix listing ref
             ist die Semantik von Listing~\ref{code:loopdec}.
 
             Nun sehen wir, dass \[
@@ -547,9 +549,11 @@ Wenn also gelten würde \[
         \item Seien $(\mathcal{D}, \sqsubseteq), (\mathcal{D}',\sqsubseteq'), (\mathcal{D}'',\sqsubseteq'')$ ccpos und $f_1: \mathcal{D} \to \mathcal{D}'$ und $f_2: \mathcal{D}' \to \mathcal{D}''$ monoton Funktionen.
 
             Dann ist auch $f_1 \circ f_2$ monoton.
-        \item Seien $(\mathcal{D}, \sqsubseteq), (\mathcal{D}',\sqsubseteq')$ ccpos und $f: \mathcal{D} \to \mathcal{D}'$ eine monotone Funktion. Sei $\mathcal{K}$ eine Kette. Dann ist $f(\mathcal{K})$ eine Kette in $\mathcal{D}'$. Wenn $\mathcal{D}$ endlich ist, dann ist das Supremum von $\mathcal{D}'$: \[
-                \sup' \mathcal{D}' = f(\sup \mathcal{D})
-            \]
+        \item Seien $(\mathcal{D}, \sqsubseteq), (\mathcal{D}',\sqsubseteq')$ ccpos und $f: \mathcal{D} \to \mathcal{D}'$ eine monotone Funktion. Sei $\mathcal{K}$ eine Kette. Dann ist $f(\mathcal{K})$ eine Kette in $\mathcal{D}'$. Wenn $\mathcal{D}$ endlich ist, dann ist das Supremum von $\mathcal{D}'$:
+            % NOTE: using math display mode incorrectly renders \sup'
+            \begin{center}
+                $\sup' \mathcal{D}' = f(\sup \mathcal{D})$
+            \end{center}
 
             Im Allgemeinen gilt: $f(\sup S) \sqsubsetneqq' \sup' f(S)$
     \end{enumerate}
@@ -561,7 +565,7 @@ Wenn also gelten würde \[
     Seien $(\mathcal{D}, \sqsubseteq), (\mathcal{D}',\sqsubseteq')$ ccpos und $f: \mathcal{D} \to \mathcal{D}'$ heißt \emph{stetig} wenn:
     \begin{enumerate}
         \item $f$ ist monoton.
-        \item Für alle nichtleeren Ketten $\mathcal{S} \in \mathcal{D}$ gilt $\sup' f(\mathcal{S}) = f(\sup\, \mathcal{S})$.
+        \item Für alle nichtleeren Ketten $\mathcal{S} \in \mathcal{D}$ gilt: $\sup' f(\mathcal{S}) = f(\sup\, \mathcal{S})$.
     \end{enumerate}
 \end{definition}
 
@@ -630,7 +634,7 @@ und $F_2(g) = \cond(\Bsem{b}, g, \id)$.
 
 $\Sdssem{\cdot}$ ist schwierig, also beweisen wir die Stetigkeit getrennt.
 
-\begin{proof}[Skizze]
+\begin{proof}[Beweisskizze]
     Zu zeigen:
     \begin{enumerate}
         \item $F_2$ ist stetig, durch detaillierte Analyse.
@@ -646,7 +650,7 @@ $\Sdssem{\cdot}$ ist schwierig, also beweisen wir die Stetigkeit getrennt.
     $\Sdssem{\cdot}$ definiert eine semantische Funktion auf der Menge aller \texttt{while}-Programme.
 \end{theorem}
 
-\begin{proof}[Skizze]
+\begin{proof}[Beweisskizze]
     Durch strukturelle Induktion nach der Anweisung $S$.
 \end{proof}
 
@@ -683,7 +687,7 @@ Seien $S_1, S_2$ Anweisungen. Wir sagen, sie sind semantisch äquivalent, wenn \
     \]
 \end{theorem}
 
-\begin{proof}[Skizze]
+\begin{proof}[Beweisskizze]
     Durch Fallunterscheidung/Induktion.
 
     Der Beweis verwendet die Antisymmetrie von $(\mathcal{F}, \sqsubseteq)$. Wir zeigen, dass \[

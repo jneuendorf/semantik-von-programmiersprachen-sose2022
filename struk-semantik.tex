@@ -17,7 +17,7 @@ Interpretation:
 
 
 
-Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreiben wir $[\cdot]_{\text{sos}}$ um anzuzeigen, dass es sich um die strukturelle operationelle Semantik handelt.
+Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreiben wir $[\cdot_{\text{sos}}]$ um anzuzeigen, dass es sich um die strukturelle operationelle Semantik handelt.
 
 
 \begin{enumerate}
@@ -96,10 +96,10 @@ Wir definieren $\Rightarrow$ durch folgende Schlussregeln. Im Folgenden schreibe
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{example}
-    Sei $\sigma$ ein Zustand mit $\sigma(x) = 5, \sigma(y) = 7$. Betrachte die Auswertung von \texttt{(z := x; x := y); y = z;} in der SOS für Startzustand $\sigma$.
+    Sei $\sigma$ ein Zustand mit $\sigma(x) = 5, \sigma(y) = 7$. Betrachte die Auswertung von \texttt{(z := x; x := y); y = z} in der SOS für Startzustand $\sigma$.
 
     \begin{align*}
-        & \langle \texttt{(z := x; x := y); y = z;}, \sigma \rangle \\
+        & \langle \texttt{(z := x; x := y); y = z}, \sigma \rangle \\
         \overset{\infruleSos[1]{seq}\infruleSos[2]{seq}\infruleSos{zuw}}{\Rightarrow} \quad & \langle \texttt{x := y; y := z}, \sigma[z \mapsto 5] \rangle \tag{i} \\
         \overset{\infruleSos[2]{seq}\infruleSos{zuw}}{\Rightarrow} \quad & \langle \texttt{y := z}, \sigma[z \mapsto 5][y \mapsto 7] \rangle \tag{ii} \\
         \overset{\infruleSos{zuw}}{\Rightarrow} \quad & \sigma[z \mapsto 5][x \mapsto 7][y \mapsto 5]
@@ -344,7 +344,7 @@ Wir fügen für \texttt{abort} \emph{keine neuen Schlussregeln} hinzu -- weder f
     \hrule
     \emph{Wie sieht es bei der NS aus?}
 
-    Sie $\sigma(x) = -1$. Wie sieht dann der Ableitungsbaum aus?
+    Sei $\sigma(x) = -1$. Wie sieht dann der Ableitungsbaum aus?
     \begin{align*}
         \infruleNs[\true]{if}\; \frac{
             \cfrac{
@@ -462,7 +462,7 @@ wobei
 \hfill 17.06.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Unterprogramme / Prozeduren / Subroutine / Methode}
+\subsubsection{Unterprogramme / Prozeduren / Subroutinen / Methoden}
 
 Wir wollen ein neues Sprachkonstrukt für \texttt{while} einführen: Prozeduren (wie in Pascal).
 
