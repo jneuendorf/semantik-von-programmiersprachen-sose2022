@@ -86,7 +86,7 @@ S: \Stm \to (\State \to \State)
     Sei $n \in \Num, x \in \Var, \sigma \in \State$ und $a_1, a_2 \in \AExp$. Wir definieren:
     \begin{enumerate}
         \item[(i)] $\A\lsem n \rsem(\sigma) = \N\lsem n \rsem$ \quad\quad (konstante Funktion)
-        \item[(ii)] $\A\lsem x \rsem(\sigma) = \sigma(x)$ \quad\quad\quad alternativ: $\A\lsem n \rsem = (\sigma \mapsto \sigma(n))$
+        \item[(ii)] $\A\lsem x \rsem(\sigma) = \sigma(x)$ \quad\quad\quad alternativ: $\A\lsem x \rsem = (\sigma \mapsto \sigma(x))$
         \item[(iii)] $\A\lsem a_1 + a_2 \rsem(\sigma) = \A\lsem a_1 \rsem(\sigma) + \A\lsem a_2 \rsem(\sigma)$ \\[4pt]
         \emph{Bemerkung.} In anderen Sprachen könnte der Aufruf des ersten Summanden Seiteneffekte haben, \dh{} ggf.\ muss man an dieser Stelle aufpassen. In diesem Fall würde der potenziell veränderte Zustand mit zurückgegeben werden.
         \item[(iv)] Analog für Subtraktion
