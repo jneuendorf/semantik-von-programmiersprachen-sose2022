@@ -45,7 +45,7 @@
 
     Zur Definition von Verzweigungen ($\leadsto$ \texttt{if}) benutzen wir eine Hilfsfunktion \emph{cond} (siehe \defref{def:cond}). Damit ist die Definition von Verzweigungen wie folgt:
     \[
-        \Sdssem{\texttt{if $b$ then $S_1$ then $S_2$}} = \cond(\Bsem{b}, \Sdssem{S_1}, \Sdssem{S_2})
+        \Sdssem{\texttt{if $b$ then $S_1$ else $S_2$}} = \cond(\Bsem{b}, \Sdssem{S_1}, \Sdssem{S_2})
     \]
 \end{definition}
 
