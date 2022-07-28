@@ -2,7 +2,7 @@
 
 \begin{definition}[Zustand]
     Es gibt eine abzählbar unendliche Menge von Variablen $V = \{ x_1, x_2, \dots, y, z, \dots \}$ (Speicher ist begrenzt aber beliebig groß). Der Zustand ist eine (partielle) Funktion \[
-    \sigma: V \to \mathbb{Z} \cup \{ \bot, true, false \}
+    \sigma: V \to \mathbb{Z} \cup \{ \bot, \true, \false \}
     \]
     ($\bot$ bedeutet undefiniert, \dh{} eine Speicherzelle hat noch keinen Wert und die Funk"-tion gibt nichts aus).
 
@@ -30,7 +30,7 @@
 \subsection{\texttt{while}-Sprache}\label{section:while}
 
 \begin{definition}
-    Wir verwenden in dieser Vorlesung eine einfache, turing-vollständige, imperative Programmiersprache als durchgängiges Beispiel namens \texttt{while}\emph{-Sprache}, die durch folgende kontextfreie Grammatik gegeben ist:
+    Wir verwenden in dieser Vorlesung eine einfache, turing-vollständi"-ge, imperative Programmiersprache als durchgängiges Beispiel namens \texttt{while}-\emph{Spra"-che}, die durch folgende kontextfreie Grammatik gegeben ist:
 \end{definition}
 \vspace*{-2em}
 \begin{align*}
@@ -44,9 +44,9 @@
 
 \begin{example}
     \begin{align*}
-        \Pi & = \texttt{x = z + 1} \\
-        \Ssem{\texttt{x = z + 1}}(\underbrace{[x \mapsto 5, z \mapsto -4, a \mapsto 2]}_{\text{Startzustand}}) & = \underbrace{[x \mapsto -3, z \mapsto 4, a \mapsto 2]}_{\text{Endzustand}} \\
-        \Ssem{\texttt{x = z + 3}}([x \mapsto 10, z \mapsto 12]) & = [x \mapsto 10, z \mapsto 12]
+        \Pi & = \texttt{x := z + 1} \\
+        \Ssem{\texttt{x := z + 1}}(\underbrace{[x \mapsto 5, z \mapsto -4, a \mapsto 2]}_{\text{Startzustand}}) & = \underbrace{[x \mapsto -3, z \mapsto -4, a \mapsto 2]}_{\text{Endzustand}} \\
+        \Ssem{\texttt{x := z + 3}}([x \mapsto 10, z \mapsto 12]) & = [x \mapsto 15, z \mapsto 12]
     \end{align*}
 \end{example}
 
@@ -90,10 +90,10 @@ das die Ausführung von $\Pi$ auf Zustand $s$ darstellt.
 
 \begin{example}
     \begin{align*}
-        & \langle \texttt{'z = x; x = y; y = z;'}, [x \mapsto 2, y \mapsto 3, z \mapsto 6] \rangle \\
-        \leadsto \; & \langle \texttt{'x = y; y = z;'}, [x \mapsto 2, y \mapsto 3, z \mapsto 2] \rangle \quad\quad \text{(1. Befehl ausgeführt)} \\
-        \leadsto \; & \langle \texttt{'y = z;'}, [x \mapsto 3, y \mapsto 3, z \mapsto 2] \rangle \\
-        \leadsto \; & [x \mapsto 3, y \mapsto 2, z \mapsto 2] \quad\quad \text{(Endzustand)}
+        & \langle \texttt{z := x; x := y; y := z}, [x \mapsto 2, y \mapsto 3, z \mapsto 6] \rangle \\
+        \Rightarrow \; & \langle \texttt{x := y; y := z}, [x \mapsto 2, y \mapsto 3, z \mapsto 2] \rangle \quad\quad \text{(1. Befehl ausgeführt)} \\
+        \Rightarrow \; & \langle \texttt{y := z}, [x \mapsto 3, y \mapsto 3, z \mapsto 2] \rangle \\
+        \Rightarrow \; & [x \mapsto 3, y \mapsto 2, z \mapsto 2] \quad\quad \text{(Endzustand)}
     \end{align*}
 \end{example}
 
@@ -116,6 +116,5 @@ Es wird also \zb{} die sequenzielle Ausführung von Anweisungen als Funktionskom
 
 \begin{remark}[Problem]
     Wie kann man beispielsweise Schleifen darstellen (insbesondere \texttt{while})? Ein möglicher Ansatz sind Grenzwerte, aber das geht tiefer in die Analysis.
-
     Bei der operationellen Semantik wird die Schleife durch das Transitionssystem realisiert.
 \end{remark}

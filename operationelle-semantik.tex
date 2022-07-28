@@ -9,7 +9,7 @@ Das Folgende bezieht sich auf die \texttt{while}-Sprache (siehe \secref{section:
     \]
     Mengen wie $\AExp$ bezeichnen wir als \textbf{syntaktische Kategorien}.
 
-    \textbf{Zahl} ist eine ganze Zahl aus $\mathbb{Z}$. Die zugehörige syntaktische Kategorie $\Num$. Num ist die Menge aller Zeichenketten, die ganze Zahlen darstellen.
+    \textbf{Zahl} ist eine ganze Zahl aus $\mathbb{Z}$. Die zugehörige syntaktische Kategorie ist $\Num$. Sie ist die Menge aller Zeichenketten, die ganze Zahlen darstellen.
     \begin{align*}
         \texttt{1234} & \in \Num \\
         1234 & \in \mathbb{Z}
@@ -51,7 +51,7 @@ r := a
 
 Die \emph{Semantik} in \texttt{while} wird gegeben durch eine \emph{semantische Funktion}, eine für jede \emph{syntaktische Kategorie}.
 
-Sei $State = \{ \sigma \,\vert\, \sigma: \Var \to \mathbb{Z} \}$, \zb
+Sei $\State = \{ \sigma \mid \sigma: \Var \to \mathbb{Z} \}$, \zb{}
 \begin{align*}
     \mathcal{N} : \Num & \to \mathbb{Z} \\
     \mathcal{N}\lsem\texttt{-123}\rsem & = -123
@@ -59,14 +59,14 @@ Sei $State = \{ \sigma \,\vert\, \sigma: \Var \to \mathbb{Z} \}$, \zb
 
 \begin{align*}
     \A: \underbrace{\AExp}_{\text{``Compiler''}} & \to \underbrace{(\State \to \mathbb{Z})}_{\text{``Interpreter''}} \\
-    \A\lsem\texttt{x+x*5}\rsem & = (\sigma \mapsto 6 \cdot \sigma(x)) \quad (\text{da }\texttt{x+x*5} = \texttt{6*x})
+    \A\lsem\texttt{x + x*5}\rsem & = (\sigma \mapsto 6 \cdot \sigma(x)) \quad (\text{da }\texttt{x + x*5} = \texttt{6*x})
 \end{align*}
 
 \begin{align*}
-    \B : \BExp \to (\State \to \{ w, f \}) \\
-    \B\lsem\texttt{x<=10}\rsem = \bigg( \sigma \mapsto \begin{cases}
-        w & \sigma(x) \leq 10 \\
-        f & \sigma(x) > 10
+    \B : \BExp \to (\State \to \bool) \\
+    \B\lsem\texttt{x <= 10}\rsem = \bigg( \sigma \mapsto \begin{cases}
+        \true & \sigma(x) \leq 10 \\
+        \false & \sigma(x) > 10
     \end{cases} \bigg)
 \end{align*}
 
@@ -101,7 +101,7 @@ S: \Stm \to (\State \to \State)
 \begin{example}
     Führe Negation ein: $\A \to \dots | -A$.
 
-    Erlaubt ist $\A\lsem -a_1 \rsem(\sigma) = 0 - \A\lsem a_1 \rsem(\sigma)$ aber nicht $\A\lsem -a_1 \rsem(\sigma) = \A\lsem 0 - a_1 \rsem(\sigma)$, da der Ausdruck hier um eine Null erweitert wurde.
+    Erlaubt ist $\A\lsem -a_1 \rsem(\sigma) = 0 - \A\lsem a_1 \rsem(\sigma)$, aber nicht $\A\lsem -a_1 \rsem(\sigma) = \A\lsem 0 - a_1 \rsem(\sigma)$, da der Ausdruck hier um eine Null erweitert wurde.
 \end{example}
 
 
@@ -114,7 +114,7 @@ S: \Stm \to (\State \to \State)
 \begin{theorem}
     $\A$ besitzt die folgenden Eigenschaften:
     \begin{enumerate}
-        \item für alle $a \in \AExp$, für alle $\sigma \in \State$ existiert genau eine Zahl $n \in \mathbb{Z}$, sodass $\A\lsem a \rsem (\sigma) = n$. (Voraussetzung: $\sigma$ ist eine totale Funktion.)
+        \item Für alle $a \in \AExp$, für alle $\sigma \in \State$ existiert genau eine Zahl $n \in \mathbb{Z}$, sodass $\A\lsem a \rsem (\sigma) = n$. (Voraussetzung: $\sigma$ ist eine totale Funktion.)
         \item $\A$ ist eine totale Funktion.
     \end{enumerate}
 \end{theorem}
@@ -144,12 +144,13 @@ S: \Stm \to (\State \to \State)
     \begin{enumerate}
         \item $\FV(n) = \emptyset$ \quad\quad\quad (falls $a = n$ (Zahl))
         \item $\FV(x) = \{ x \}$ \quad\quad (falls $a = x$ (Variable))
-        \item $\FV(a_1 \;\square\; a_2) = \FV(a_1) \cup \FV(a_2)$ \quad\quad für $\square \in \{ +, -, * \}$
+        \item $\FV(a_1 \;\square\; a_2) = \FV(a_1) \cup \FV(a_2)$ \quad\quad für $\square \in \{ \texttt{+}, \texttt{-}, \texttt{*} \}$
     \end{enumerate}
 
     Gebundene Variablen betrachten wir im Kontext der \texttt{while}-Sprache nicht. In anderen Sprachen können aber lokale Variablen \zb{} als solche betrachtet werden.
 \end{definition}
 
+\par\medskip
 \begin{lemma}
     Sei $a \in \AExp$, sei $\sigma, \sigma' \in \State$, sodass $\sigma(x) = \sigma'(x)$ für alle $x \ in\FV(a)$ gilt.
 
@@ -158,7 +159,8 @@ S: \Stm \to (\State \to \State)
     \A\lsem a \rsem(\sigma) = \A\lsem a \rsem(\sigma')
     \]
 \end{lemma}
-\begin{proof}[Beweis]
+
+\begin{proof}
     Durch strukturelle Induktion nach $a$.
 
     \emph{Induktionsanfang:}
@@ -190,7 +192,7 @@ S: \Stm \to (\State \to \State)
 
     \emph{Induktionsschritt:}
 
-    $a = a_1 \;\square\; a_2$ mit $\square \in \{ +, -, * \}$
+    $a = a_1 \;\square\; a_2$ mit $\square \in \{ \texttt{+}, \texttt{-}, \texttt{*} \}$
 
     \begin{align*}
         \A\lsem a \rsem(\sigma) & = \A\lsem a_1 \;\square\; a_2 \rsem(\sigma) \\

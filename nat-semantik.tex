@@ -7,7 +7,7 @@
 
 $\Asem{\cdot}$ und $\Bsem{\cdot}$ \emph{benutzen} den Zustand $\sigma$ während die Semantik von Anweisungen den Zustand \emph{verändern} soll.
 
-Idee: Definiere $\Ssem{\cdot}$ mithilfe einer Zustandsüberführungerelation.
+\emph{Idee:} Definiere $\Ssem{\cdot}$ mithilfe einer Zustandsüberführungsrelation.
 
 \begin{definition}
     Sei $s \in \Stm$ eine Anweisungsfolge und seien $\sigma, \sigma' \in \State$ Zustände. Die Zustandsüberführungsrelation
@@ -37,7 +37,7 @@ Idee: Definiere $\Ssem{\cdot}$ mithilfe einer Zustandsüberführungerelation.
 % SCHLUSSREGELN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Schlussregeln für die natürliche Semantik von \texttt{while}}
 
-Im Folgenden schreiben wir $[\cdot]_{\text{ns}}$ um anzuzeigen, dass es sich um die natürliche Semantik handelt.
+Im Folgenden schreiben wir $[\cdot_{\text{ns}}]$ um anzuzeigen, dass es sich um die natürliche Semantik handelt.
 
 \begin{enumerate}
     \item Zuweisung $\infruleNs{zuw}$ (Axiom)
@@ -88,7 +88,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
 \begin{definition}
     Sei $S \in \Stm$ ein Programm und seien $\sigma, \sigma' \in \State$. Dann gilt
     \[
-    \langle S, \sigma \rangle \to \sigma'
+        \langle S, \sigma \rangle \to \sigma'
     \]
     gdw.\ ein \emph{endlicher Ableitungsbaum} dafür existiert.
 
@@ -106,7 +106,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
     \begin{enumerate}
         \item $\infruleNs{seq}$
             \[
-            \frac{\langle z := x; x := y, \sigma \rangle \to \sigma', \langle y := z, \sigma' \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}{\langle \underbrace{(z := x; x := y)}_{s_1}; \underbrace{y := z}_{S_2}, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
+            \frac{\langle z := x; x := y, \sigma \rangle \to \sigma', \langle y := z, \sigma' \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}{\langle \underbrace{(z := x; x := y)}_{S_1}; \underbrace{y := z}_{S_2}, \sigma \rangle \to \sigma[z \mapsto 1][x \mapsto 5][y \mapsto 1]}
             \]
 
             Welches $\sigma'$ brauchen wir? $\leadsto \sigma[z \mapsto 1][x \mapsto 5]$. Somit erhalten wir
@@ -120,7 +120,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
             \]
 
             \[
-            \Asem{z}(\sigma[z \mapsto 1][x \mapsto 5]) \overset{Def}{=} \sigma[z \mapsto 1][x \mapsto 5](z) \overset{Def}{=} 1
+            \Asem{z}(\sigma[z \mapsto 1][x \mapsto 5]) \overset{\text{Def}}{=} \sigma[z \mapsto 1][x \mapsto 5](z) \overset{\text{Def}}{=} 1
             \]
 
         \item $\infruleNs{seq}$
@@ -155,7 +155,7 @@ Wie ist die Zustandsüberführungsfunktion überhaupt definiert?
 \begin{definition}
     Sei $S$ ein Programm und $\sigma$ ein Startzustand. Das Programm $S$ \emph{terminiert} bei Startzustand $\sigma$ falls ein $\sigma'$ existiert, sodass $\strans{S}{\sigma}{\sigma'}$ gilt.
 
-    ? Analog \emph{terminiert $S$ nicht} bei Startzustand $\sigma$.
+    % ? Analog \emph{terminiert $S$ nicht} bei Startzustand $\sigma$.
 
     Das Programm $S$ \emph{terminiert immer}, falls $S$ für jeden Startzustand $\sigma$ terminiert. $S$ \emph{terminiert nie}, falls $S$ für keinen Startzustand $\sigma$ terminiert.
 \end{definition}
